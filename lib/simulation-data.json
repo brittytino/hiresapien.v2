@@ -1,0 +1,337 @@
+{
+  "assessment": {
+    "name": "Data Scientist Industry Simulation",
+    "version": "MVP V1",
+    "competencies": {
+      "ProblemFraming": 15,
+      "DataLiteracy": 20,
+      "AnalyticalReasoning": 15,
+      "RootCauseAnalysis": 15,
+      "Prioritization": 10,
+      "BusinessThinking": 10,
+      "DataQualityAwareness": 5,
+      "Communication": 10
+    },
+    "missions": [
+      {
+        "id": "mission-1",
+        "title": "Mission 1: CEO Escalation",
+        "context": "CEO: Revenue down 18%. Marketing says traffic is healthy. Finance is concerned. Need answers by 4 PM.",
+        "tasks": [
+          {
+            "id": "task-1",
+            "type": "SingleSelect",
+            "question": "Which KPI would you check first?",
+            "options": ["Website Traffic", "Conversion Rate", "Server Uptime", "Employee Attendance"],
+            "correctAnswer": "Conversion Rate",
+            "competencies": ["ProblemFraming", "BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-2",
+            "type": "Ranking",
+            "question": "Rank investigations from highest to lowest priority.",
+            "items": ["Customer Segments", "Website Traffic", "Delivery Performance", "Social Media Mentions"],
+            "correctAnswer": ["Customer Segments", "Delivery Performance", "Social Media Mentions", "Website Traffic"],
+            "competencies": ["Prioritization"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-3",
+            "type": "MultiSelect",
+            "question": "Which teams should be involved in the investigation?",
+            "options": ["Product", "Marketing", "Logistics", "Finance"],
+            "correctAnswer": ["Product", "Finance", "Logistics"],
+            "competencies": ["ProblemFraming"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-2",
+        "title": "Mission 2: Dashboard Analysis",
+        "context": "Operational Dashboard",
+        "dashboardData": {
+          "columns": ["Month", "Visitors", "Orders"],
+          "rows": [
+            ["Jan", "100,000", "4,000"],
+            ["Feb", "102,000", "4,100"],
+            ["Mar", "101,000", "4,050"],
+            ["Apr", "100,000", "3,050"]
+          ]
+        },
+        "tasks": [
+          {
+            "id": "task-4",
+            "type": "SingleSelect",
+            "question": "Which metric changed significantly?",
+            "options": ["Visitors", "Orders", "Both", "Neither"],
+            "correctAnswer": "Orders",
+            "competencies": ["DataLiteracy"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-5",
+            "type": "SingleSelect",
+            "question": "What happened to conversion rate?",
+            "options": ["Remained steady at 4%", "Dropped from ~4% to ~3%", "Increased to 5%"],
+            "correctAnswer": "Dropped from ~4% to ~3%",
+            "competencies": ["DataLiteracy", "AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-6",
+            "type": "ShortText",
+            "question": "Write one key observation from the dashboard.",
+            "keywords": ["drop", "decline", "decrease", "april", "conversion", "orders"],
+            "competencies": ["DataLiteracy", "Communication"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-7",
+            "type": "Slider",
+            "question": "How confident are you that traffic is causing the issue?",
+            "range": [0, 100],
+            "correctRange": [0, 20],
+            "competencies": ["AnalyticalReasoning"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-3",
+        "title": "Mission 3: Segment Analysis",
+        "context": "Customer Segment Dashboard",
+        "dashboardData": {
+          "columns": ["Segment", "Revenue", "Revenue Change"],
+          "rows": [
+            ["New", "₹10M", "-2%"],
+            ["Returning", "₹18M", "-5%"],
+            ["Premium", "₹40M", "-28%"]
+          ]
+        },
+        "tasks": [
+          {
+            "id": "task-8",
+            "type": "SingleSelect",
+            "question": "Which segment requires immediate attention?",
+            "options": ["New", "Returning", "Premium"],
+            "correctAnswer": "Premium",
+            "competencies": ["Prioritization", "RootCauseAnalysis"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-9",
+            "type": "ShortText",
+            "question": "Explain why.",
+            "keywords": ["premium", "28%", "highest", "drop", "decline", "revenue"],
+            "competencies": ["AnalyticalReasoning", "Communication"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-10",
+            "type": "MultiSelect",
+            "question": "You only have 2 hours. Which two areas would you investigate first?",
+            "options": ["Website Traffic by Segment", "Premium Segment Delivery Complaints", "New Segment Conversion Rate", "Premium Segment Product Mix"],
+            "correctAnswer": ["Premium Segment Delivery Complaints", "Premium Segment Product Mix"],
+            "competencies": ["Prioritization", "BusinessThinking"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-4",
+        "title": "Mission 4: Stakeholder Conflict",
+        "context": "Messages:\nMarketing: Ads are underperforming.\nOperations: Delivery complaints increased.\nProduct: Checkout redesign launched recently.",
+        "tasks": [
+          {
+            "id": "task-11",
+            "type": "SingleSelect",
+            "question": "Whose claim currently has supporting evidence?",
+            "options": ["Marketing", "Operations", "Product", "None"],
+            "correctAnswer": "None",
+            "competencies": ["AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-12",
+            "type": "MultiSelect",
+            "question": "What data would help validate these claims?",
+            "options": ["Ad Click-Through Rate", "Delivery Delay Report", "Checkout Drop-off Rate", "Employee Attendance"],
+            "correctAnswer": ["Ad Click-Through Rate", "Delivery Delay Report", "Checkout Drop-off Rate"],
+            "competencies": ["DataLiteracy"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-13",
+            "type": "SingleSelect",
+            "question": "Which assumption is most dangerous to make without evidence?",
+            "options": ["Traffic is fine", "Operations is at fault", "Product redesign broke checkout"],
+            "correctAnswer": "Operations is at fault",
+            "competencies": ["RootCauseAnalysis"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-5",
+        "title": "Mission 5: Delivery Investigation",
+        "context": "Logistics Dashboard",
+        "dashboardData": {
+          "columns": ["Month", "Delayed Orders"],
+          "rows": [
+            ["Jan", "4%"],
+            ["Feb", "5%"],
+            ["Mar", "6%"],
+            ["Apr", "24%"]
+          ]
+        },
+        "tasks": [
+          {
+            "id": "task-14",
+            "type": "SingleSelect",
+            "question": "What anomaly do you observe?",
+            "options": ["Delay increased in Feb", "Delay skyrocketed in Apr", "No anomaly"],
+            "correctAnswer": "Delay skyrocketed in Apr",
+            "competencies": ["DataLiteracy"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-15",
+            "type": "SingleSelect",
+            "question": "Which hypothesis becomes stronger?",
+            "options": ["Delivery delays caused revenue drop", "Marketing ads failed", "Product redesign failed"],
+            "correctAnswer": "Delivery delays caused revenue drop",
+            "competencies": ["RootCauseAnalysis"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-16",
+            "type": "Slider",
+            "question": "How confident are you in this hypothesis?",
+            "range": [0, 100],
+            "correctRange": [70, 100],
+            "competencies": ["AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-17",
+            "type": "SingleSelect",
+            "question": "What should be analyzed next?",
+            "options": ["Customer reviews", "Ad performance", "Server uptime"],
+            "correctAnswer": "Customer reviews",
+            "competencies": ["Prioritization"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-6",
+        "title": "Mission 6: Customer Voice Analysis",
+        "context": "Customer Feedback: 'Delivery took 8 days', 'Package arrived damaged', 'Excellent product quality', 'Tracking inaccurate', 'Late arrival again'.",
+        "tasks": [
+          {
+            "id": "task-18",
+            "type": "MultiSelect",
+            "question": "Identify recurring themes.",
+            "options": ["Delivery Delays", "Damaged Items", "Bad Customer Support", "Tracking Issues", "Product Quality Good"],
+            "correctAnswer": ["Delivery Delays", "Tracking Issues", "Damaged Items", "Product Quality Good"],
+            "competencies": ["DataLiteracy"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-19",
+            "type": "SingleSelect",
+            "question": "Which department appears most responsible?",
+            "options": ["Marketing", "Operations", "Product"],
+            "correctAnswer": "Operations",
+            "competencies": ["RootCauseAnalysis"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-20",
+            "type": "Slider",
+            "question": "How severe is the problem (1-5)?",
+            "range": [1, 5],
+            "correctRange": [4, 5],
+            "competencies": ["BusinessThinking"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-7",
+        "title": "Mission 7: Data Quality Audit",
+        "context": "Dataset Health Report:\nMissing Values: 12%\nDuplicate Orders: 6%\nMissing Delivery Dates: 15%",
+        "tasks": [
+          {
+            "id": "task-21",
+            "type": "MultiSelect",
+            "question": "What risks do these issues create?",
+            "options": ["Skewed delivery delay metric", "Overstated order count", "Understated revenue", "None"],
+            "correctAnswer": ["Skewed delivery delay metric", "Overstated order count"],
+            "competencies": ["DataQualityAwareness"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-22",
+            "type": "Ranking",
+            "question": "Rank data quality issues by urgency.",
+            "items": ["Missing Delivery Dates", "Duplicate Orders", "Missing Values"],
+            "correctAnswer": ["Missing Delivery Dates", "Duplicate Orders", "Missing Values"],
+            "competencies": ["DataQualityAwareness", "Prioritization"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-23",
+            "type": "ShortText",
+            "question": "Would you present findings now? Explain reasoning.",
+            "keywords": ["yes", "directionally", "urgent", "clean", "fix"],
+            "competencies": ["BusinessThinking", "Communication"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-8",
+        "title": "Mission 8: Executive Decision",
+        "context": "CEO: We have ₹20 Lakhs available. Should we invest in advertising next month?",
+        "tasks": [
+          {
+            "id": "task-24",
+            "type": "SingleSelect",
+            "question": "Choose your recommendation.",
+            "options": ["Invest in Ads", "Hold Ad Spend until Operations are fixed", "Invest in new Product Features"],
+            "correctAnswer": "Hold Ad Spend until Operations are fixed",
+            "competencies": ["BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-25",
+            "type": "ShortText",
+            "question": "What evidence supports your recommendation?",
+            "keywords": ["delay", "operations", "churn", "waste", "delivery"],
+            "competencies": ["AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-26",
+            "type": "ShortText",
+            "question": "What is the biggest remaining uncertainty?",
+            "keywords": ["why", "root", "cause", "delivery", "logistics"],
+            "competencies": ["ProblemFraming"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-27",
+            "type": "ShortText",
+            "question": "Write a concise executive update.",
+            "keywords": ["revenue", "dropped", "operations", "delay", "premium", "segment", "recommend", "pause"],
+            "competencies": ["Communication", "BusinessThinking"],
+            "maxScore": 20
+          }
+        ]
+      }
+    ]
+  }
+}
