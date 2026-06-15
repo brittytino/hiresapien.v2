@@ -99,7 +99,7 @@ export default function MissionPage({ params }: { params: { id: string } }) {
       {/* Current Task */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 relative">
         <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-           <h3 className="text-xl font-bold text-gray-900">Task {currentTaskIndex + 1} of {mission.tasks.length}</h3>
+           <h3 className="text-xl font-bold text-gray-900">Interaction {currentTaskIndex + 1} of {mission.tasks.length}</h3>
            <span className="text-sm font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
              {task.type}
            </span>
