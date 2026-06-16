@@ -3,7 +3,6 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 import LoadingBar from "@/components/basic/LoadingBar";
-import RouteLoadingOverlay from "@/components/basic/RouteLoadingOverlay";
 import { Suspense } from "react";
 import { UIProvider } from "@/components/providers/ui-provider";
 
@@ -14,8 +13,9 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Hiresapien | Portal",
-  description: "Secure access to the Placement Readiness Intelligence Platform",
+  title: "Hiresapien | Discover How Industry-Ready You Are",
+  description:
+    "Experience a real-world Junior Data Scientist simulation and receive a personalized competency report. Industry-based, 15 minutes, no preparation required.",
   icons: {
     icon: "/logo.webp",
   },
@@ -32,7 +32,6 @@ export default function RootLayout({
         <UIProvider>
           <Suspense fallback={null}>
             <LoadingBar />
-            <RouteLoadingOverlay />
           </Suspense>
           {children}
         </UIProvider>

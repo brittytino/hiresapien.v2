@@ -76,13 +76,33 @@ export function MultiSelectUI({ options, onSelect }: { options: string[], onSele
 }
 
 export function ShortTextUI({ onUpdate }: { onUpdate: (val: string) => void }) {
+  const [text, setText] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    setText(val);
+    onUpdate(val);
+  };
+
+  const wordCount = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+  const isMinWords = wordCount >= 50;
+
   return (
-    <div className="mt-2">
+    <div className="mt-2 space-y-2">
       <textarea
-        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-600 focus:ring-0 outline-none transition-all resize-none min-h-[150px] text-gray-800"
-        placeholder="Type your answer here..."
-        onChange={(e) => onUpdate(e.target.value)}
+        value={text}
+        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 outline-none transition-all resize-none min-h-[160px] text-gray-800"
+        placeholder="Provide a detailed analysis (minimum 50 words)..."
+        onChange={handleChange}
       />
+      <div className="flex justify-between items-center text-xs font-semibold">
+        <span className={isMinWords ? "text-emerald-600" : "text-amber-600"}>
+          {isMinWords ? "✓ Minimum length met" : "⚠️ Please write at least 50 words"}
+        </span>
+        <span className={`${isMinWords ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"} px-2.5 py-1 rounded-md transition-all`}>
+          Word Count: {wordCount} / 50
+        </span>
+      </div>
     </div>
   );
 }
@@ -96,20 +116,69 @@ export function SliderUI({ range, onUpdate }: { range: number[], onUpdate: (val:
     onUpdate(v);
   };
 
+  const getPercentage = () => {
+    return ((val - range[0]) / (range[1] - range[0])) * 100;
+  };
+
+  const percent = getPercentage();
+  const isPercent = range[1] > 10;
+
+  const getColor = (p: number) => {
+    if (p <= 30) return "from-blue-400 to-blue-500";
+    if (p <= 60) return "from-indigo-400 to-indigo-600";
+    return "from-violet-500 to-purple-600";
+  };
+
+  const getDisplayVal = () => {
+    if (isPercent) return `${val}%`;
+    return `${val} / ${range[1]}`;
+  };
+
+  const getLabel = () => {
+    if (isPercent) {
+      if (val <= 20) return "Not Confident";
+      if (val <= 55) return "Slightly Confident";
+      if (val <= 80) return "Highly Confident";
+      return "Extremely Confident";
+    } else {
+      if (val <= 1) return "Very Low";
+      if (val <= 2) return "Low";
+      if (val <= 3) return "Medium";
+      if (val <= 4) return "High";
+      return "Critical";
+    }
+  };
+
   return (
-    <div className="py-8 px-4">
-      <input 
-        type="range" 
-        min={range[0]} 
-        max={range[1]} 
-        value={val}
-        onChange={handleChange}
-        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-      />
-      <div className="flex justify-between text-sm font-semibold text-gray-500 mt-4">
-        <span>{range[0]}%</span>
-        <span className="text-xl text-blue-600">{val}%</span>
-        <span>{range[1]}%</span>
+    <div className="py-6 px-2">
+      {/* Score Display (matching Confidence screen) */}
+      <div className="flex flex-col items-center mb-8">
+        <div
+          className={`w-24 h-24 rounded-full bg-gradient-to-br ${getColor(percent)} flex items-center justify-center shadow-lg shadow-indigo-100 mb-3 transition-all duration-300`}
+        >
+          <span className="text-3xl font-black text-white">{getDisplayVal()}</span>
+        </div>
+        <span className="text-base font-bold text-slate-700">{getLabel()}</span>
+      </div>
+
+      {/* Range Slider Track */}
+      <div className="relative px-2">
+        <input 
+          type="range" 
+          min={range[0]} 
+          max={range[1]} 
+          step={1}
+          value={val}
+          onChange={handleChange}
+          className="confidence-slider"
+          style={{
+            background: `linear-gradient(90deg, #6366f1 ${percent}%, #e5e7eb ${percent}%)`,
+          }}
+        />
+        <div className="flex justify-between text-xs font-semibold text-gray-400 mt-4">
+          <span>{range[0]}{isPercent ? "%" : ""} {isPercent ? "— Low" : "— Very Low"}</span>
+          <span>{range[1]}{isPercent ? "%" : ""} {isPercent ? "— High" : "— Critical"}</span>
+        </div>
       </div>
     </div>
   );

@@ -17,8 +17,12 @@ export interface ISimulationAttempt extends Document {
     name: string;
     email: string;
     phone: string;
+    degree?: string;
+    year?: string;
+    skills?: string[];
+    confidence?: number;
   };
-  status: "IN_PROGRESS" | "COMPLETED";
+  status: "IN_PROGRESS" | "COMPLETED" | "TERMINATED";
   interactions: ISimulationInteraction[];
   competencyScores: {
     ProblemFraming: number;
@@ -32,8 +36,16 @@ export interface ISimulationAttempt extends Document {
   };
   overallScore: number;
   readinessLevel: string;
+  archetype?: string;
+  strengths?: string[];
+  improvements?: string[];
   startedAt: Date;
   completedAt?: Date;
+  warningCount: number;
+  warningEvents: {
+    timestamp: Date;
+    reason: string;
+  }[];
 }
 
 const SimulationAttemptSchema = new mongoose.Schema<ISimulationAttempt>({
@@ -41,8 +53,12 @@ const SimulationAttemptSchema = new mongoose.Schema<ISimulationAttempt>({
     name: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
+    degree: { type: String },
+    year: { type: String },
+    skills: [{ type: String }],
+    confidence: { type: Number },
   },
-  status: { type: String, enum: ["IN_PROGRESS", "COMPLETED"], default: "IN_PROGRESS" },
+  status: { type: String, enum: ["IN_PROGRESS", "COMPLETED", "TERMINATED"], default: "IN_PROGRESS" },
   interactions: [
     {
       taskId: { type: String, required: true },
@@ -68,8 +84,18 @@ const SimulationAttemptSchema = new mongoose.Schema<ISimulationAttempt>({
   },
   overallScore: { type: Number, default: 0 },
   readinessLevel: { type: String, default: "Explorer" },
+  archetype: { type: String },
+  strengths: [{ type: String }],
+  improvements: [{ type: String }],
   startedAt: { type: Date, default: Date.now },
   completedAt: { type: Date },
+  warningCount: { type: Number, default: 0 },
+  warningEvents: [
+    {
+      timestamp: { type: Date, default: Date.now },
+      reason: { type: String, required: true },
+    },
+  ],
 });
 
 export const SimulationAttempt: Model<ISimulationAttempt> =

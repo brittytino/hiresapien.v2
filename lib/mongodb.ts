@@ -1,11 +1,5 @@
 import mongoose from 'mongoose';
 
-const MONGO_URI = process.env.MONGO_URI as string;
-
-if (!MONGO_URI) {
-  throw new Error('MONGO_URI environment variable is not defined');
-}
-
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
@@ -19,14 +13,23 @@ const cached: MongooseCache = global._mongooseCache ?? { conn: null, promise: nu
 global._mongooseCache = cached;
 
 async function connectDB(): Promise<typeof mongoose> {
+  const MONGO_URI = process.env.MONGO_URI;
+
+  if (!MONGO_URI) {
+    throw new Error(
+      'MONGO_URI environment variable is not defined. ' +
+      'Please copy .env.local.example to .env.local and fill in your MongoDB Atlas URI.'
+    );
+  }
+
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(MONGO_URI, {
         bufferCommands: false,
-        maxPoolSize: 200,      // support 120+ concurrent exam sessions
-        minPoolSize: 10,
+        maxPoolSize: 50,
+        minPoolSize: 5,
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
       })

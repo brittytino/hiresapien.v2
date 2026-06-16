@@ -16,7 +16,7 @@
       {
         "id": "mission-1",
         "title": "Mission 1: CEO Escalation",
-        "context": "CEO: Revenue down 18%. Marketing says traffic is healthy. Finance is concerned. Need answers by 4 PM.",
+        "context": "From: CEO <ceo@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: URGENT: Revenue Drop Investigation (Need Answers by 4 PM)\n\nHi,\n\nOur overall revenue is down 18% this month. Marketing insists traffic acquisition is perfectly healthy, but Finance is deeply concerned.\n\nPlease audit the main KPIs immediately and identify where the breakdown is happening. I need your preliminary findings by 4 PM today.\n\nBest,\nCEO, ShopSphere",
         "tasks": [
           {
             "id": "task-1",
@@ -50,7 +50,7 @@
       {
         "id": "mission-2",
         "title": "Mission 2: Dashboard Analysis",
-        "context": "Operational Dashboard",
+        "context": "From: Operations Manager <ops@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Monthly Operational Performance Report (April Q1)\n\nHi,\n\nI've compiled our Q1 operational metrics into the Dashboard below. As you can see, there's a significant shift in some of our core conversion numbers.\n\nPlease review this dataset and tell me which metrics changed abnormally and what happened to the overall checkout conversion rate.\n\nRegards,\nOperations Manager, ShopSphere",
         "dashboardData": {
           "columns": ["Month", "Visitors", "Orders"],
           "rows": [
@@ -101,7 +101,7 @@
       {
         "id": "mission-3",
         "title": "Mission 3: Segment Analysis",
-        "context": "Customer Segment Dashboard",
+        "context": "From: Marketing Director <marketing@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Segment Cohort Performance - Revenue Drop\n\nHi,\n\nFollowing up on the CEO's directive: we suspect the revenue decline is heavily concentrated in a specific customer cohort rather than across the board.\n\nBelow is the Segment Revenue Dashboard. Please analyze the data, determine which segment requires our immediate focus, and give a brief explanation why.\n\nBest,\nMarketing Director, ShopSphere",
         "dashboardData": {
           "columns": ["Segment", "Revenue", "Revenue Change"],
           "rows": [
@@ -142,7 +142,7 @@
       {
         "id": "mission-4",
         "title": "Mission 4: Stakeholder Conflict",
-        "context": "Messages:\nMarketing: Ads are underperforming.\nOperations: Delivery complaints increased.\nProduct: Checkout redesign launched recently.",
+        "context": "From: Product VP <product@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Fwd: Internal Slack Thread - Cross-Team Alignment\n\nHi,\n\nWe are experiencing a major stakeholder conflict regarding the root cause of the revenue leak. Here is the recent exchange on our #alerts channel:\n\n- Marketing: \"Ad campaigns are underperforming. Budget efficiency has collapsed.\"\n- Operations: \"Delivery complaints and delays have increased over the last 3 weeks.\"\n- Product: \"The new checkout interface redesign launched recently might have caused issues.\"\n\nPlease tell me which of these claims has immediate supporting evidence in our current dashboards, and what additional data we need to gather to resolve this.\n\nRegards,\nVP of Product, ShopSphere",
         "tasks": [
           {
             "id": "task-11",
@@ -176,7 +176,7 @@
       {
         "id": "mission-5",
         "title": "Mission 5: Delivery Investigation",
-        "context": "Logistics Dashboard",
+        "context": "From: Logistics Lead <logistics@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Logistics Dashboard - Late Shipping Metrics\n\nHi,\n\nWe pulled our late delivery tracking logs from the last 4 months. The metrics in the logistics dashboard below show a clear operational bottleneck.\n\nPlease check the anomaly in April, assess if this correlates with the premium segment revenue drop, and advise on what we should look at next.\n\nRegards,\nLogistics Lead, ShopSphere",
         "dashboardData": {
           "columns": ["Month", "Delayed Orders"],
           "rows": [
@@ -228,7 +228,7 @@
       {
         "id": "mission-6",
         "title": "Mission 6: Customer Voice Analysis",
-        "context": "Customer Feedback: 'Delivery took 8 days', 'Package arrived damaged', 'Excellent product quality', 'Tracking inaccurate', 'Late arrival again'.",
+        "context": "From: Customer Support Lead <support@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Direct Customer Feedback & Transcripts (April Shipments)\n\nHi,\n\nTo help connect the logs to the real customer experience, here is a batch of direct customer feedback we collected this week:\n\"Delivery took 8 days\", \"Package arrived damaged\", \"Excellent product quality\", \"Tracking inaccurate\", \"Late arrival again\".\n\nPlease read these transcripts, group them into core themes, and rate the severity of the operational issue on a scale of 1 to 5.\n\nThanks,\nSupport Lead, ShopSphere",
         "tasks": [
           {
             "id": "task-18",
@@ -262,7 +262,7 @@
       {
         "id": "mission-7",
         "title": "Mission 7: Data Quality Audit",
-        "context": "Dataset Health Report:\nMissing Values: 12%\nDuplicate Orders: 6%\nMissing Delivery Dates: 15%",
+        "context": "From: Engineering Lead <engineering@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Dataset Health Report - Telemetry Database Audit\n\nHi,\n\nWe audited our shipping telemetry databases, and the report shows some data quality warnings:\n- Missing Values: 12%\n- Duplicate Orders: 6%\n- Missing Delivery Dates: 15%\n\nPlease review these warnings, audit what risks they create for our analytics, and let me know if we should present our findings now or wait for cleaning.\n\nBest,\nData Engineering Lead, ShopSphere",
         "tasks": [
           {
             "id": "task-21",
@@ -295,7 +295,7 @@
       {
         "id": "mission-8",
         "title": "Mission 8: Executive Decision",
-        "context": "CEO: We have ₹20 Lakhs available. Should we invest in advertising next month?",
+        "context": "From: CEO <ceo@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Executive Decision - Final Recommendation for Q2 Strategy\n\nHi,\n\nThanks for your analysis. We have ₹20 Lakhs in flexible funding available for next month.\n\nGiven your findings, should we proceed with advertising spend or hold ads until operations are fixed? Please make your final recommendation and write a concise executive update for the board.\n\nBest,\nCEO, ShopSphere",
         "tasks": [
           {
             "id": "task-24",

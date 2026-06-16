@@ -1,11 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import WelcomeCard from "@/components/simulation/WelcomeCard";
 import MissionStepper from "@/components/simulation/MissionStepper";
 import { EvaluatedOnCard, TipsCard } from "@/components/simulation/InfoCards";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Rocket, AlertTriangle } from "lucide-react";
+import Skeleton from "@/components/basic/Skeleton";
+import ProctoringGuard from "@/components/simulation/ProctoringGuard";
+
+function MissionStepperFallback() {
+  return (
+    <div className="mt-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-2">
+          <Skeleton className="h-7 w-48" />
+          <Skeleton className="h-4 w-72" />
+        </div>
+        <Skeleton className="h-12 w-48 rounded-xl" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {[...Array(8)].map((_, i) => (
+          <Skeleton key={i} className="h-[120px] w-full rounded-2xl" />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function SimulationIntroPage() {
   const router = useRouter();
@@ -17,76 +38,109 @@ export default function SimulationIntroPage() {
     setError("");
 
     try {
-      // 1. Retrieve lead info from onboarding
-      let leadData = { name: "Guest", email: "guest@example.com", phone: "0000000000" };
+      let candidateData = {
+        name: "Guest",
+        email: "guest@example.com",
+        phone: "0000000000",
+        degree: "",
+        year: "",
+        skills: [] as string[],
+        confidence: 50,
+      };
+
       if (typeof window !== "undefined") {
-        const stored = localStorage.getItem("hiresapienLead");
-        if (stored) leadData = JSON.parse(stored);
+        const stored = localStorage.getItem("hiresapienCandidate");
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            candidateData = { ...candidateData, ...parsed };
+          } catch {
+            // ignore parse error — use defaults
+          }
+        }
       }
 
-      // 2. Call API to create attempt
       const res = await fetch("/api/simulation/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(leadData),
+        body: JSON.stringify(candidateData),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to start simulation");
+        throw new Error(data.error || "Failed to start simulation. Please try again.");
       }
 
-      // 3. Store attempt ID and route
       if (typeof window !== "undefined") {
         localStorage.setItem("simulationAttemptId", data.attemptId);
       }
-      
-      router.push("/simulation/mission/mission-1");
 
-    } catch (err: any) {
+      router.push("/simulation/mission/mission-1");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       console.error(err);
-      setError(err.message || "An unexpected error occurred.");
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="pb-12">
+    <ProctoringGuard>
+      <div className="pb-16 space-y-8">
+      {/* Welcome Banner */}
       <WelcomeCard />
-      <MissionStepper />
-      
-      <div className="flex mt-12 gap-8 flex-col md:flex-row">
-        <div className="flex-1">
-          <EvaluatedOnCard />
-        </div>
-        <div className="flex-1">
-          <TipsCard />
-        </div>
+
+      {/* Mission Roadmap */}
+      <Suspense fallback={<MissionStepperFallback />}>
+        <MissionStepper />
+      </Suspense>
+
+      {/* Divider */}
+      <div className="border-t border-slate-100" />
+
+      {/* Bottom Row: Info Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <EvaluatedOnCard />
+        <TipsCard />
       </div>
 
+      {/* Error */}
       {error && (
-        <div className="mt-8 p-4 bg-red-50 text-red-600 rounded-lg border border-red-200">
+        <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-200 text-sm font-medium flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           {error}
         </div>
       )}
 
-      <div className="mt-12 flex justify-end">
-        <button 
+      {/* CTA Row */}
+      <div className="flex items-center justify-between pt-2">
+        <div className="text-sm text-slate-400 font-medium">
+          <span className="font-bold text-slate-600">Ready to prove your skills?</span>{" "}
+          All missions unlock sequentially.
+        </div>
+
+        <button
+          id="start-assessment-btn"
           onClick={handleStart}
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-colors flex items-center disabled:opacity-70 disabled:cursor-not-allowed"
+          className="flex items-center gap-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-black py-3.5 px-8 rounded-xl shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-200 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed text-sm uppercase tracking-widest select-none cursor-pointer"
         >
           {loading ? (
             <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Starting Engine...
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Starting Engine…
             </>
           ) : (
-            "Start Assessment"
+            <>
+              <Rocket className="w-4 h-4" />
+              Begin the Assessment
+            </>
           )}
         </button>
       </div>
     </div>
+    </ProctoringGuard>
   );
 }
