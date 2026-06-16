@@ -145,10 +145,27 @@ const labelMap: Record<string, string> = {
 export default function ResultPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [transitionStage, setTransitionStage] = useState(0);
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
 
+  const transitionMessages = [
+    "Analyzing Your Decisions...",
+    "Comparing Against Industry Benchmarks...",
+    "Evaluating Business Reasoning...",
+    "Evaluating Data Interpretation..."
+  ];
+
   useEffect(() => {
+    // Start transition animation
+    let stage = 0;
+    const interval = setInterval(() => {
+      stage++;
+      if (stage < transitionMessages.length) {
+        setTransitionStage(stage);
+      }
+    }, 1500);
+
     const fetchResults = async () => {
       const minDelay = new Promise((res) => setTimeout(res, 3500));
 
@@ -181,6 +198,17 @@ export default function ResultPage() {
     };
 
     fetchResults();
+
+    // Ensure transition takes at least 6 seconds
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      clearInterval(interval);
+    }, 6000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleRetake = () => {
@@ -193,7 +221,7 @@ export default function ResultPage() {
 
   if (loading) return <LoadingScreen />;
 
-  if (error || !result) {
+  if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6 font-sans">
         <div className="p-8 bg-red-50 rounded-2xl border border-red-200 max-w-md shadow-sm">
