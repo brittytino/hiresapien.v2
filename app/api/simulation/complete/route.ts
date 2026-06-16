@@ -135,6 +135,16 @@ export async function POST(req: Request) {
         });
       }
 
+      // Check if all 8 missions are completed
+      const totalMissionsCount = simulationData.assessment.missions.length;
+      const completedMissionsSet = new Set(attempt.interactions.map((i: any) => i.missionId));
+      if (completedMissionsSet.size < totalMissionsCount) {
+        return NextResponse.json(
+          { error: "You must complete all 8 simulation missions before calculating results." },
+          { status: 400 }
+        );
+      }
+
       const compWeights = simulationData.assessment.competencies;
 
       const scores: Record<string, { earned: number; max: number }> = {

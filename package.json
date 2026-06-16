@@ -13,6 +13,7 @@
 
 
     "db:clean-users": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" scripts/clean-users.ts",
+    "test:gemini": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" scripts/test-gemini.ts",
     "test:source": "node tests/verify-source.js",
     "test:api": "vitest run --reporter=verbose",
     "test:e2e": "playwright test",

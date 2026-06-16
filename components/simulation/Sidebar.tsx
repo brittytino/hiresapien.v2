@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LayoutDashboard, Info, TrendingUp, BarChart2, FileText, Clock, Target, X, LogOut, ArrowLeft, User, Mail, Phone, GraduationCap, Calendar } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -79,10 +80,18 @@ export default function Sidebar() {
       {/* ── Sidebar ─────────────────────────────────── */}
       <div className="w-64 h-screen bg-white border-r border-gray-200 flex flex-col p-4 select-none">
         <div className="mb-8 px-2 flex items-center space-x-2">
-          <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold animate-pulse">
-            H
+          <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center p-1">
+            <Image
+              src="/image-removebg-preview (1).png"
+              alt="Hiresapien Logo"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">Hiresapien</h1>
+          <h1 className="text-xl font-bold text-gray-900 font-sans">
+            Hire<span className="text-blue-600">Sapien</span>
+          </h1>
         </div>
 
         <div className="flex-1 space-y-6">

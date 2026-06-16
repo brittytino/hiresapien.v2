@@ -173,6 +173,25 @@ export default function ResultPage() {
         const attemptId = localStorage.getItem("simulationAttemptId");
         if (!attemptId) throw new Error("No simulation attempt found. Please restart the assessment.");
 
+        // Check if all 8 missions are completed
+        const progressRaw = localStorage.getItem("hiresapienProgress");
+        let isAllCompleted = false;
+        if (progressRaw) {
+          try {
+            const parsed = JSON.parse(progressRaw);
+            const completed = parsed.completedMissions || [];
+            if (completed.length >= 8) {
+              isAllCompleted = true;
+            }
+          } catch {
+            // ignore
+          }
+        }
+
+        if (!isAllCompleted) {
+          throw new Error("You must complete all 8 simulation missions before you can view your results.");
+        }
+
         const [res] = await Promise.all([
           fetch("/api/simulation/complete", {
             method: "POST",

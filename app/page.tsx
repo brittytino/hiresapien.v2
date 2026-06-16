@@ -562,10 +562,18 @@ export default function OnboardingFlow() {
         <div className="relative z-20 flex flex-col h-full justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center text-white font-black text-xl shadow-lg">
-              H
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg p-1.5">
+              <Image
+                src="/image-removebg-preview (1).png"
+                alt="Hiresapien Logo"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
             </div>
-            <span className="text-xl font-black tracking-tight text-white">Hiresapien</span>
+            <span className="text-xl font-black tracking-tight text-white">
+              Hire<span className="text-blue-500">Sapien</span>
+            </span>
           </div>
 
           {/* Tagline/details */}
@@ -605,10 +613,15 @@ export default function OnboardingFlow() {
           </div>
 
           {/* Footer inside hero */}
-          <div className="text-xs text-slate-500 flex items-center gap-4">
-            <span>© {new Date().getFullYear()} Hiresapien.</span>
-            <span>·</span>
-            <span>Privacy Policy</span>
+          <div className="text-[10px] text-slate-500 flex flex-col gap-2">
+            <div className="flex items-center gap-4">
+              <span>© {new Date().getFullYear()} HireSapien.</span>
+              <span>·</span>
+              <span>Privacy Policy</span>
+            </div>
+            <p className="opacity-75 leading-normal max-w-md">
+              Disclaimer: ShopSphere is a fictional e-commerce company used strictly for simulated assessment purposes. Any resemblance to real brands, events, or companies is purely coincidental.
+            </p>
           </div>
         </div>
       </div>
@@ -617,10 +630,18 @@ export default function OnboardingFlow() {
       <div className="w-full md:w-1/2 lg:w-5/12 xl:w-2/5 min-h-screen md:h-screen bg-white flex flex-col justify-between p-8 md:p-12 lg:p-16 overflow-y-auto">
         {/* On mobile, show logo */}
         <div className="flex md:hidden items-center gap-3 mb-8">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center text-white font-black text-sm shadow-md">
-            H
+          <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center shadow-sm p-1">
+            <Image
+              src="/image-removebg-preview (1).png"
+              alt="Hiresapien Logo"
+              width={24}
+              height={24}
+              className="object-contain"
+            />
           </div>
-          <span className="text-lg font-black tracking-tight text-slate-900">Hiresapien</span>
+          <span className="text-lg font-black tracking-tight text-slate-900">
+            Hire<span className="text-blue-600">Sapien</span>
+          </span>
         </div>
 
         <div className="my-auto w-full max-w-md mx-auto">

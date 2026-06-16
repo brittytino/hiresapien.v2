@@ -20,11 +20,13 @@ export default function InstructionsPage() {
       </div>
 
       <div className="space-y-6">
-        {/* Core details banner */}
         <div className="bg-gradient-to-r from-indigo-50/60 to-blue-50/40 border border-indigo-100/60 rounded-2xl p-6">
           <h2 className="text-lg font-black text-slate-950 mb-3">Assessment Scenario Overview</h2>
           <p className="text-slate-600 leading-relaxed text-sm font-semibold">
             You will act as a <span className="font-bold text-slate-900">Junior Data Scientist</span> at <span className="font-bold text-slate-900">ShopSphere</span>, an e-commerce platform. Your core directive is to investigate why customer purchases and retention have dropped over the last quarter. You will be evaluated across 8 structured missions covering real-world analytical tasks.
+            <span className="block mt-3 text-xs text-slate-450 font-medium italic">
+              *Disclaimer: ShopSphere is a fictional company. Any resemblance to actual organizations, brands, or real-world events is entirely coincidental.
+            </span>
           </p>
         </div>
 
