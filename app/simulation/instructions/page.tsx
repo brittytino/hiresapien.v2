@@ -185,19 +185,12 @@ export default function InstructionsPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between items-center pt-6 border-t border-slate-150">
+        <div className="flex justify-center pt-6 border-t border-slate-150">
           <button
             onClick={() => router.push("/simulation/intro")}
-            className="flex items-center gap-1.5 text-xs font-black text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wider cursor-pointer"
+            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-500 hover:opacity-95 text-white font-bold py-3 px-10 rounded-xl shadow-md shadow-indigo-100/50 transition-all hover:-translate-y-0.5 text-xs uppercase tracking-wider cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Dashboard
-          </button>
-
-          <button
-            onClick={() => router.push("/simulation/intro")}
-            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-500 hover:opacity-95 text-white font-bold py-3 px-6 rounded-xl shadow-md shadow-indigo-100/50 transition-all hover:-translate-y-0.5 text-xs uppercase tracking-wider cursor-pointer"
-          >
-            <PlayCircle className="w-4 h-4" /> Go to Simulator
+            <PlayCircle className="w-4 h-4" /> Go to Simulator Dashboard
           </button>
         </div>
       </div>

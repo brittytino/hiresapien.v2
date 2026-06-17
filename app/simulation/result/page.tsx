@@ -499,10 +499,10 @@ export default function ResultPage() {
           <ListRestart className="w-4 h-4" /> Retake Assessment
         </button>
         <Link
-          href="/simulation/intro"
+          href="#"
           className="w-full sm:w-auto flex items-center justify-center gap-2 text-slate-550 font-bold hover:text-slate-800 transition-colors px-8 py-3.5 rounded-xl border border-slate-200 hover:border-slate-350 text-xs uppercase tracking-wider"
         >
-          Return to Dashboard <ArrowRight className="w-4 h-4" />
+          Sign Up for Beta <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>

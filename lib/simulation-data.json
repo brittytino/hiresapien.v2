@@ -1,7 +1,7 @@
 {
   "assessment": {
     "name": "Data Scientist Industry Simulation",
-    "version": "MVP V1",
+    "version": "MVP V2",
     "competencies": {
       "ProblemFraming": 15,
       "DataLiteracy": 20,
@@ -15,318 +15,251 @@
     "missions": [
       {
         "id": "mission-1",
-        "title": "Mission 1: CEO Escalation",
-        "context": "From: CEO <ceo@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: URGENT: Revenue Drop Investigation (Need Answers by 4 PM)\n\nHi,\n\nOur overall revenue is down 18% this month. Marketing insists traffic acquisition is perfectly healthy, but Finance is deeply concerned.\n\nPlease audit the main KPIs immediately and identify where the breakdown is happening. I need your preliminary findings by 4 PM today.\n\nBest,\nCEO, ShopSphere",
+        "title": "Mission 1: The Revenue Alarm",
+        "context": "From: ShopSphere CEO <ceo@shopsphere.com>\nTo: Data Team <data@shopsphere.com>\nSubject: URGENT: Revenue down 18% WoW\n\nTeam,\n\nOur weekly revenue dashboard is showing an 18% drop compared to last week. Marketing is running their highest ad spend of the quarter, so traffic should be through the roof. I need to know exactly what is happening before the board meeting at 4 PM.\n\nLook at our core funnel. Is the traffic bad, or is something breaking down in the checkout pipeline?",
         "tasks": [
           {
             "id": "task-1",
             "type": "SingleSelect",
-            "question": "Which KPI would you check first?",
-            "options": ["Website Traffic", "Conversion Rate", "Server Uptime", "Employee Attendance"],
-            "correctAnswer": "Conversion Rate",
+            "question": "Which set of metrics should you pull first to isolate the breakdown?",
+            "options": [
+              "Daily Active Users (DAU) and Session Duration",
+              "Funnel Conversion Rates: Sessions -> Add to Cart -> Checkout",
+              "Customer Acquisition Cost (CAC) and Lifetime Value (LTV)",
+              "Server Uptime and API Error Rates"
+            ],
+            "correctAnswer": "Funnel Conversion Rates: Sessions -> Add to Cart -> Checkout",
             "competencies": ["ProblemFraming", "BusinessThinking"],
             "maxScore": 20
           },
           {
             "id": "task-2",
-            "type": "Ranking",
-            "question": "Rank investigations from highest to lowest priority.",
-            "items": ["Customer Segments", "Website Traffic", "Delivery Performance", "Social Media Mentions"],
-            "correctAnswer": ["Customer Segments", "Delivery Performance", "Social Media Mentions", "Website Traffic"],
-            "competencies": ["Prioritization"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-3",
             "type": "MultiSelect",
-            "question": "Which teams should be involved in the investigation?",
-            "options": ["Product", "Marketing", "Logistics", "Finance"],
-            "correctAnswer": ["Product", "Finance", "Logistics"],
-            "competencies": ["ProblemFraming"],
+            "question": "If you find that traffic is up 10% but revenue is down 18%, which of the following hypotheses are most plausible?",
+            "options": [
+              "The checkout API is failing for a specific payment method.",
+              "Marketing traffic is bringing in high-intent buyers.",
+              "The new traffic consists of low-quality bots or non-buyers.",
+              "Our inventory of top-selling items is out of stock."
+            ],
+            "correctAnswer": ["The checkout API is failing for a specific payment method.", "The new traffic consists of low-quality bots or non-buyers.", "Our inventory of top-selling items is out of stock."],
+            "competencies": ["AnalyticalReasoning", "RootCauseAnalysis"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-2",
-        "title": "Mission 2: Dashboard Analysis",
-        "context": "From: Operations Manager <ops@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Monthly Operational Performance Report (April Q1)\n\nHi,\n\nI've compiled our Q1 operational metrics into the Dashboard below. As you can see, there's a significant shift in some of our core conversion numbers.\n\nPlease review this dataset and tell me which metrics changed abnormally and what happened to the overall checkout conversion rate.\n\nRegards,\nOperations Manager, ShopSphere",
-        "dashboardData": {
-          "columns": ["Month", "Visitors", "Orders"],
-          "rows": [
-            ["Jan", "100,000", "4,000"],
-            ["Feb", "102,000", "4,100"],
-            ["Mar", "101,000", "4,050"],
-            ["Apr", "100,000", "3,050"]
-          ]
-        },
+        "title": "Mission 2: SQL Anomaly Hunt",
+        "context": "You decide to pull the conversion funnel using Snowflake.\n\nYou run the following query:\n\n```sql\nSELECT \n  DATE_TRUNC('day', event_timestamp) as date,\n  COUNT(DISTINCT session_id) as total_sessions,\n  COUNT(DISTINCT CASE WHEN event_name = 'add_to_cart' THEN session_id END) as cart_sessions,\n  COUNT(DISTINCT CASE WHEN event_name = 'checkout_success' THEN session_id END) as purchase_sessions\nFROM events_log\nWHERE event_timestamp >= CURRENT_DATE - 7\nGROUP BY 1 ORDER BY 1 DESC;\n```\n\nThe output shows `total_sessions` increased from 100k to 110k, `cart_sessions` increased from 20k to 22k, but `purchase_sessions` dropped from 4k to 3.2k.",
         "tasks": [
           {
-            "id": "task-4",
+            "id": "task-3",
             "type": "SingleSelect",
-            "question": "Which metric changed significantly?",
-            "options": ["Visitors", "Orders", "Both", "Neither"],
-            "correctAnswer": "Orders",
-            "competencies": ["DataLiteracy"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-5",
-            "type": "SingleSelect",
-            "question": "What happened to conversion rate?",
-            "options": ["Remained steady at 4%", "Dropped from ~4% to ~3%", "Increased to 5%"],
-            "correctAnswer": "Dropped from ~4% to ~3%",
+            "question": "Based on the SQL output, where is the exact bottleneck in the funnel?",
+            "options": [
+              "Between visiting the site and adding to cart.",
+              "Between adding to cart and completing the purchase.",
+              "The traffic source is entirely fake.",
+              "There is no bottleneck; this is normal variance."
+            ],
+            "correctAnswer": "Between adding to cart and completing the purchase.",
             "competencies": ["DataLiteracy", "AnalyticalReasoning"],
             "maxScore": 20
           },
           {
-            "id": "task-6",
+            "id": "task-4",
             "type": "ShortText",
-            "question": "Write one key observation from the dashboard.",
-            "keywords": ["drop", "decline", "decrease", "april", "conversion", "orders"],
-            "competencies": ["DataLiteracy", "Communication"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-7",
-            "type": "Slider",
-            "question": "How confident are you that traffic is causing the issue?",
-            "range": [0, 100],
-            "correctRange": [0, 20],
-            "competencies": ["AnalyticalReasoning"],
+            "question": "Write a brief slack message to the Product Manager explaining the funnel drop-off.",
+            "keywords": ["cart", "checkout", "conversion", "drop", "purchase"],
+            "competencies": ["Communication", "DataLiteracy"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-3",
-        "title": "Mission 3: Segment Analysis",
-        "context": "From: Marketing Director <marketing@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Segment Cohort Performance - Revenue Drop\n\nHi,\n\nFollowing up on the CEO's directive: we suspect the revenue decline is heavily concentrated in a specific customer cohort rather than across the board.\n\nBelow is the Segment Revenue Dashboard. Please analyze the data, determine which segment requires our immediate focus, and give a brief explanation why.\n\nBest,\nMarketing Director, ShopSphere",
-        "dashboardData": {
-          "columns": ["Segment", "Revenue", "Revenue Change"],
-          "rows": [
-            ["New", "₹10M", "-2%"],
-            ["Returning", "₹18M", "-5%"],
-            ["Premium", "₹40M", "-28%"]
-          ]
-        },
+        "title": "Mission 3: A/B Test Conflict",
+        "context": "From: Product Manager <pm@shopsphere.com>\nTo: Data Team <data@shopsphere.com>\nSubject: Re: Funnel Drop-off\n\nHey,\n\nWe did launch a new \"1-Click Checkout\" A/B test for 50% of users 3 days ago. The product dashboard shows that the \"1-Click Checkout\" variant has a 40% faster completion time than the control group.\n\nHowever, you know overall conversion has dropped. You check the data and see:\n\n- Control Group (Standard Checkout): 4.1% Conversion Rate\n- Variant Group (1-Click Checkout): 1.8% Conversion Rate",
         "tasks": [
           {
-            "id": "task-8",
+            "id": "task-5",
             "type": "SingleSelect",
-            "question": "Which segment requires immediate attention?",
-            "options": ["New", "Returning", "Premium"],
-            "correctAnswer": "Premium",
-            "competencies": ["Prioritization", "RootCauseAnalysis"],
+            "question": "How do you interpret the PM's claim that the variant is 'faster'?",
+            "options": [
+              "The variant is a success because speed is the most important checkout metric.",
+              "The variant is faster for those who successfully purchase, but it is preventing the vast majority from purchasing at all.",
+              "The data must be corrupted because faster checkouts always yield higher conversion.",
+              "The control group data is outdated."
+            ],
+            "correctAnswer": "The variant is faster for those who successfully purchase, but it is preventing the vast majority from purchasing at all.",
+            "competencies": ["AnalyticalReasoning", "BusinessThinking"],
             "maxScore": 20
           },
           {
-            "id": "task-9",
-            "type": "ShortText",
-            "question": "Explain why.",
-            "keywords": ["premium", "28%", "highest", "drop", "decline", "revenue"],
-            "competencies": ["AnalyticalReasoning", "Communication"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-10",
+            "id": "task-6",
             "type": "MultiSelect",
-            "question": "You only have 2 hours. Which two areas would you investigate first?",
-            "options": ["Website Traffic by Segment", "Premium Segment Delivery Complaints", "New Segment Conversion Rate", "Premium Segment Product Mix"],
-            "correctAnswer": ["Premium Segment Delivery Complaints", "Premium Segment Product Mix"],
-            "competencies": ["Prioritization", "BusinessThinking"],
+            "question": "What actions should you recommend immediately?",
+            "options": [
+              "Halt the A/B test and roll back to the Control group for 100% of traffic.",
+              "Increase marketing spend to compensate for the lower conversion rate.",
+              "Investigate Javascript error logs for the Variant group.",
+              "Wait another 2 weeks to gather statistical significance."
+            ],
+            "correctAnswer": ["Halt the A/B test and roll back to the Control group for 100% of traffic.", "Investigate Javascript error logs for the Variant group."],
+            "competencies": ["Prioritization", "ProblemFraming"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-4",
-        "title": "Mission 4: Stakeholder Conflict",
-        "context": "From: Product VP <product@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Fwd: Internal Slack Thread - Cross-Team Alignment\n\nHi,\n\nWe are experiencing a major stakeholder conflict regarding the root cause of the revenue leak. Here is the recent exchange on our #alerts channel:\n\n- Marketing: \"Ad campaigns are underperforming. Budget efficiency has collapsed.\"\n- Operations: \"Delivery complaints and delays have increased over the last 3 weeks.\"\n- Product: \"The new checkout interface redesign launched recently might have caused issues.\"\n\nPlease tell me which of these claims has immediate supporting evidence in our current dashboards, and what additional data we need to gather to resolve this.\n\nRegards,\nVP of Product, ShopSphere",
+        "title": "Mission 4: Data Quality Engineering",
+        "context": "Before halting the A/B test, the Lead Engineer challenges your data:\n\n\"Wait, our telemetry pipeline had a known bug yesterday where 'checkout_success' events from mobile devices were getting dropped entirely from the Kafka stream. Are you sure the variant is actually performing worse, or are we just missing data?\"\n\nYou run a quick Python Pandas script:\n```python\ndf.groupby(['device_type', 'variant'])['checkout_success'].mean()\n```\nOutput:\nDesktop - Control: 4.2%\nDesktop - Variant: 4.1%\nMobile - Control: 4.0%\nMobile - Variant: 0.05%",
         "tasks": [
           {
-            "id": "task-11",
+            "id": "task-7",
             "type": "SingleSelect",
-            "question": "Whose claim currently has supporting evidence?",
-            "options": ["Marketing", "Operations", "Product", "None"],
-            "correctAnswer": "None",
+            "question": "What does this Pandas output tell you?",
+            "options": [
+              "Mobile users hate the new checkout variant.",
+              "The new checkout variant is fundamentally broken on mobile devices, or the telemetry bug only affects the variant.",
+              "Desktop traffic is dropping off heavily.",
+              "The A/B test was configured incorrectly on the backend."
+            ],
+            "correctAnswer": "The new checkout variant is fundamentally broken on mobile devices, or the telemetry bug only affects the variant.",
+            "competencies": ["DataLiteracy", "DataQualityAwareness"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-8",
+            "type": "Slider",
+            "question": "On a scale of 0 to 100, how confident are you that rolling back the mobile variant will stop the bleeding?",
+            "range": [0, 100],
+            "correctRange": [80, 100],
             "competencies": ["AnalyticalReasoning"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-12",
-            "type": "MultiSelect",
-            "question": "What data would help validate these claims?",
-            "options": ["Ad Click-Through Rate", "Delivery Delay Report", "Checkout Drop-off Rate", "Employee Attendance"],
-            "correctAnswer": ["Ad Click-Through Rate", "Delivery Delay Report", "Checkout Drop-off Rate"],
-            "competencies": ["DataLiteracy"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-13",
-            "type": "SingleSelect",
-            "question": "Which assumption is most dangerous to make without evidence?",
-            "options": ["Traffic is fine", "Operations is at fault", "Product redesign broke checkout"],
-            "correctAnswer": "Operations is at fault",
-            "competencies": ["RootCauseAnalysis"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-5",
-        "title": "Mission 5: Delivery Investigation",
-        "context": "From: Logistics Lead <logistics@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Logistics Dashboard - Late Shipping Metrics\n\nHi,\n\nWe pulled our late delivery tracking logs from the last 4 months. The metrics in the logistics dashboard below show a clear operational bottleneck.\n\nPlease check the anomaly in April, assess if this correlates with the premium segment revenue drop, and advise on what we should look at next.\n\nRegards,\nLogistics Lead, ShopSphere",
-        "dashboardData": {
-          "columns": ["Month", "Delayed Orders"],
-          "rows": [
-            ["Jan", "4%"],
-            ["Feb", "5%"],
-            ["Mar", "6%"],
-            ["Apr", "24%"]
-          ]
-        },
+        "title": "Mission 5: Segment Investigation",
+        "context": "You rollback the mobile variant. Conversion stabilizes. However, the CEO replies:\n\n\"Thanks for fixing the mobile checkout. But I'm looking at our Premium Customers (our top 10% spenders). Their order volume is still down 25% year-over-year. The checkout bug only accounts for a fraction of that. What else is going on?\"\n\nYou pull a dashboard for Premium Customers. You see their traffic is normal, checkout conversion is normal, but 'Return Rate' has spiked from 4% to 22% in the last month.",
         "tasks": [
           {
-            "id": "task-14",
+            "id": "task-9",
             "type": "SingleSelect",
-            "question": "What anomaly do you observe?",
-            "options": ["Delay increased in Feb", "Delay skyrocketed in Apr", "No anomaly"],
-            "correctAnswer": "Delay skyrocketed in Apr",
-            "competencies": ["DataLiteracy"],
+            "question": "What is the most likely mathematical reason their order volume (net revenue) is down?",
+            "options": [
+              "They are adding fewer items to their cart.",
+              "They are successfully buying, but returning the items at a massive rate, killing net revenue.",
+              "Marketing is targeting the wrong premium customers.",
+              "The SQL query is double-counting returns."
+            ],
+            "correctAnswer": "They are successfully buying, but returning the items at a massive rate, killing net revenue.",
+            "competencies": ["RootCauseAnalysis", "BusinessThinking"],
             "maxScore": 20
           },
           {
-            "id": "task-15",
-            "type": "SingleSelect",
-            "question": "Which hypothesis becomes stronger?",
-            "options": ["Delivery delays caused revenue drop", "Marketing ads failed", "Product redesign failed"],
-            "correctAnswer": "Delivery delays caused revenue drop",
-            "competencies": ["RootCauseAnalysis"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-16",
-            "type": "Slider",
-            "question": "How confident are you in this hypothesis?",
-            "range": [0, 100],
-            "correctRange": [70, 100],
-            "competencies": ["AnalyticalReasoning"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-17",
-            "type": "SingleSelect",
-            "question": "What should be analyzed next?",
-            "options": ["Customer reviews", "Ad performance", "Server uptime"],
-            "correctAnswer": "Customer reviews",
-            "competencies": ["Prioritization"],
+            "id": "task-10",
+            "type": "Ranking",
+            "question": "Rank the datasets you would join next to investigate the return spike, from most useful to least useful.",
+            "items": ["Return Reason Codes (Logistics API)", "Product Categories Returned (Inventory DB)", "User Browser Fingerprints (Telemetry)", "Ad Click Source (Marketing DB)"],
+            "correctAnswer": ["Return Reason Codes (Logistics API)", "Product Categories Returned (Inventory DB)", "Ad Click Source (Marketing DB)", "User Browser Fingerprints (Telemetry)"],
+            "competencies": ["Prioritization", "DataLiteracy"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-6",
-        "title": "Mission 6: Customer Voice Analysis",
-        "context": "From: Customer Support Lead <support@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Direct Customer Feedback & Transcripts (April Shipments)\n\nHi,\n\nTo help connect the logs to the real customer experience, here is a batch of direct customer feedback we collected this week:\n\"Delivery took 8 days\", \"Package arrived damaged\", \"Excellent product quality\", \"Tracking inaccurate\", \"Late arrival again\".\n\nPlease read these transcripts, group them into core themes, and rate the severity of the operational issue on a scale of 1 to 5.\n\nThanks,\nSupport Lead, ShopSphere",
+        "title": "Mission 6: NLP Review Classification",
+        "context": "You join the return data with Customer Support NLP classifications. \n\nThe NLP model categorized 80% of the premium returns under a cluster labeled `Topic_4_Logistics_Fulfillment`.\n\nYou sample the raw text reviews associated with this cluster:\n- \"Box arrived crushed, laptop screen cracked.\"\n- \"Package was left in the rain, completely ruined.\"\n- \"Waited 3 weeks, tracking was completely inaccurate, item damaged.\"\n- \"Carrier threw it over my fence.\"",
         "tasks": [
           {
-            "id": "task-18",
+            "id": "task-11",
             "type": "MultiSelect",
-            "question": "Identify recurring themes.",
-            "options": ["Delivery Delays", "Damaged Items", "Bad Customer Support", "Tracking Issues", "Product Quality Good"],
-            "correctAnswer": ["Delivery Delays", "Tracking Issues", "Damaged Items", "Product Quality Good"],
-            "competencies": ["DataLiteracy"],
+            "question": "Which teams must be alerted immediately based on this qualitative data?",
+            "options": [
+              "Logistics / 3rd Party Shipping Carrier Management",
+              "Warehouse Packaging Operations",
+              "Marketing / User Acquisition",
+              "Frontend Web Developers"
+            ],
+            "correctAnswer": ["Logistics / 3rd Party Shipping Carrier Management", "Warehouse Packaging Operations"],
+            "competencies": ["ProblemFraming", "BusinessThinking"],
             "maxScore": 20
           },
           {
-            "id": "task-19",
-            "type": "SingleSelect",
-            "question": "Which department appears most responsible?",
-            "options": ["Marketing", "Operations", "Product"],
-            "correctAnswer": "Operations",
-            "competencies": ["RootCauseAnalysis"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-20",
-            "type": "Slider",
-            "question": "How severe is the problem (1-5)?",
-            "range": [1, 5],
-            "correctRange": [4, 5],
-            "competencies": ["BusinessThinking"],
+            "id": "task-12",
+            "type": "ShortText",
+            "question": "Write a 1-sentence summary of the root cause of the premium segment revenue drop.",
+            "keywords": ["damage", "shipping", "logistics", "carrier", "returns"],
+            "competencies": ["Communication", "RootCauseAnalysis"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-7",
-        "title": "Mission 7: Data Quality Audit",
-        "context": "From: Engineering Lead <engineering@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Dataset Health Report - Telemetry Database Audit\n\nHi,\n\nWe audited our shipping telemetry databases, and the report shows some data quality warnings:\n- Missing Values: 12%\n- Duplicate Orders: 6%\n- Missing Delivery Dates: 15%\n\nPlease review these warnings, audit what risks they create for our analytics, and let me know if we should present our findings now or wait for cleaning.\n\nBest,\nData Engineering Lead, ShopSphere",
+        "title": "Mission 7: Cost Modeling",
+        "context": "The VP of Operations sees your report and panics.\n\n\"We switched to a cheaper third-party shipping carrier last month to save costs. We saved ₹40 per package on shipping.\"\n\nYou calculate the math for the Premium Segment:\n- Volume: 10,000 orders last month.\n- Saved ₹40 per order = ₹4,00,000 saved.\n- However, the return rate jumped by 18% (1,800 extra returns).\n- Average margin lost per return (including damaged goods) = ₹2,500.",
         "tasks": [
           {
-            "id": "task-21",
-            "type": "MultiSelect",
-            "question": "What risks do these issues create?",
-            "options": ["Skewed delivery delay metric", "Overstated order count", "Understated revenue", "None"],
-            "correctAnswer": ["Skewed delivery delay metric", "Overstated order count"],
-            "competencies": ["DataQualityAwareness"],
+            "id": "task-13",
+            "type": "SingleSelect",
+            "question": "What is the net financial impact of switching to the cheaper carrier for the Premium segment?",
+            "options": [
+              "Net gain of ₹4,00,000.",
+              "Net loss of ₹41,00,000.",
+              "Net loss of ₹45,00,000.",
+              "Breakeven."
+            ],
+            "correctAnswer": "Net loss of ₹41,00,000.",
+            "competencies": ["AnalyticalReasoning", "BusinessThinking"],
             "maxScore": 20
           },
           {
-            "id": "task-22",
-            "type": "Ranking",
-            "question": "Rank data quality issues by urgency.",
-            "items": ["Missing Delivery Dates", "Duplicate Orders", "Missing Values"],
-            "correctAnswer": ["Missing Delivery Dates", "Duplicate Orders", "Missing Values"],
-            "competencies": ["DataQualityAwareness", "Prioritization"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-23",
-            "type": "ShortText",
-            "question": "Would you present findings now? Explain reasoning.",
-            "keywords": ["yes", "directionally", "urgent", "clean", "fix"],
-            "competencies": ["BusinessThinking", "Communication"],
+            "id": "task-14",
+            "type": "SingleSelect",
+            "question": "What is the business lesson here?",
+            "options": [
+              "Always use the cheapest carrier to maximize margin.",
+              "Optimizing for a local metric (shipping cost) can destroy a global metric (net revenue and customer retention).",
+              "Premium customers complain too much.",
+              "Data scientists shouldn't worry about shipping logistics."
+            ],
+            "correctAnswer": "Optimizing for a local metric (shipping cost) can destroy a global metric (net revenue and customer retention).",
+            "competencies": ["BusinessThinking", "ProblemFraming"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-8",
-        "title": "Mission 8: Executive Decision",
-        "context": "From: CEO <ceo@shopsphere.com>\nTo: Lead Data Analyst <analyst@shopsphere.com>\nSubject: Executive Decision - Final Recommendation for Q2 Strategy\n\nHi,\n\nThanks for your analysis. We have ₹20 Lakhs in flexible funding available for next month.\n\nGiven your findings, should we proceed with advertising spend or hold ads until operations are fixed? Please make your final recommendation and write a concise executive update for the board.\n\nBest,\nCEO, ShopSphere",
+        "title": "Mission 8: Executive Briefing",
+        "context": "It is 3:45 PM. The board meeting starts in 15 minutes.\n\nThe CEO asks you for the final verdict:\n\"I need to present the reason for our 18% revenue drop and exactly what we are doing to fix it. Keep it to the absolute core facts.\"",
         "tasks": [
           {
-            "id": "task-24",
-            "type": "SingleSelect",
-            "question": "Choose your recommendation.",
-            "options": ["Invest in Ads", "Hold Ad Spend until Operations are fixed", "Invest in new Product Features"],
-            "correctAnswer": "Hold Ad Spend until Operations are fixed",
-            "competencies": ["BusinessThinking"],
+            "id": "task-15",
+            "type": "MultiSelect",
+            "question": "Which of these points must be included in your executive briefing?",
+            "options": [
+              "We dropped the mobile A/B checkout variant which was causing severe cart drop-offs.",
+              "The Pandas script took 4 minutes to run instead of 2 minutes.",
+              "We must revert to our previous premium shipping carrier, as the new cheaper carrier caused ₹41L in damage returns.",
+              "Marketing traffic is up 10% but that traffic is mostly bots."
+            ],
+            "correctAnswer": ["We dropped the mobile A/B checkout variant which was causing severe cart drop-offs.", "We must revert to our previous premium shipping carrier, as the new cheaper carrier caused ₹41L in damage returns."],
+            "competencies": ["Communication", "Prioritization"],
             "maxScore": 20
           },
           {
-            "id": "task-25",
+            "id": "task-16",
             "type": "ShortText",
-            "question": "What evidence supports your recommendation?",
-            "keywords": ["delay", "operations", "churn", "waste", "delivery"],
-            "competencies": ["AnalyticalReasoning"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-26",
-            "type": "ShortText",
-            "question": "What is the biggest remaining uncertainty?",
-            "keywords": ["why", "root", "cause", "delivery", "logistics"],
-            "competencies": ["ProblemFraming"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-27",
-            "type": "ShortText",
-            "question": "Write a concise executive update.",
-            "keywords": ["revenue", "dropped", "operations", "delay", "premium", "segment", "recommend", "pause"],
+            "question": "Write the final 2-sentence executive summary for the CEO.",
+            "keywords": ["checkout", "mobile", "shipping", "carrier", "damage", "revert"],
             "competencies": ["Communication", "BusinessThinking"],
             "maxScore": 20
           }

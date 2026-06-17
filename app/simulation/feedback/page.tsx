@@ -7,12 +7,36 @@ import { FileText, ArrowLeft, PlayCircle, Lock } from "lucide-react";
 export default function FeedbackPage() {
   const router = useRouter();
   const [attemptId, setAttemptId] = useState<string | null>(null);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setAttemptId(localStorage.getItem("simulationAttemptId"));
+      
+      const raw = localStorage.getItem("hiresapienProgress");
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed.completedMissions && parsed.completedMissions.length >= 8) {
+            setIsCompleted(true);
+          }
+        } catch {}
+      }
     }
   }, []);
+
+  const handleAction = () => {
+    if (isCompleted) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("simulationAttemptId");
+        localStorage.removeItem("hiresapienCandidate");
+        localStorage.removeItem("hiresapienProgress");
+      }
+      router.push("/");
+    } else {
+      router.push(attemptId ? "/simulation/intro" : "/");
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto pb-12 select-none font-sans">
@@ -30,23 +54,32 @@ export default function FeedbackPage() {
         {/* Card wrapper */}
         <div className="bg-white border border-slate-150 rounded-2xl p-8 shadow-sm text-center max-w-xl mx-auto my-8">
           <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Lock className="w-8 h-8 text-slate-400" />
+            {isCompleted ? <FileText className="w-8 h-8 text-indigo-500" /> : <Lock className="w-8 h-8 text-slate-400" />}
           </div>
           
           <h2 className="text-xl font-black text-slate-900 mb-2">
-            Feedback Report Locked
+            {isCompleted ? "Detailed Feedback Coming Soon" : "Feedback Report Locked"}
           </h2>
           
           <p className="text-sm text-slate-500 leading-relaxed mb-6 font-semibold">
-            To unlock your comprehensive capability breakdown, archetype classification, and manager feedback, you must first complete the active assessment.
+            {isCompleted 
+              ? "You have successfully completed the simulation! Your comprehensive capability breakdown is being generated and will be available in a future update." 
+              : "To unlock your comprehensive capability breakdown, archetype classification, and manager feedback, you must first complete the active assessment."}
           </p>
 
           <button
-            onClick={() => router.push(attemptId ? "/simulation/intro" : "/")}
+            onClick={handleAction}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-500 hover:opacity-95 text-white font-bold py-3.5 px-8 rounded-xl shadow-md shadow-indigo-100/50 transition-all hover:-translate-y-0.5 text-xs uppercase tracking-wider cursor-pointer"
           >
-            <PlayCircle className="w-4 h-4" /> 
-            {attemptId ? "Resume Simulation Sandbox" : "Begin Assessment Setup"}
+            {isCompleted ? (
+              <>
+                <PlayCircle className="w-4 h-4" /> Retake Assessment
+              </>
+            ) : (
+              <>
+                <Lock className="w-4 h-4" /> {attemptId ? "Resume Simulation Sandbox" : "Begin Assessment Setup"}
+              </>
+            )}
           </button>
         </div>
 

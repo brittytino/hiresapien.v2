@@ -13,11 +13,11 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "HireSapien | Discover How Industry-Ready You Are",
+  title: "HireSapien | Experience a Day in the Life of a Data Scientist",
   description:
     "Experience a real-world Junior Data Scientist simulation and receive a personalized competency report. Industry-based, 15 minutes, no preparation required.",
   icons: {
-    icon: "/logo.webp",
+    icon: "/image-removebg-preview (1).png",
   },
 };
 

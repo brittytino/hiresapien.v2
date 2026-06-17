@@ -43,19 +43,41 @@ export default function Sidebar() {
 
   const getInitials = (name: string) => name.charAt(0).toUpperCase() || "G";
 
-  const getProgressPercentage = () => {
-    if (pathname === "/simulation/intro") return 0;
-    if (pathname === "/simulation/result") return 100;
-    const match = pathname.match(/\/simulation\/mission\/mission-(\d+)/);
-    if (match) {
-      const num = parseInt(match[1]);
-      return Math.round(((num - 1) / 8) * 100);
-    }
-    if (pathname.includes("/transition")) return 5;
-    return 0;
-  };
+  const [progressVal, setProgressVal] = useState(0);
 
-  const progressVal = getProgressPercentage();
+  useEffect(() => {
+    const updateProgress = () => {
+      if (!pathname) return;
+      if (pathname === "/simulation/intro") { setProgressVal(0); return; }
+      if (pathname === "/simulation/result") { setProgressVal(100); return; }
+      if (pathname.includes("/transition")) { setProgressVal(5); return; }
+
+      const match = pathname.match(/\/simulation\/mission\/mission-(\d+)/);
+      if (match) {
+        const num = parseInt(match[1]);
+        let completed = num - 1;
+        
+        const raw = localStorage.getItem("hiresapienProgress");
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (parsed.completedMissions) {
+              completed = Math.max(completed, parsed.completedMissions.length);
+            }
+          } catch {}
+        }
+        
+        let val = Math.round((completed / 8) * 100);
+        if (val === 0 && num === 1) val = 5; // Prevent 0% when starting
+        setProgressVal(val);
+      }
+    };
+
+    updateProgress();
+    const interval = setInterval(updateProgress, 1000); // Check periodically for localStorage updates
+    return () => clearInterval(interval);
+  }, [pathname]);
+
   const radius = 18;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progressVal / 100) * circumference;
@@ -70,7 +92,6 @@ export default function Sidebar() {
   const navItems = [
     { label: "Simulation Flow", icon: LayoutDashboard, href: "/simulation/intro", section: "Assessment" },
     { label: "Instructions", icon: Info, href: "/simulation/instructions", section: "Assessment" },
-    { label: "My Progress", icon: TrendingUp, href: "/simulation/progress", section: "Assessment" },
     { label: "Results", icon: BarChart2, href: "/simulation/result", section: "Reports" },
     { label: "Feedback Report", icon: FileText, href: "/simulation/feedback", section: "Reports" },
   ];
@@ -94,37 +115,8 @@ export default function Sidebar() {
           </h1>
         </div>
 
-        <div className="flex-1 space-y-6">
-          <div>
-            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">Assessment</h2>
-            <div className="space-y-1">
-              {navItems.filter(i => i.section === "Assessment").map((item) => (
-                <Link key={item.label} href={item.href}>
-                  <div className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                    pathname.startsWith(item.href) ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-600 hover:bg-gray-50"
-                  }`}>
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="space-y-1">
-              {navItems.filter(i => i.section === "Reports").map((item) => (
-                <Link key={item.label} href={item.href}>
-                  <div className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                    pathname === item.href ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-600 hover:bg-gray-50"
-                  }`}>
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+        <div className="flex-1">
+          {/* Linear flow enforced. Navigation disabled during assessment. */}
         </div>
 
         {/* About this Simulation card */}

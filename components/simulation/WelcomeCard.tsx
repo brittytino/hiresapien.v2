@@ -2,9 +2,14 @@
 
 import React from "react";
 import Image from "next/image";
-import { Clock, BarChart2, Briefcase, Zap, Building, Smile } from "lucide-react";
+import { Clock, BarChart2, Briefcase, Zap, Building, Smile, Rocket, Loader2 } from "lucide-react";
 
-export default function WelcomeCard() {
+interface WelcomeCardProps {
+  onStart?: () => void;
+  loading?: boolean;
+}
+
+export default function WelcomeCard({ onStart, loading }: WelcomeCardProps) {
   const stats = [
     { label: "Duration", value: "15 mins", icon: Clock, color: "text-violet-400", bg: "bg-violet-500/10" },
     { label: "Difficulty", value: "Beginner → Mid", icon: BarChart2, color: "text-sky-400", bg: "bg-sky-500/10" },
@@ -56,13 +61,33 @@ export default function WelcomeCard() {
           <h2 className="text-2xl xl:text-3xl font-black text-white mb-3 tracking-tight leading-tight flex items-center gap-2">
             Your First Day at ShopSphere <Smile className="w-5 h-5 text-indigo-300 inline-block animate-bounce" />
           </h2>
-          <p className="text-slate-400 text-sm leading-relaxed max-w-lg font-medium">
+          <p className="text-slate-400 text-sm leading-relaxed max-w-lg font-medium mb-6">
             Welcome aboard! You&apos;re stepping in as our new{" "}
             <span className="text-indigo-300 font-bold">Junior Data Scientist</span>. Review
             the mission roadmap below, skim the tips, then click{" "}
-            <span className="text-white font-bold">Begin Simulation Sandbox</span> when you&apos;re
+            <span className="text-white font-bold">Begin Your Work!</span> when you&apos;re
             ready to launch.
           </p>
+
+          {onStart && (
+            <button
+              onClick={onStart}
+              disabled={loading}
+              className="w-fit flex items-center gap-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-black py-3 px-6 rounded-xl shadow-lg shadow-indigo-900/50 hover:shadow-xl transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed text-xs uppercase tracking-widest select-none cursor-pointer border border-indigo-500/30"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Starting Engine…
+                </>
+              ) : (
+                <>
+                  <Rocket className="w-4 h-4" />
+                  Begin Your Work!
+                </>
+              )}
+            </button>
+          )}
         </div>
 
         {/* Right: Stats Panel */}
