@@ -84,23 +84,23 @@ export function ShortTextUI({ onUpdate }: { onUpdate: (val: string) => void }) {
     onUpdate(val);
   };
 
-  const wordCount = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
-  const isMinWords = wordCount >= 50;
+  const charCount = text.trim() ? text.trim().length : 0;
+  const isMinChars = charCount >= 150;
 
   return (
     <div className="mt-2 space-y-2">
       <textarea
         value={text}
         className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 outline-none transition-all resize-none min-h-[160px] text-gray-800"
-        placeholder="Provide a detailed analysis (minimum 50 words)..."
+        placeholder="Provide a detailed analysis (minimum 150 characters)..."
         onChange={handleChange}
       />
       <div className="flex justify-between items-center text-xs font-semibold">
-        <span className={isMinWords ? "text-emerald-600" : "text-amber-600"}>
-          {isMinWords ? "✓ Minimum length met" : "⚠️ Please write at least 50 words"}
+        <span className={isMinChars ? "text-emerald-600" : "text-amber-600"}>
+          {isMinChars ? "✓ Minimum length met" : "⚠️ Please write at least 150 characters"}
         </span>
-        <span className={`${isMinWords ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"} px-2.5 py-1 rounded-md transition-all`}>
-          Word Count: {wordCount} / 50
+        <span className={`${isMinChars ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"} px-2.5 py-1 rounded-md transition-all`}>
+          Character Count: {charCount} / 150
         </span>
       </div>
     </div>

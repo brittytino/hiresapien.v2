@@ -237,8 +237,8 @@ export default function MissionPage({
     if (task.type === "Slider") return true; // slider always has a value
     if (task.type === "ShortText") {
       if (typeof answer !== "string") return false;
-      const wordCount = answer.trim() ? answer.trim().split(/\s+/).filter(Boolean).length : 0;
-      return wordCount >= 50;
+      const charCount = answer.trim() ? answer.trim().length : 0;
+      return charCount >= 150;
     }
     if (task.type === "MultiSelect") return Array.isArray(answer) && answer.length > 0;
     if (task.type === "Ranking") return Array.isArray(answer) && answer.length > 0;
