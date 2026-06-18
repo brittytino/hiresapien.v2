@@ -110,18 +110,24 @@ export default function SonaSCALEPortal() {
         </div>
       </div>
 
-      {/* Spacer instead of Header Logo */}
-      <div className="pt-4 lg:pt-6" />
+      {/* Sona Scale Header Branding */}
+      <header className="w-full max-w-[1440px] mx-auto px-10 md:px-16 pt-8 pb-4 z-20 relative">
+        <div className="mb-4">
+          <Image
+            src="/scale-removebg-preview.png"
+            alt="Sona Scale Logo"
+            width={180}
+            height={40}
+            className="object-contain"
+          />
+        </div>
+      </header>
 
       {/* Main Hero Section */}
-      <main className="max-w-[1440px] w-full mx-auto px-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-4 lg:py-6 relative z-10 min-h-0">
+      <main className="max-w-[1440px] w-full mx-auto px-10 md:px-16 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-2 lg:py-4 relative z-10 min-h-0">
         
         {/* Left Side: Content & Copy */}
         <div className="lg:col-span-6 flex flex-col justify-center">
-          
-          <span className="text-sm md:text-base font-black text-[#2563FF] uppercase tracking-[0.25em] mb-3">
-            Sona SCALE
-          </span>
           
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#0C2340] tracking-tight leading-[1.08] mb-4">
             Data Science <br />

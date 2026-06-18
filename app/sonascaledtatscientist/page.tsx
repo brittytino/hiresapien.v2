@@ -46,25 +46,23 @@ export default function SonaSCALEDatascientistWelcome() {
         </svg>
       </div>
 
-      {/* HireSapien Top-Left Branding */}
-      <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20 flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-white border border-slate-100 flex items-center justify-center p-1 shadow-sm">
-          <Image
-            src="/image-removebg-preview (1).png"
-            alt="HireSapien Logo"
-            width={20}
-            height={20}
-            className="object-contain"
-          />
-        </div>
-        <span className="text-lg font-bold text-gray-900 font-sans tracking-tight">
-          Hire<span className="text-blue-600">Sapien</span>
-        </span>
-      </div>
+      {/* Sona Scale Top-Left Branding */}
+      
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-4xl flex flex-col items-center text-center mt-8">
         
+        {/* Top Scale Image (Above Headline) */}
+        <div className="mb-4 animate-[fadeIn_0.4s_ease-out_both]">
+          <Image
+            src="/scale-removebg-preview.png"
+            alt="Sona Scale"
+            width={160}
+            height={40}
+            className="object-contain"
+          />
+        </div>
+
         {/* Welcome Headline */}
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-[#0C2340] tracking-tight leading-tight mb-6 select-none animate-[fadeIn_0.5s_ease-out_both]">
           Data Science <span className="text-[#2563FF]">Xperience</span>
