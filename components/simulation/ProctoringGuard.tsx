@@ -127,10 +127,10 @@ export default function ProctoringGuard({ children }: ProctoringGuardProps) {
     }
   };
 
-  // Focus Lost management
+  // Focus Lost management — fires near-instantly (300 ms debounce)
   const triggerFocusLost = (reason: string) => {
     const now = Date.now();
-    if (now - lastFocusLostTime.current < 1500) return;
+    if (now - lastFocusLostTime.current < 300) return;
     lastFocusLostTime.current = now;
     setShowFocusLost(true);
     triggerCountingViolation(reason);
@@ -292,6 +292,10 @@ export default function ProctoringGuard({ children }: ProctoringGuardProps) {
     };
 
     const handleDragStart = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target && target.getAttribute('draggable') === 'true' && target.tagName !== 'IMG' && target.tagName !== 'A') {
+        return;
+      }
       e.preventDefault();
     };
 
@@ -342,12 +346,12 @@ export default function ProctoringGuard({ children }: ProctoringGuardProps) {
       }
     }, 2000);
 
-    // Initial fullscreen lock trigger (delay to avoid block)
+    // Immediately check fullscreen state (short delay to let page settle)
     const initialFs = setTimeout(() => {
       if (!document.fullscreenElement && !isTerminated) {
         setIsFullscreenLocked(true);
       }
-    }, 1000);
+    }, 300);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown, true);
@@ -368,7 +372,8 @@ export default function ProctoringGuard({ children }: ProctoringGuardProps) {
       clearInterval(heartbeat);
       clearTimeout(initialFs);
     };
-  }, [warningCount, isTerminated, attemptId]);
+  // pathname is the critical dep — guards must re-attach whenever route changes
+  }, [warningCount, isTerminated, attemptId, pathname]);
 
   // Bind idle reset events
   useEffect(() => {
@@ -381,7 +386,7 @@ export default function ProctoringGuard({ children }: ProctoringGuardProps) {
       window.removeEventListener("keydown", resetIdleTimer);
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
-  }, [warningCount, isTerminated]);
+  }, [warningCount, isTerminated, pathname]);
 
   const handleLogOut = () => {
     localStorage.removeItem("hiresapienCandidate");
@@ -456,27 +461,56 @@ export default function ProctoringGuard({ children }: ProctoringGuardProps) {
         </div>
       )}
 
-      {/* ── 4. Focus Lost Overlay ── */}
-      {showFocusLost && !showWarningModal && !isTerminated && (
-        <div className="fixed inset-0 z-[850] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-slate-100 flex flex-col items-center text-center">
-            <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-4">
-              <ShieldAlert className="w-7 h-7 text-red-500" />
-            </div>
-            <h3 className="text-lg font-black text-slate-900 tracking-tight mb-1">Focus Lost Warning</h3>
-            <p className="text-xs font-semibold text-slate-400 mb-6 uppercase tracking-wider">Proctoring Active</p>
-            
-            <p className="text-sm font-medium text-slate-600 mb-6 leading-relaxed">
-              You switched tabs or focused another application. All window events are logged in the database.
-            </p>
-
-            <button
-              onClick={() => setShowFocusLost(false)}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition-all shadow-md cursor-pointer"
-            >
-              Resume Assessment
-            </button>
+      {/* ── 4. Focus Lost — full-screen hard blackout ── */}
+      {showFocusLost && !isTerminated && (
+        <div
+          className="fixed inset-0 z-[1500] flex flex-col items-center justify-center text-center p-6"
+          style={{ backgroundColor: "#000", backdropFilter: "none" }}
+        >
+          {/* Animated warning icon */}
+          <div className="w-20 h-20 rounded-2xl bg-red-500/15 border-2 border-red-500/40 flex items-center justify-center mb-6 animate-pulse">
+            <ShieldAlert className="w-10 h-10 text-red-400" />
           </div>
+
+          <h1 className="text-3xl font-black text-white tracking-tight mb-2 uppercase">
+            Focus Violation
+          </h1>
+          <p className="text-red-400 text-xs font-black uppercase tracking-widest mb-1">
+            Tab / Window Switch Detected
+          </p>
+          <p className="text-slate-400 text-xs font-semibold mb-1">Proctoring Active · Event Logged</p>
+
+          {/* Warning counter */}
+          <div className="flex items-center gap-2 mt-4 mb-8">
+            {[1,2,3,4,5].map((n) => (
+              <div
+                key={n}
+                className={`w-8 h-2 rounded-full transition-colors ${
+                  n <= warningCount ? "bg-red-500" : "bg-slate-700"
+                }`}
+              />
+            ))}
+          </div>
+
+          <div className="max-w-sm bg-slate-900 border border-slate-800 rounded-2xl p-5 text-left mb-8">
+            <p className="text-xs font-semibold text-slate-400 leading-relaxed">
+              Switching tabs or windows during an active assessment is a proctoring violation.
+              All events are recorded. <span className="text-red-400 font-bold">5 violations will automatically submit your exam.</span>
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              setShowFocusLost(false);
+              // Re-enter fullscreen if it was lost
+              if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+              }
+            }}
+            className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-[0.98] cursor-pointer"
+          >
+            Resume Assessment
+          </button>
         </div>
       )}
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
+import { connectWithTimeout } from "@/lib/mongodb";
 import { SimulationAttempt } from "@/models/SimulationAttempt";
 import simulationData from "@/lib/simulation-data.json";
 
@@ -19,11 +19,32 @@ export async function POST(req: Request) {
 
     if (process.env.MONGO_URI) {
       try {
-        await connectDB();
+        await connectWithTimeout(3000);
+        
+        // Inline require so we don't break other files if they load first
+        const { CandidateProfile } = require("@/models/CandidateProfile");
+
+        // Create the Candidate Profile first
+        const profile = await CandidateProfile.create({
+          name: body.name || "Guest",
+          email: body.email || "guest@example.com",
+          phone: body.phone || body.mobile || "0000000000",
+          degree: body.degree,
+          academic_status: body.academic_status || body.year,
+          career_interest: body.career_interest,
+          skills: body.skills,
+          ws_q1: body.ws_q1,
+          ws_q2: body.ws_q2,
+          ws_q3: body.ws_q3,
+          ds_familiarity: body.ds_familiarity ? Number(body.ds_familiarity) : undefined,
+          data_comfort: body.data_comfort ? Number(body.data_comfort) : undefined,
+          expectations: body.expectations
+        });
+
+        // Create the Simulation Attempt linking to the Profile
         const attempt = await SimulationAttempt.create({
-          candidate: { name, email, phone, degree, year, skills, confidence },
+          candidateId: profile._id,
           status: "IN_PROGRESS",
-          interactions: [],
         });
         attemptId = attempt._id.toString();
       } catch (dbErr) {

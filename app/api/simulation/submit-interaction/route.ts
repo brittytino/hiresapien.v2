@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
+import { connectWithTimeout } from "@/lib/mongodb";
 import { SimulationAttempt } from "@/models/SimulationAttempt";
 import simulationData from "@/lib/simulation-data.json";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -99,31 +99,60 @@ Evaluate if the candidate captured the core insight. Return ONLY valid JSON in t
             throw new Error("No JSON found in Gemini response");
           }
         } catch (aiError) {
-          console.error("Gemini AI evaluation failed, using keyword fallback:", aiError);
-          // ── Keyword Fallback ────────────────────────────────────────────
-          const keywords: string[] = task.keywords || [];
-          const hits = keywords.filter((kw: string) => text.includes(kw.toLowerCase())).length;
-          if (hits >= 3) scoreEarned = maxScore;
-          else if (hits === 2) scoreEarned = Math.round(maxScore * 0.75);
-          else if (hits === 1) scoreEarned = Math.round(maxScore * 0.4);
+          console.error("Gemini AI evaluation failed (Likely 429), using robust heuristic fallback:", aiError);
+          scoreEarned = robustKeywordEvaluation(text, task.keywords || [], maxScore);
         }
       } else {
-        // ── No Gemini Key — pure keyword match ───────────────────────────
-        const keywords: string[] = task.keywords || [];
-        const hits = keywords.filter((kw: string) => text.includes(kw.toLowerCase())).length;
-        if (hits >= 3) scoreEarned = maxScore;
-        else if (hits === 2) scoreEarned = Math.round(maxScore * 0.75);
-        else if (hits === 1) scoreEarned = Math.round(maxScore * 0.4);
+        // ── No Gemini Key — pure robust heuristic match ────────────────────
+        scoreEarned = robustKeywordEvaluation(text, task.keywords || [], maxScore);
       }
+    }
+
+    // --- Helper function for robust fallback evaluation ---
+    function robustKeywordEvaluation(answerText: string, keywords: string[], maxScore: number): number {
+      if (!answerText || answerText.length < 10) return 0; // Too short to be a valid analysis
+      
+      const normalizedText = answerText.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g," ").replace(/\s{2,}/g," ");
+      const words = new Set(normalizedText.split(" "));
+      
+      let matches = 0;
+      keywords.forEach(kw => {
+        const kwLower = kw.toLowerCase();
+        // Exact word match OR strong substring match for complex terms
+        if (words.has(kwLower) || (kwLower.length > 4 && normalizedText.includes(kwLower))) {
+          matches++;
+        }
+      });
+
+      const ratio = matches / Math.max(keywords.length, 1);
+      
+      let score = 0;
+      if (ratio >= 0.7) score = maxScore; 
+      else if (ratio >= 0.4) score = Math.round(maxScore * 0.75); 
+      else if (ratio > 0) score = Math.round(maxScore * 0.4); 
+      
+      // Effort bonus: if they wrote a detailed paragraph but missed keywords, give slight partial credit
+      if (score === 0 && words.size > 20) {
+        score = Math.round(maxScore * 0.2); 
+      }
+      
+      return score;
     }
 
     // ── Persist to DB (if available and not a local/demo attempt) ─────────
     if (process.env.MONGO_URI && !isLocalAttempt(attemptId)) {
       try {
-        await connectDB();
+        await connectWithTimeout(3000);
+        
+        // Import inline to avoid circular dependencies if they exist
+        const { SimulationResponse } = await import("@/models/SimulationResponse");
+        const { SimulationAttempt } = await import("@/models/SimulationAttempt");
+        
         const attempt = await SimulationAttempt.findById(attemptId);
         if (attempt) {
-          attempt.interactions.push({
+          await SimulationResponse.create({
+            candidateId: attempt.candidateId as any,
+            attemptId: attempt._id as any,
             taskId,
             missionId,
             interactionType: task.type,
@@ -138,7 +167,6 @@ Evaluate if the candidate captured the core insight. Return ONLY valid JSON in t
             maxScore,
             competenciesHit: task.competencies || [],
           });
-          await attempt.save();
         }
       } catch (dbErr) {
         console.error("DB save failed (non-fatal):", dbErr);

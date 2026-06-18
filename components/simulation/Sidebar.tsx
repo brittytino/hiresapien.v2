@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, Info, TrendingUp, BarChart2, FileText, Clock, Target, X, LogOut, ArrowLeft, User, Mail, Phone, GraduationCap, Calendar } from "lucide-react";
+import { LayoutDashboard, Info, BarChart2, FileText, Clock, Target, X, LogOut, ArrowLeft, User, Mail, Phone, GraduationCap, Calendar, AlertTriangle, ChevronDown, ChevronUp, Layers, CheckCircle2, Timer, PlayCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface CandidateData {
@@ -23,23 +23,43 @@ export default function Sidebar() {
   const [userName, setUserName] = useState("Guest");
   const [candidate, setCandidate] = useState<CandidateData | null>(null);
   const [showProfile, setShowProfile] = useState(false);
+  const [isBriefingOpen, setIsBriefingOpen] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("hiresapienCandidate");
-      if (stored) {
+      const storedProfile = localStorage.getItem("hiresapienCandidateProfile");
+      if (storedProfile) {
         try {
-          const parsed = JSON.parse(stored);
-          setCandidate(parsed);
+          const parsed = JSON.parse(storedProfile);
+          setCandidate({
+            name: parsed.name,
+            email: parsed.email,
+            phone: parsed.mobile,
+            degree: parsed.degree,
+            year: parsed.academic_status,
+            skills: parsed.skills || [],
+            confidence: parseInt(parsed.ds_familiarity) || 50
+          });
           if (parsed.name && parsed.name.trim()) {
             setUserName(parsed.name.trim());
           }
         } catch {
           // ignore
         }
+      } else {
+        // Fallback for older structure
+        const storedName = localStorage.getItem("hiresapienCandidate");
+        if (storedName) {
+          try {
+            const parsed = JSON.parse(storedName);
+            if (parsed.name) setUserName(parsed.name.trim());
+          } catch {
+            setUserName(storedName.trim());
+          }
+        }
       }
     }
-  }, []);
+  }, [pathname]);
 
   const getInitials = (name: string) => name.charAt(0).toUpperCase() || "G";
 
@@ -90,10 +110,9 @@ export default function Sidebar() {
   };
 
   const navItems = [
-    { label: "Simulation Flow", icon: LayoutDashboard, href: "/simulation/intro", section: "Assessment" },
-    { label: "Instructions", icon: Info, href: "/simulation/instructions", section: "Assessment" },
-    { label: "Results", icon: BarChart2, href: "/simulation/result", section: "Reports" },
-    { label: "Feedback Report", icon: FileText, href: "/simulation/feedback", section: "Reports" },
+    { label: "Instructions", icon: Info, href: "/simulation/instructions" },
+    { label: "Simulation", icon: PlayCircle, href: "/simulation/intro" },
+    { label: "Results", icon: BarChart2, href: "/simulation/result" },
   ];
 
   return (
@@ -115,35 +134,127 @@ export default function Sidebar() {
           </h1>
         </div>
 
-        <div className="flex-1">
-          {/* Linear flow enforced. Navigation disabled during assessment. */}
-        </div>
+        <div className="flex-1 overflow-y-auto pr-1 space-y-6 select-none my-4">
+          
+          {/* Assessment Portal Navigation */}
+          <div className="px-2">
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">
+              Assessment Portal
+            </span>
+            <div className="space-y-1">
+              {navItems.map((item, idx) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={idx}
+                    href={item.href}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-black transition-all ${
+                      isActive
+                        ? "bg-blue-50 text-[#2563FF]"
+                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? "text-[#2563FF]" : "text-slate-400"}`} />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
 
-        {/* About this Simulation card */}
-        <div className="mt-auto bg-gray-50 rounded-xl p-4 border border-gray-100">
-          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
-            <Target className="w-5 h-5 text-blue-600" />
+          <hr className="border-slate-100/80 mx-2" />
+
+          {/* Briefing Memo Section */}
+          <div className="px-2">
+            <button
+              onClick={() => setIsBriefingOpen(!isBriefingOpen)}
+              className="w-full flex items-center justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 cursor-pointer hover:text-slate-600 transition-colors outline-none"
+            >
+              <span>Briefing Memo</span>
+              <span className="text-[9px] font-bold text-slate-400 flex items-center gap-1">
+                {isBriefingOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </span>
+            </button>
+            {isBriefingOpen && (
+              <div className="bg-amber-50/50 border border-amber-100/60 rounded-2xl p-3.5 space-y-2.5 transition-all duration-200">
+                <div className="flex items-center gap-2 text-amber-800 font-extrabold text-[11px] tracking-tight">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 animate-pulse" />
+                  <span>URGENT: REVENUE DROP</span>
+                </div>
+                <div className="space-y-2 text-[11px] leading-relaxed text-slate-600 font-medium">
+                  <div className="grid grid-cols-[36px_1fr] gap-y-0.5 gap-x-1 text-[10px] bg-white/60 border border-amber-100/40 rounded-lg p-1.5 font-semibold text-slate-500">
+                    <span>To:</span>
+                    <span className="text-slate-800 truncate font-bold">{userName}</span>
+                    <span>From:</span>
+                    <span className="text-slate-800 font-bold truncate">Director of DS</span>
+                  </div>
+                  <p className="text-[10.5px]">
+                    NovaCart's revenue declined by <span className="text-rose-600 font-bold">18% last quarter</span>. Customer complaints up 12%. Investigation underway.
+                  </p>
+                  <p className="text-[10px] text-slate-500 italic">
+                    Identify the root cause from the telemetry and databases before the meeting starts.
+                  </p>
+                  <div className="pt-1 border-t border-amber-100 space-y-1">
+                    <span className="font-bold text-slate-700 block text-[9.5px] uppercase tracking-wider">System Architecture</span>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-600">
+                      <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full flex-shrink-0" />
+                      <span className="truncate">Marketing: Snowflake</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-600">
+                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" />
+                      <span className="truncate">Product: Telemetry stream</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-600">
+                      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full flex-shrink-0" />
+                      <span className="truncate">Logistics: PostgreSQL</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <h3 className="font-semibold text-sm text-gray-900 mb-1">About this Simulation</h3>
-          <p className="text-xs text-gray-500 mb-4 leading-relaxed">
-            Step into the role of a Junior Data Scientist at ShopSphere and solve real business problems.
-          </p>
-          <div className="space-y-3">
-            <div className="flex items-center text-xs text-gray-600">
-              <Clock className="w-4 h-4 mr-2" />
-              <div>
-                <p className="font-medium">Duration</p>
-                <p className="text-gray-400">15-20 mins</p>
+
+          <hr className="border-slate-100/80 mx-2" />
+
+          {/* Overview Section */}
+          <div className="px-2">
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-3">
+              Overview
+            </span>
+            <div className="rounded-2xl border border-blue-100/60 bg-gradient-to-br from-blue-50/40 to-indigo-50/30 p-3.5 space-y-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-blue-100/70 flex items-center justify-center flex-shrink-0">
+                  <Layers className="w-4 h-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-extrabold text-slate-800 leading-tight">Sona SCALE</p>
+                  <p className="text-[10px] font-semibold text-slate-500">Data Scientist Assessment</p>
+                </div>
+              </div>
+              <p className="text-[10.5px] text-slate-600 leading-relaxed font-medium">
+                Step into the role of a Junior Data Analyst at NovaCart and investigate a real revenue decline.
+              </p>
+              <div className="space-y-2 pt-1 border-t border-blue-100/60">
+                <div className="flex items-center gap-2 text-[10.5px] text-slate-600">
+                  <Timer className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                  <span className="font-semibold">Duration:</span>
+                  <span className="text-slate-500">15–20 mins</span>
+                </div>
+                <div className="flex items-center gap-2 text-[10.5px] text-slate-600">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                  <span className="font-semibold">Missions:</span>
+                  <span className="text-slate-500">8 unique tasks</span>
+                </div>
+                <div className="flex items-center gap-2 text-[10.5px] text-slate-600">
+                  <Target className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+                  <span className="font-semibold">Goal:</span>
+                  <span className="text-slate-500">Identify revenue drop</span>
+                </div>
               </div>
             </div>
-            <div className="flex items-center text-xs text-gray-600">
-              <Target className="w-4 h-4 mr-2" />
-              <div>
-                <p className="font-medium">Total Missions</p>
-                <p className="text-gray-400">8</p>
-              </div>
-            </div>
           </div>
+
         </div>
 
         {/* Profile Widget — click to open modal */}

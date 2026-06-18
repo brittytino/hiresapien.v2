@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
+import { connectWithTimeout } from "@/lib/mongodb";
 import { SimulationAttempt } from "@/models/SimulationAttempt";
 import simulationData from "@/lib/simulation-data.json";
 
@@ -113,31 +113,42 @@ export async function POST(req: Request) {
       finalCompScores = computed.finalCompScores;
     } else {
       // ── Production mode with MongoDB ─────────────────────────────────────
-      await connectDB();
+      await connectWithTimeout(3000);
+      
+      const { SimulationAttempt } = await import("@/models/SimulationAttempt");
+      const { SimulationResponse } = await import("@/models/SimulationResponse");
+      const { SimulationResult } = await import("@/models/SimulationResult");
+
       const attempt = await SimulationAttempt.findById(attemptId);
       if (!attempt) {
         return NextResponse.json({ error: "Attempt not found" }, { status: 404 });
       }
 
-      // If already marked as COMPLETED, return early to prevent double-save VersionErrors from Strict Mode
+      // Check if already completed
       if (attempt.status === "COMPLETED") {
-        return NextResponse.json({
-          success: true,
-          result: {
-            overallScore: attempt.overallScore,
-            readinessLevel: attempt.readinessLevel,
-            competencyScores: attempt.competencyScores,
-            archetype: attempt.archetype,
-            strengths: attempt.strengths,
-            improvements: attempt.improvements,
-            completedAt: attempt.completedAt,
-          },
-        });
+        const existingResult = await SimulationResult.findOne({ attemptId });
+        if (existingResult) {
+          return NextResponse.json({
+            success: true,
+            result: {
+              overallScore: existingResult.overallScore,
+              readinessLevel: existingResult.readinessLevel,
+              competencyScores: existingResult.competencyScores,
+              archetype: existingResult.archetype,
+              strengths: existingResult.strengths,
+              improvements: existingResult.improvements,
+              completedAt: attempt.completedAt,
+            },
+          });
+        }
       }
+
+      // Fetch all responses for this attempt
+      const responses = await SimulationResponse.find({ attemptId });
 
       // Check if all 8 missions are completed
       const totalMissionsCount = simulationData.assessment.missions.length;
-      const completedMissionsSet = new Set(attempt.interactions.map((i: any) => i.missionId));
+      const completedMissionsSet = new Set(responses.map((r: any) => r.missionId));
       if (completedMissionsSet.size < totalMissionsCount) {
         return NextResponse.json(
           { error: "You must complete all 8 simulation missions before calculating results." },
@@ -158,11 +169,11 @@ export async function POST(req: Request) {
         Communication: { earned: 0, max: 0 },
       };
 
-      attempt.interactions.forEach((interaction: any) => {
-        interaction.competenciesHit.forEach((comp: string) => {
+      responses.forEach((response: any) => {
+        response.competenciesHit.forEach((comp: string) => {
           if (scores[comp]) {
-            scores[comp].earned += interaction.scoreEarned;
-            scores[comp].max += interaction.maxScore;
+            scores[comp].earned += response.scoreEarned;
+            scores[comp].max += response.maxScore;
           }
         });
       });
@@ -186,25 +197,29 @@ export async function POST(req: Request) {
       const strengths = generateStrengths(finalCompScores);
       const improvements = generateImprovements(finalCompScores);
 
+      // Update attempt status
       attempt.status = "COMPLETED";
       attempt.completedAt = new Date();
-      attempt.overallScore = overallScore;
-      attempt.readinessLevel = readinessLevel;
-      attempt.competencyScores = finalCompScores as any;
-      attempt.archetype = archetype;
-      attempt.strengths = strengths;
-      attempt.improvements = improvements;
+      await attempt.save();
 
       try {
-        await attempt.save();
+        await SimulationResult.create({
+          candidateId: attempt.candidateId as any,
+          attemptId: attempt._id as any,
+          overallScore,
+          competencyScores: finalCompScores,
+          readinessLevel,
+          archetype,
+          strengths,
+          improvements,
+        });
       } catch (err: any) {
-        if (err.name === "VersionError") {
-          // Another concurrent request saved the document first.
-          // Retrieve the saved values to return.
-          const savedAttempt = await SimulationAttempt.findById(attemptId);
-          if (savedAttempt) {
-            overallScore = savedAttempt.overallScore || overallScore;
-            finalCompScores = (savedAttempt.competencyScores as any) || finalCompScores;
+        if (err.code === 11000) {
+          // Duplicate key error, meaning result was already created concurrently
+          const savedResult = await SimulationResult.findOne({ attemptId });
+          if (savedResult) {
+            overallScore = savedResult.overallScore || overallScore;
+            finalCompScores = (savedResult.competencyScores as any) || finalCompScores;
           }
         } else {
           throw err;

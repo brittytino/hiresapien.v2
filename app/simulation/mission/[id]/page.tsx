@@ -66,21 +66,26 @@ export default function MissionPage({
       setCheckingAttempt(false);
     } else {
       // Auto-start on the fly using saved candidate info
-      const storedCandidate = localStorage.getItem("hiresapienCandidate");
-      let candidateData = {
+      const storedProfile = localStorage.getItem("hiresapienCandidateProfile");
+      let candidateData: any = {
         name: "Guest",
         email: "guest@example.com",
         phone: "0000000000",
-        degree: "",
-        year: "",
-        skills: [],
-        confidence: 50,
       };
-      if (storedCandidate) {
+      if (storedProfile) {
         try {
-          const parsed = JSON.parse(storedCandidate);
-          candidateData = { ...candidateData, ...parsed };
+          const parsed = JSON.parse(storedProfile);
+          candidateData = { ...parsed };
+          // Ensure phone maps properly if frontend used 'mobile'
+          if (parsed.mobile && !parsed.phone) {
+            candidateData.phone = parsed.mobile;
+          }
         } catch { /* ignore */ }
+      } else {
+        const storedName = localStorage.getItem("hiresapienCandidate");
+        if (storedName && !storedName.startsWith('{')) {
+          candidateData.name = storedName;
+        }
       }
 
       fetch("/api/simulation/start", {
@@ -212,11 +217,11 @@ export default function MissionPage({
         setMissionComplete({ num: missionNum, title: mission.title });
         setTimeout(() => router.push("/simulation/result"), 2200);
       } else if (data.nextMission && data.nextMission.id !== mission.id) {
-        // Navigate to intro with completed + next params so roadmap animates
+        // Navigate directly to the next mission
         const nextIdx = missions.findIndex((m) => m.id === data.nextMission.id);
         saveProgress(missionNum, nextIdx + 1);
         setMissionComplete({ num: missionNum, title: mission.title, nextId: data.nextMission.id });
-        setTimeout(() => router.push(`/simulation/intro?justCompleted=${missionNum}&nextMission=${nextIdx + 1}`), 2200);
+        setTimeout(() => router.push(`/simulation/mission/${data.nextMission.id}`), 2200);
       } else {
         setCurrentTaskIndex((prev) => prev + 1);
       }

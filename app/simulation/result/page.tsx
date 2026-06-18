@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import {
   CheckCircle,
-  Award,
   Target,
   Brain,
   FileText,
@@ -13,14 +12,22 @@ import {
   Database,
   RefreshCcw,
   ArrowRight,
-  Sparkles,
-  Compass,
-  ListRestart
+  ListRestart,
+  Trophy,
+  Flame,
+  Lightbulb,
+  AlertCircle,
+  Download,
+  Calendar,
+  Clock,
+  ChevronRight,
+  Star,
+  BarChart2,
 } from "lucide-react";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-// ── Loading Messages ────────────────────────────────────────────────────────
+// ── Loading Screen ───────────────────────────────────────────────────────────
 const LOADING_MESSAGES = [
   "Analyzing Your Decisions...",
   "Comparing Against Industry Benchmarks...",
@@ -31,479 +38,472 @@ const LOADING_MESSAGES = [
 
 function LoadingScreen() {
   const [msgIdx, setMsgIdx] = useState(0);
-
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
-    const interval = setInterval(() => {
-      setMsgIdx((prev) => Math.min(prev + 1, LOADING_MESSAGES.length - 1));
-    }, 700);
-    return () => clearInterval(interval);
+    const i1 = setInterval(() => setMsgIdx((p) => Math.min(p + 1, LOADING_MESSAGES.length - 1)), 700);
+    const i2 = setInterval(() => setProgress((p) => Math.min(p + 2, 95)), 100);
+    return () => { clearInterval(i1); clearInterval(i2); };
   }, []);
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center select-none font-sans">
-      <div className="relative w-20 h-20 mb-8">
-        <div className="absolute inset-0 rounded-full border-4 border-gray-105/50" />
-        <div
-          className="absolute inset-0 rounded-full border-4 border-transparent border-t-indigo-600 border-r-blue-500 animate-spin"
-        />
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center select-none font-sans px-6">
+      <div className="relative w-24 h-24 mb-8">
+        <div className="absolute inset-0 rounded-full border-4 border-slate-100" />
+        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#2563FF] border-r-indigo-400 animate-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Brain className="w-8 h-8 text-indigo-650" />
+          <Brain className="w-9 h-9 text-[#2563FF]" />
         </div>
       </div>
-      <h2 className="text-xl font-black text-gray-900 mb-2 transition-all duration-500">
-        {LOADING_MESSAGES[msgIdx]}
-      </h2>
-      <p className="text-gray-400 text-sm font-semibold">
-        Calculating capability indexes...
-      </p>
+      <h2 className="text-xl font-black text-gray-900 mb-2 transition-all duration-500">{LOADING_MESSAGES[msgIdx]}</h2>
+      <p className="text-slate-400 text-sm font-semibold mb-8">Generating your personalized competency report...</p>
+      <div className="w-64 h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div className="h-full bg-gradient-to-r from-[#2563FF] to-indigo-500 rounded-full transition-all duration-200" style={{ width: `${progress}%` }} />
+      </div>
+      <p className="text-xs text-slate-400 font-bold mt-3">{progress}%</p>
     </div>
   );
 }
 
-// ── Readiness Level Config ──────────────────────────────────────────────────
-function getReadinessConfig(level: string) {
-  const configs: Record<string, { color: string; bg: string; desc: string }> = {
-    "Industry Ready": {
-      color: "text-emerald-350",
-      bg: "from-emerald-950 via-teal-900 to-slate-900",
-      desc: "You demonstrate an exceptional grasp of real-world Data Science responsibilities. You think like an analyst, communicate like a strategist, and act with data-driven precision.",
-    },
-    "Industry Ready Foundation": {
-      color: "text-blue-355",
-      bg: "from-indigo-950 via-blue-900 to-slate-900",
-      desc: "You show strong potential and a solid practical understanding of core concepts. With targeted practice, you're very close to being industry-ready.",
-    },
-    "Emerging Professional": {
-      color: "text-amber-350",
-      bg: "from-amber-950 via-orange-900 to-slate-900",
-      desc: "You are building your skills and developing the right instincts. Focus on bridging the gap between academic knowledge and real business application.",
-    },
-    Explorer: {
-      color: "text-purple-350",
-      bg: "from-purple-950 via-violet-900 to-slate-900",
-      desc: "You're at the beginning of an exciting journey. Every expert was once an Explorer. Use this report to find your focus areas and grow.",
-    },
-  };
-  return configs[level] || configs["Explorer"];
+// ── Band Config ──────────────────────────────────────────────────────────────
+function getBand(score: number) {
+  if (score >= 86) return { band: "High Potential Talent", range: "86–100", color: "#6366f1", desc: "Exceptional analytical ability, business awareness, and professional judgment.", perf: "Exceptional performance!" };
+  if (score >= 71) return { band: "Industry Ready", range: "71–85", color: "#2563FF", desc: "You demonstrate practical thinking expected from entry-level professionals.", perf: "Amazing performance!" };
+  if (score >= 56) return { band: "Emerging Professional", range: "56–70", color: "#0891b2", desc: "You can solve structured problems and interpret data effectively.", perf: "Great job!" };
+  if (score >= 41) return { band: "Foundation Builder", range: "41–55", color: "#64748b", desc: "You understand concepts and are developing your application skills.", perf: "Good start!" };
+  return { band: "Explorer", range: "0–40", color: "#7c3aed", desc: "You're at the beginning of an exciting journey.", perf: "Keep going!" };
 }
 
-// ── Score Ring ──────────────────────────────────────────────────────────────
-function ScoreRing({ score }: { score: number }) {
-  const circumference = 2 * Math.PI * 45;
-  const strokeDasharray = `${(score / 100) * circumference} ${circumference}`;
-  const color =
-    score >= 80 ? "#10b981" : score >= 60 ? "#6366f1" : score >= 40 ? "#f59e0b" : "#8b5cf6";
+// ── Competency Config ────────────────────────────────────────────────────────
+const iconMap: Record<string, React.ElementType> = {
+  ProblemFraming: Target, DataLiteracy: FileText, DataInterpretation: BarChart2,
+  AnalyticalReasoning: Brain, RootCauseAnalysis: TrendingUp, Prioritization: Zap,
+  BusinessThinking: Trophy, DataQualityAwareness: Database, Communication: MessageSquare,
+};
+const labelMap: Record<string, string> = {
+  ProblemFraming: "Problem Framing", DataLiteracy: "Data Literacy", DataInterpretation: "Data Interpretation",
+  AnalyticalReasoning: "Analytical Reasoning", RootCauseAnalysis: "Root Cause Analysis",
+  Prioritization: "Prioritization", BusinessThinking: "Business Thinking",
+  DataQualityAwareness: "Data Quality Awareness", Communication: "Communication",
+};
+const descMap: Record<string, string> = {
+  ProblemFraming: "Focus on structuring problems more precisely and identifying key focus areas.",
+  DataLiteracy: "Improve your ability to extract and interpret data insights.",
+  DataInterpretation: "You excel at extracting meaningful insights from data, reports, and dashboards.",
+  AnalyticalReasoning: "You evaluate evidence well and make logical, well-supported decisions.",
+  RootCauseAnalysis: "Practice identifying the underlying causes behind business problems.",
+  Prioritization: "Continue improving how you prioritize tasks under time constraints.",
+  BusinessThinking: "You connect data findings effectively to business outcomes.",
+  DataQualityAwareness: "Pay more attention to identifying data quality risks early in your analysis.",
+  Communication: "You communicate insights clearly and make your recommendations easy to understand.",
+};
+const iconBgMap: Record<string, string> = {
+  ProblemFraming: "bg-orange-50 text-orange-600", DataLiteracy: "bg-indigo-50 text-indigo-600",
+  DataInterpretation: "bg-blue-50 text-blue-600", AnalyticalReasoning: "bg-purple-50 text-purple-600",
+  RootCauseAnalysis: "bg-teal-50 text-teal-600", Prioritization: "bg-yellow-50 text-yellow-600",
+  BusinessThinking: "bg-emerald-50 text-emerald-600", DataQualityAwareness: "bg-rose-50 text-rose-600",
+  Communication: "bg-sky-50 text-sky-600",
+};
+
+// ── Radar / Spider Chart ─────────────────────────────────────────────────────
+function RadarChart({ competencies }: { competencies: { key: string; label: string; score: number; icon: React.ElementType }[] }) {
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const cx = 100, cy = 100, r = 70; // Slightly smaller radius to fit icons
+  const items = competencies.slice(0, 8);
+  const n = items.length;
+
+  const angleStep = (2 * Math.PI) / n;
+  const getPoint = (idx: number, radius: number) => {
+    const angle = idx * angleStep - Math.PI / 2;
+    return { x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) };
+  };
+
+  const gridLevels = [0.25, 0.5, 0.75, 1];
+
+  const dataPath = items.map((item, i) => {
+    const pt = getPoint(i, (item.score / 100) * r);
+    return `${i === 0 ? "M" : "L"} ${pt.x} ${pt.y}`;
+  }).join(" ") + " Z";
+
+  const labelColors: Record<string, string> = {
+    ProblemFraming: "#f97316", DataLiteracy: "#6366f1", DataInterpretation: "#2563FF",
+    AnalyticalReasoning: "#a855f7", RootCauseAnalysis: "#14b8a6", Prioritization: "#eab308",
+    BusinessThinking: "#22c55e", DataQualityAwareness: "#f43f5e", Communication: "#0ea5e9",
+  };
 
   return (
-    <div className="relative w-44 h-44 flex items-center justify-center select-none">
-      <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="#f1f5f9" strokeWidth="8" />
-        <circle
-          cx="50"
-          cy="50"
-          r="45"
-          fill="none"
-          stroke={color}
-          strokeWidth="8"
-          strokeLinecap="round"
-          strokeDasharray={strokeDasharray}
-          style={{ transition: "stroke-dasharray 1.5s ease-out" }}
-        />
+    <div className="relative w-full h-full">
+      <svg viewBox="0 0 200 200" className="w-full h-full absolute inset-0 overflow-visible">
+        {/* Grid circles */}
+        {gridLevels.map((level, i) => {
+          const pts = items.map((_, idx) => getPoint(idx, level * r));
+          const path = pts.map((p, pi) => `${pi === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") + " Z";
+          return <path key={i} d={path} fill="none" stroke="#e2e8f0" strokeWidth="0.8" />;
+        })}
+        {/* Axis lines */}
+        {items.map((_, i) => {
+          const pt = getPoint(i, r);
+          return <line key={i} x1={cx} y1={cy} x2={pt.x} y2={pt.y} stroke="#e2e8f0" strokeWidth="0.8" />;
+        })}
+        {/* Data polygon */}
+        <path d={dataPath} fill="#2563FF" fillOpacity="0.15" stroke="#2563FF" strokeWidth="2" strokeLinejoin="round" />
+        {/* Data points */}
+        {items.map((item, i) => {
+          const pt = getPoint(i, (item.score / 100) * r);
+          return <circle key={i} cx={pt.x} cy={pt.y} r="3" fill="#2563FF" stroke="white" strokeWidth="1.5" />;
+        })}
       </svg>
-      <div className="absolute text-center">
-        <div className="text-4xl font-black text-gray-900 tracking-tight">{score}</div>
-        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Score</div>
-      </div>
+
+      {/* HTML Icons on axes */}
+      {items.map((item, i) => {
+        const pt = getPoint(i, r + 16);
+        const color = labelColors[item.key] || "#2563FF";
+        const isHovered = hovered === item.key;
+        const Icon = item.icon;
+        
+        // Adjust tooltip position for points on top/bottom/sides
+        const isBottom = pt.y > cy + 10;
+        
+        return (
+          <div
+            key={`icon-${i}`}
+            className="absolute flex items-center justify-center rounded-full cursor-pointer transition-all duration-200 z-10 bg-white"
+            style={{
+              left: `${(pt.x / 200) * 100}%`,
+              top: `${(pt.y / 200) * 100}%`,
+              transform: "translate(-50%, -50%)",
+              width: "22px",
+              height: "22px",
+              border: `1.5px solid ${color}`,
+              boxShadow: isHovered ? `0 0 0 3px ${color}20` : 'none',
+              zIndex: isHovered ? 20 : 10,
+            }}
+            onMouseEnter={() => setHovered(item.key)}
+            onMouseLeave={() => setHovered(null)}
+          >
+            <Icon className="w-3 h-3" style={{ color }} />
+            
+            {/* Tooltip */}
+            <div 
+              className={`absolute ${isBottom ? 'top-full mt-2' : 'bottom-full mb-2'} left-1/2 -translate-x-1/2 w-max px-3 py-2 bg-[#0C2340] text-white text-[10px] rounded-lg font-semibold pointer-events-none transition-all duration-200 shadow-xl border border-slate-700 flex flex-col items-center ${
+                isHovered ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              }`}
+              style={{ transformOrigin: isBottom ? 'top center' : 'bottom center' }}
+            >
+              <div className={`absolute ${isBottom ? 'bottom-full mb-[-1px] border-b-[#0C2340]' : 'top-full mt-[-1px] border-t-[#0C2340]'} left-1/2 -translate-x-1/2 border-[5px] border-transparent`} />
+              <span className="text-blue-200/70 font-black uppercase tracking-widest text-[8px] mb-0.5">Competency Score</span>
+              <span className="flex items-center gap-1.5 text-xs whitespace-nowrap text-white">
+                {item.label} <span className="text-blue-400 font-black">{item.score}</span>
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-// ── Competency Icon Map ─────────────────────────────────────────────────────
-const iconMap: Record<string, React.ElementType> = {
-  ProblemFraming: Target,
-  DataLiteracy: FileText,
-  AnalyticalReasoning: Brain,
-  RootCauseAnalysis: TrendingUp,
-  Prioritization: Zap,
-  BusinessThinking: Award,
-  DataQualityAwareness: Database,
-  Communication: MessageSquare,
-};
-
-const labelMap: Record<string, string> = {
-  ProblemFraming: "Problem Framing",
-  DataLiteracy: "Data Literacy",
-  AnalyticalReasoning: "Analytical Reasoning",
-  RootCauseAnalysis: "Root Cause Analysis",
-  Prioritization: "Prioritization",
-  BusinessThinking: "Business Thinking",
-  DataQualityAwareness: "Data Quality Awareness",
-  Communication: "Communication",
-};
-
-// ── Main Results Page ───────────────────────────────────────────────────────
+// ── Main Results Page ────────────────────────────────────────────────────────
 export default function ResultPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [transitionStage, setTransitionStage] = useState(0);
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
-
-  const transitionMessages = [
-    "Analyzing Your Decisions...",
-    "Comparing Against Industry Benchmarks...",
-    "Evaluating Business Reasoning...",
-    "Evaluating Data Interpretation..."
-  ];
+  const [candidateName, setCandidateName] = useState("Candidate");
+  const [completedDate, setCompletedDate] = useState("");
+  const [animScore, setAnimScore] = useState(0);
 
   useEffect(() => {
-    // Start transition animation
-    let stage = 0;
-    const interval = setInterval(() => {
-      stage++;
-      if (stage < transitionMessages.length) {
-        setTransitionStage(stage);
-      }
-    }, 1500);
+    if (typeof window !== "undefined") {
+      const raw = localStorage.getItem("hiresapienCandidateProfile");
+      if (raw) { try { const p = JSON.parse(raw); if (p.name) setCandidateName(p.name.trim()); } catch {} }
+      else { const fb = localStorage.getItem("hiresapienCandidate"); if (fb) setCandidateName(fb.trim()); }
+    }
 
     const fetchResults = async () => {
       const minDelay = new Promise((res) => setTimeout(res, 3500));
-
       try {
         const attemptId = localStorage.getItem("simulationAttemptId");
         if (!attemptId) throw new Error("No simulation attempt found. Please restart the assessment.");
-
-        // Check if all 8 missions are completed
         const progressRaw = localStorage.getItem("hiresapienProgress");
-        let isAllCompleted = false;
-        if (progressRaw) {
-          try {
-            const parsed = JSON.parse(progressRaw);
-            const completed = parsed.completedMissions || [];
-            if (completed.length >= 8) {
-              isAllCompleted = true;
-            }
-          } catch {
-            // ignore
-          }
-        }
-
-        if (!isAllCompleted) {
-          throw new Error("You must complete all 8 simulation missions before you can view your results.");
-        }
-
+        let allDone = false;
+        if (progressRaw) { try { const p = JSON.parse(progressRaw); if ((p.completedMissions || []).length >= 8) allDone = true; } catch {} }
+        if (!allDone) throw new Error("Complete all 8 missions before viewing results.");
         const [res] = await Promise.all([
-          fetch("/api/simulation/complete", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ attemptId }),
-          }),
+          fetch("/api/simulation/complete", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ attemptId }) }),
           minDelay,
         ]);
-
         const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to calculate results.");
-        }
-
+        if (!res.ok) throw new Error(data.error || "Failed to calculate results.");
         setResult(data.result);
       } catch (err: any) {
-        console.error(err);
-        setError(err.message || "Something went wrong loading your results.");
+        setError(err.message || "Something went wrong.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchResults();
-
-    // Ensure transition takes at least 6 seconds
-    const timeout = setTimeout(() => {
-      setLoading(false);
-      clearInterval(interval);
-    }, 6000);
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
   }, []);
 
+  // Animate score once result loads
+  useEffect(() => {
+    if (!result) return;
+    const target = result.overallScore;
+    let s = 0;
+    const step = () => { s += 1.5; if (s < target) { setAnimScore(Math.round(s)); requestAnimationFrame(step); } else { setAnimScore(target); } };
+    const t = setTimeout(() => requestAnimationFrame(step), 200);
+    return () => clearTimeout(t);
+  }, [result]);
+
   const handleRetake = () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("simulationAttemptId");
-      localStorage.removeItem("hiresapienCandidate");
-    }
+    if (typeof window !== "undefined") { localStorage.removeItem("simulationAttemptId"); localStorage.removeItem("hiresapienCandidate"); }
     router.push("/");
   };
 
   if (loading) return <LoadingScreen />;
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6 font-sans">
-        <div className="p-8 bg-red-50 rounded-2xl border border-red-200 max-w-md shadow-sm">
-          <h2 className="text-xl font-black text-red-700 mb-2">Could Not Load Results</h2>
-          <p className="text-red-650 text-sm mb-6 font-semibold">{error}</p>
-          <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">
-            Make sure your server is running with valid credentials.
-          </p>
-        </div>
-        <button
-          onClick={handleRetake}
-          className="mt-6 flex items-center gap-2 text-indigo-600 font-extrabold hover:text-indigo-800 transition-colors uppercase text-xs tracking-wider"
-        >
-          <RefreshCcw className="w-4 h-4" /> Retake Assessment
-        </button>
+  if (error) return (
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+      <div className="p-8 bg-red-50 rounded-2xl border border-red-100 max-w-md">
+        <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-3" />
+        <h2 className="text-lg font-black text-red-700 mb-2">Could Not Load Results</h2>
+        <p className="text-red-500 text-sm font-semibold">{error}</p>
       </div>
-    );
-  }
-
-  const {
-    overallScore,
-    readinessLevel,
-    competencyScores,
-    archetype,
-    strengths = [],
-    improvements = [],
-    completedAt,
-  } = result;
-
-  const readinessConfig = getReadinessConfig(readinessLevel);
-
-  const competencies = Object.entries(competencyScores as Record<string, number>).map(
-    ([key, value]) => ({
-      key,
-      label: labelMap[key] || key,
-      score: Math.round(value as number),
-      icon: iconMap[key] || Target,
-    })
+      <button onClick={handleRetake} className="mt-5 flex items-center gap-2 text-[#2563FF] font-bold text-sm">
+        <RefreshCcw className="w-4 h-4" /> Retake Assessment
+      </button>
+    </div>
   );
 
-  const formattedDate = completedAt
-    ? new Date(completedAt).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : null;
+  const { overallScore, readinessLevel, competencyScores, strengths = [], improvements = [], completedAt } = result;
+  const band = getBand(overallScore);
 
-  const getIndustryComparison = (score: number) => {
-    if (score >= 80) return "Top 5% of entry-level candidates";
-    if (score >= 60) return "Top 15% of entry-level candidates";
-    if (score >= 40) return "Top 35% of entry-level candidates";
-    return "Top 60% of entry-level candidates";
+  const competencies = Object.entries(competencyScores as Record<string, number>)
+    .map(([key, value]) => ({ key, label: labelMap[key] || key, score: Math.round(value as number), icon: iconMap[key] || Target, iconBg: iconBgMap[key] || "bg-slate-50 text-slate-600", desc: descMap[key] || "" }))
+    .sort((a, b) => b.score - a.score);
+
+  const topStrengths = competencies.filter(c => c.score >= 65).slice(0, 3);
+  const growthAreas = competencies.filter(c => c.score < 65).slice(0, 3).reverse();
+  // If not enough <65, fallback to bottom 3
+  const displayGrowth = growthAreas.length > 0 ? growthAreas : [...competencies].sort((a,b) => a.score - b.score).slice(0, 3);
+  const displayStrengths = topStrengths.length > 0 ? topStrengths : [...competencies].sort((a,b) => b.score - a.score).slice(0, 3);
+
+  const fmtDate = completedAt
+    ? new Date(completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
+    : new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+
+  const getStrengthBadge = (score: number) => {
+    if (score >= 80) return { label: "High Strength", color: "bg-blue-100 text-blue-700" };
+    if (score >= 70) return { label: "Strong", color: "bg-indigo-100 text-indigo-700" };
+    return { label: "Moderate", color: "bg-slate-100 text-slate-600" };
+  };
+  const getGrowthBadge = (score: number) => {
+    if (score < 50) return { label: "High Priority", color: "bg-orange-100 text-orange-700" };
+    if (score < 60) return { label: "Medium Priority", color: "bg-amber-100 text-amber-700" };
+    return { label: "Low Priority", color: "bg-emerald-100 text-emerald-700" };
   };
 
-  // Find lowest score domain for actionable recommendation
-  const weakestCompetency = competencies.reduce((min, curr) => 
-    curr.score < min.score ? curr : min
-  , competencies[0] || { key: "DataLiteracy", label: "Data Literacy", score: 100 });
-
-  const getRecommendationText = (key: string) => {
-    const recs: Record<string, string> = {
-      ProblemFraming: "Focus on breaking down vague stakeholder requests into concrete, testable statistical hypothesis statements.",
-      DataLiteracy: "Study multi-metric behavioral cohort analysis and practice scanning funnel charts under time pressure.",
-      AnalyticalReasoning: "Dedicate time to structuring A/B testing validation hypotheses before drawing database conclusions.",
-      RootCauseAnalysis: "Leverage the structured '5-Why' investigative framework when debugging telemetry drops.",
-      Prioritization: "Apply an Eisenhower Matrix to weigh the commercial urgency vs technical complexity of requests.",
-      BusinessThinking: "Practice mapping data fluctuations directly to corporate financial models (CAC, LTV, revenue).",
-      DataQualityAwareness: "Spend time analyzing database constraints and common pipeline telemetry failures (NULL values, duplicated rows).",
-      Communication: "Draft short executive summaries (TL;DR) for metrics fluctuations, highlighting core findings and recommendations first.",
-    };
-    return recs[key] || "Investigate broad user metrics systematically before finalizing statistical conclusions.";
-  };
+  // Score ring
+  const circumference = 2 * Math.PI * 38;
+  const scoreDash = `${(animScore / 100) * circumference} ${circumference}`;
 
   return (
-    <div className="max-w-4xl mx-auto pb-16 font-sans">
-      {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div className="text-center mb-10 select-none">
-        <div className="w-14 h-14 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-          <CheckCircle className="w-7 h-7 text-green-600" />
-        </div>
-        <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mb-2">Simulation Complete!</h1>
-        <p className="text-gray-500 max-w-md mx-auto text-sm font-semibold">
-          You've completed the ShopSphere Data Scientist simulation. Here's your personalized competency report.
-        </p>
-        {formattedDate && (
-          <p className="text-[10px] font-bold text-gray-400 mt-3 uppercase tracking-wider">Completed: {formattedDate}</p>
-        )}
-      </div>
+    <div className="font-sans -m-8 min-h-screen bg-white flex flex-col">
 
-      {/* ── Score + Readiness ───────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 select-none">
-        {/* Score Ring Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-150 p-6 md:p-8 flex flex-col items-center justify-center text-center">
-          <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">
-            Overall Readiness Score
-          </h2>
-          <ScoreRing score={overallScore} />
-          
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-650 mt-6 tracking-wide border border-indigo-100/50">
-            <TrendingUp className="w-3.5 h-3.5 text-indigo-600" /> {getIndustryComparison(overallScore)}
-          </span>
-        </div>
 
-        {/* Readiness Band Card */}
-        <div
-          className={`bg-gradient-to-br ${readinessConfig.bg} rounded-2xl shadow-md p-6 md:p-8 flex flex-col justify-between text-white relative overflow-hidden`}
-        >
-          <Award className="absolute -bottom-6 -right-6 w-36 h-36 text-white/10 select-none pointer-events-none" />
-          <div className="z-10">
-            <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">
-              Readiness Level
-            </p>
-            <div className={`text-3xl font-black mb-3 leading-none ${readinessConfig.color}`}>
-              {readinessLevel}
+      {/* ── Body ────────────────────────────────────────────────────────────── */}
+      <div className="flex flex-1 overflow-hidden">
+
+        {/* ── Left Panel ────────────────────────────────────────────────── */}
+        <div className="w-72 shrink-0 border-r border-slate-200 bg-white flex flex-col overflow-y-auto p-5 gap-5">
+
+          {/* Title */}
+          <div>
+            <p className="text-[10px] font-black text-[#2563FF] uppercase tracking-widest mb-1">Sona SCALE</p>
+            <h1 className="text-2xl font-black text-[#0C2340] leading-tight tracking-tight">
+              Data Science<br />
+              <span className="text-[#2563FF]">Xperience</span>
+            </h1>
+          </div>
+
+          {/* Meta */}
+          <div className="flex items-center gap-4 text-[11px] text-slate-500 font-semibold">
+            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {fmtDate}</span>
+            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> 15–20 mins</span>
+          </div>
+
+          <div>
+            <p className="text-sm font-black text-slate-800">Great job! You've completed the simulation.</p>
+            <p className="text-xs text-slate-500 font-semibold mt-0.5">Here's your Xperience summary.</p>
+          </div>
+
+          {/* Score Card */}
+          <div className="bg-gradient-to-br from-[#1a3a6e] via-[#1e40af] to-[#2563FF] rounded-2xl p-5 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/5 -translate-y-8 translate-x-8" />
+            <div className="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-white/5 translate-y-6 -translate-x-6" />
+            <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-3 relative z-10">Xperience Match Score</p>
+            <div className="flex items-end gap-1 mb-1 relative z-10">
+              <span className="text-6xl font-black leading-none">{animScore}</span>
+              <span className="text-xl font-bold text-blue-200 mb-2">/100</span>
+            </div>
+            <div className="relative z-10 mt-4 flex items-center gap-2.5 bg-white/10 rounded-xl px-3 py-2.5 border border-white/15">
+              <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+                <Star className="w-3.5 h-3.5 text-yellow-300" />
+              </div>
+              <div>
+                <p className="text-xs font-black leading-tight">{band.perf}</p>
+                <p className="text-[10px] text-blue-200 font-medium leading-tight mt-0.5">
+                  You demonstrated strong alignment with the role of a Data Scientist through your decisions and problem-solving approach.
+                </p>
+              </div>
             </div>
           </div>
-          <p className="text-white/80 text-sm leading-relaxed z-10 font-semibold mt-4">
-            {readinessConfig.desc}
-          </p>
-        </div>
-      </div>
 
-      {/* ── Profile Archetype ───────────────────────────────────────────── */}
-      {archetype && (
-        <div className="bg-gradient-to-r from-indigo-50/60 to-purple-50/40 border border-indigo-100/60 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-5 select-none">
-          <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center flex-shrink-0 border border-indigo-100">
-            <Compass className="w-7 h-7 text-indigo-600 animate-spin-slow" />
+          {/* Alignment / Band */}
+          <div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Readiness Band</p>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${band.color}18` }}>
+                <CheckCircle className="w-4 h-4" style={{ color: band.color }} />
+              </div>
+              <span className="text-base font-black" style={{ color: band.color }}>{band.band}</span>
+            </div>
+            <p className="text-[11px] text-slate-500 font-medium leading-relaxed">{band.desc}</p>
+            <div className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-slate-500">
+              Score Range: <span className="text-slate-700">{band.range}</span>
+            </div>
           </div>
-          <div className="text-center sm:text-left">
-            <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-0.5">
-              Your Profile Archetype
-            </p>
-            <h3 className="text-xl font-black text-indigo-900">{archetype}</h3>
-          </div>
-        </div>
-      )}
 
-      {/* ── Actionable Top Recommendation ───────────────────────────────── */}
-      <div className="bg-slate-50 border border-slate-150 rounded-2xl p-6 mb-8 flex items-start gap-4 select-none">
-        <div className="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
-          <Sparkles className="w-5 h-5 text-indigo-600" />
-        </div>
-        <div>
-          <h4 className="text-sm font-black text-slate-900 mb-1">Top Actionable Recommendation</h4>
-          <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">
-            Priority focus: Improve {weakestCompetency.label} ({weakestCompetency.score}%)
-          </p>
-          <p className="text-sm text-slate-600 font-semibold leading-relaxed">
-            {getRecommendationText(weakestCompetency.key)}
-          </p>
-        </div>
-      </div>
+          {/* Spacer */}
+          <div className="flex-1" />
 
-      {/* ── Strengths + Areas to Improve ───────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {/* Strengths */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-150 p-6 select-none">
-          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-amber-500" /> Your Strengths
-          </h3>
-          {strengths.length > 0 ? (
-            <ul className="space-y-3">
-              {strengths.map((s: string, i: number) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="w-5 h-5 bg-green-50 border border-green-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                    <CheckCircle className="w-3 h-3 text-green-600" />
+          {/* Download Button */}
+          <button className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-[#2563FF] border border-[#2563FF] shadow-sm text-xs font-bold py-3 px-4 rounded-xl transition-colors">
+            <Download className="w-4 h-4" /> Download Report
+          </button>
+        </div>
+
+        {/* ── Right Panel ───────────────────────────────────────────────── */}
+        <div className="flex-1 overflow-y-auto bg-[#F8FAFC]">
+          <div className="p-6 space-y-6">
+
+            {/* ── Strengths & Weaknesses ───────────────────────────────── */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <h2 className="text-base font-black text-[#0C2340] mb-1">Strengths & Weaknesses</h2>
+              <div className="w-8 h-0.5 bg-[#2563FF] rounded-full mb-5" />
+
+              <div className="grid grid-cols-2 gap-6">
+                {/* Top Strengths */}
+                <div>
+                  <p className="text-xs font-black text-[#2563FF] mb-3">Top Strengths</p>
+                  <div className="space-y-3">
+                    {displayStrengths.map(({ key, label, score, icon: Icon, iconBg, desc }) => {
+                      const badge = getStrengthBadge(score);
+                      return (
+                        <div key={key} className="flex items-start gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all bg-white">
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2 mb-0.5">
+                              <p className="text-xs font-black text-slate-800">{label}</p>
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${badge.color}`}>{badge.label}</span>
+                            </div>
+                            <p className="text-[10px] text-slate-500 font-medium leading-relaxed">{desc}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                  <span className="text-sm font-semibold text-slate-650 leading-normal">{s}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-gray-400 font-semibold">Complete more missions to reveal strengths.</p>
-          )}
-        </div>
-
-        {/* Areas to Improve */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-150 p-6 select-none">
-          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
-            <Target className="w-3.5 h-3.5 text-indigo-600" /> Areas to Improve
-          </h3>
-          {improvements.length > 0 ? (
-            <ul className="space-y-3">
-              {improvements.map((s: string, i: number) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="w-5 h-5 bg-amber-50 border border-amber-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                    <ArrowRight className="w-3 h-3 text-amber-600" />
-                  </div>
-                  <span className="text-sm font-semibold text-slate-650 leading-normal">{s}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-gray-400 font-semibold">You've shown strength across all areas!</p>
-          )}
-        </div>
-      </div>
-
-      {/* ── Competency Breakdown ────────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-150 p-6 md:p-8 mb-10 select-none">
-        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-1.5">
-          <TrendingUp className="w-3.5 h-3.5 text-indigo-600" /> Competency Breakdown
-        </h3>
-        <div className="space-y-5">
-          {competencies.map(({ key, label, score, icon: Icon }) => {
-            const barColor =
-              score >= 75
-                ? "bg-gradient-to-r from-emerald-400 to-teal-500"
-                : score >= 50
-                ? "bg-gradient-to-r from-indigo-400 to-blue-500"
-                : "bg-gradient-to-r from-amber-400 to-orange-400";
-
-            return (
-              <div key={key}>
-                <div className="flex justify-between items-center mb-1.5">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-slate-450" />
-                    </div>
-                    <span className="text-xs font-black text-slate-700 tracking-tight">{label}</span>
-                  </div>
-                  <span
-                    className={`text-xs font-black ${
-                      score >= 75
-                        ? "text-emerald-600"
-                        : score >= 50
-                        ? "text-indigo-650"
-                        : "text-amber-650"
-                    }`}
-                  >
-                    {score}%
-                  </span>
                 </div>
-                <div className="h-2 bg-slate-50 border border-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${barColor} transition-all duration-1000 ease-out`}
-                    style={{ width: `${score}%` }}
-                  />
+
+                {/* Key Areas to Improve */}
+                <div>
+                  <p className="text-xs font-black text-orange-500 mb-3">Key Areas to Improve</p>
+                  <div className="space-y-3">
+                    {displayGrowth.map(({ key, label, score, icon: Icon, iconBg, desc }) => {
+                      const badge = getGrowthBadge(score);
+                      return (
+                        <div key={key} className="flex items-start gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all bg-white">
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2 mb-0.5">
+                              <p className="text-xs font-black text-slate-800">{label}</p>
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${badge.color}`}>{badge.label}</span>
+                            </div>
+                            <p className="text-[10px] text-slate-500 font-medium leading-relaxed">{desc}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+
+            {/* ── Competency Breakdown ─────────────────────────────────── */}
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <div className="flex items-center justify-between mb-1">
+                <h2 className="text-base font-black text-[#0C2340]">Competency Breakdown</h2>
+              </div>
+              <div className="w-8 h-0.5 bg-[#2563FF] rounded-full mb-5" />
+
+              <div className="flex gap-6">
+                {/* Bar list */}
+                <div className="flex-1 grid grid-cols-2 gap-x-8 gap-y-4 content-start">
+                  {competencies.map(({ key, label, score, icon: Icon, iconBg }) => (
+                    <div key={key}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${iconBg}`}>
+                          <Icon className="w-3 h-3" />
+                        </div>
+                        <span className="text-[11px] font-black text-slate-700 flex-1 min-w-0 truncate">{label}</span>
+                        <span className="text-[11px] font-black text-[#2563FF] shrink-0">{score}<span className="text-slate-400 font-semibold">/100</span></span>
+                      </div>
+                      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-[#2563FF] to-indigo-500 transition-all duration-1000 ease-out"
+                          style={{ width: `${score}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Radar Chart */}
+                <div className="w-44 h-44 shrink-0 flex items-center justify-center">
+                  <RadarChart competencies={competencies} />
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
-      {/* ── CTA ─────────────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <button
-          id="retake-assessment-btn"
-          onClick={handleRetake}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-blue-500 hover:opacity-95 text-white font-bold px-8 py-3.5 rounded-xl shadow-md shadow-indigo-100/50 transition-all hover:-translate-y-0.5 text-xs uppercase tracking-wider cursor-pointer"
-        >
-          <ListRestart className="w-4 h-4" /> Retake Assessment
+      {/* ── Full-Width Beta CTA ──────────────────────────────────────────────── */}
+      <div className="bg-[#0C2340] px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
+        <div>
+          <p className="text-sm font-black text-white mb-0.5">Want early access to more Xperiences?</p>
+          <p className="text-[12px] text-blue-200 font-medium">Be the first to explore new roles and help shape the future of career exploration.</p>
+        </div>
+        <button className="shrink-0 flex items-center gap-2 bg-[#2563FF] hover:bg-blue-500 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition-colors whitespace-nowrap">
+          Sign up for Xperiences Beta <ArrowRight className="w-3.5 h-3.5" />
         </button>
-        <Link
-          href="#"
-          className="w-full sm:w-auto flex items-center justify-center gap-2 text-slate-550 font-bold hover:text-slate-800 transition-colors px-8 py-3.5 rounded-xl border border-slate-200 hover:border-slate-350 text-xs uppercase tracking-wider"
-        >
-          Sign Up for Beta <ArrowRight className="w-4 h-4" />
-        </Link>
+      </div>
+
+      {/* ── Footer ──────────────────────────────────────────────────────────── */}
+      <div className="border-t border-slate-200 bg-white px-6 py-3 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2">
+          <Image src="/image-removebg-preview (1).png" alt="HireSapien" width={16} height={16} className="object-contain opacity-70" />
+          <span className="text-[11px] text-slate-500 font-semibold">HireSapien · Reveal Potential. Report Precision.</span>
+        </div>
+        <div className="flex items-center gap-4 text-[11px] text-slate-400 font-semibold">
+          <span>© 2025 HireSapien. All rights reserved.</span>
+          <button onClick={handleRetake} className="flex items-center gap-1 text-[#2563FF] font-bold hover:underline">
+            <ListRestart className="w-3 h-3" /> Retake
+          </button>
+        </div>
       </div>
     </div>
   );

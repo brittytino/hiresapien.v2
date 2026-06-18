@@ -1,0 +1,42 @@
+import mongoose, { Document, Model } from "mongoose";
+
+export interface ICandidateProfile extends Document {
+  name: string;
+  email: string;
+  phone: string;
+  degree?: string;
+  academic_status?: string;
+  career_interest?: string;
+  skills?: string[];
+  ws_q1?: string;
+  ws_q2?: string;
+  ws_q3?: string;
+  ds_familiarity?: number;
+  data_comfort?: number;
+  expectations?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const CandidateProfileSchema = new mongoose.Schema<ICandidateProfile>(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    degree: { type: String },
+    academic_status: { type: String },
+    career_interest: { type: String },
+    skills: [{ type: String }],
+    ws_q1: { type: String },
+    ws_q2: { type: String },
+    ws_q3: { type: String },
+    ds_familiarity: { type: Number },
+    data_comfort: { type: Number },
+    expectations: [{ type: String }],
+  },
+  { timestamps: true }
+);
+
+export const CandidateProfile: Model<ICandidateProfile> =
+  mongoose.models.CandidateProfile ||
+  mongoose.model<ICandidateProfile>("CandidateProfile", CandidateProfileSchema);

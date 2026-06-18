@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
+import { connectWithTimeout } from "@/lib/mongodb";
 import { SimulationAttempt } from "@/models/SimulationAttempt";
 
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       });
     }
 
-    await connectDB();
+    await connectWithTimeout(3000);
     const attempt = await SimulationAttempt.findById(attemptId);
     if (!attempt) {
       return NextResponse.json({ error: "Attempt not found" }, { status: 404 });

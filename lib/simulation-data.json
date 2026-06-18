@@ -1,7 +1,10 @@
 {
   "assessment": {
-    "name": "Data Scientist Industry Simulation",
-    "version": "MVP V2",
+    "name": "NovaCart Data Analyst Simulation",
+    "version": "Sona SCALE v1.0",
+    "company": "NovaCart",
+    "role": "Junior Data Analyst",
+    "context": "NovaCart is one of India's growing e-commerce platforms, serving over 1.2 million monthly users and processing nearly 35,000 orders every day. Over the past quarter, revenue has declined by 18%, while customer complaints have increased by 12%. The cause is unclear. You are a Junior Data Analyst and your job is to investigate.",
     "competencies": {
       "ProblemFraming": 15,
       "DataLiteracy": 20,
@@ -15,251 +18,449 @@
     "missions": [
       {
         "id": "mission-1",
-        "title": "Mission 1: The Revenue Alarm",
-        "context": "From: ShopSphere CEO <ceo@shopsphere.com>\nTo: Data Team <data@shopsphere.com>\nSubject: URGENT: Revenue down 18% WoW\n\nTeam,\n\nOur weekly revenue dashboard is showing an 18% drop compared to last week. Marketing is running their highest ad spend of the quarter, so traffic should be through the roof. I need to know exactly what is happening before the board meeting at 4 PM.\n\nLook at our core funnel. Is the traffic bad, or is something breaking down in the checkout pipeline?",
+        "title": "Mission 1: CEO Escalation",
+        "context": "Welcome to NovaCart. Today is your first day as a Junior Data Analyst. NovaCart is one of India's growing e-commerce platforms, serving over 1.2 million monthly users and processing nearly 35,000 orders every day.\n\nOver the past quarter, the leadership team has noticed a concerning trend: revenue has declined by 18%, while customer complaints have increased by 12%. The cause is unclear.\n\nThe CEO has requested the Analytics Team to determine where the investigation should begin. Your first responsibility is to frame the problem correctly before collecting additional evidence.",
         "tasks": [
           {
-            "id": "task-1",
-            "type": "SingleSelect",
-            "question": "Which set of metrics should you pull first to isolate the breakdown?",
-            "options": [
-              "Daily Active Users (DAU) and Session Duration",
-              "Funnel Conversion Rates: Sessions -> Add to Cart -> Checkout",
-              "Customer Acquisition Cost (CAC) and Lifetime Value (LTV)",
-              "Server Uptime and API Error Rates"
+            "id": "task-1-1",
+            "type": "Ranking",
+            "question": "The Analytics Manager has identified four possible areas to investigate. Arrange them in order from Highest Priority to Lowest Priority.",
+            "items": [
+              "Customer purchasing behavior",
+              "Website traffic performance",
+              "Order fulfillment performance",
+              "Marketing campaign performance"
             ],
-            "correctAnswer": "Funnel Conversion Rates: Sessions -> Add to Cart -> Checkout",
+            "correctAnswer": [
+              "Customer purchasing behavior",
+              "Website traffic performance",
+              "Order fulfillment performance",
+              "Marketing campaign performance"
+            ],
             "competencies": ["ProblemFraming", "BusinessThinking"],
             "maxScore": 20
           },
           {
-            "id": "task-2",
+            "id": "task-1-2",
             "type": "MultiSelect",
-            "question": "If you find that traffic is up 10% but revenue is down 18%, which of the following hypotheses are most plausible?",
+            "question": "Before beginning the investigation, determine which information would be most valuable. Select the THREE most important pieces of information.",
             "options": [
-              "The checkout API is failing for a specific payment method.",
-              "Marketing traffic is bringing in high-intent buyers.",
-              "The new traffic consists of low-quality bots or non-buyers.",
-              "Our inventory of top-selling items is out of stock."
+              "Revenue trends by customer segment",
+              "Employee attendance records",
+              "Conversion rate trends",
+              "Website traffic trends",
+              "Office operating expenses",
+              "Customer retention trends"
             ],
-            "correctAnswer": ["The checkout API is failing for a specific payment method.", "The new traffic consists of low-quality bots or non-buyers.", "Our inventory of top-selling items is out of stock."],
-            "competencies": ["AnalyticalReasoning", "RootCauseAnalysis"],
+            "correctAnswer": [
+              "Revenue trends by customer segment",
+              "Conversion rate trends",
+              "Customer retention trends"
+            ],
+            "competencies": ["ProblemFraming", "DataLiteracy"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-1-3",
+            "type": "SingleSelect",
+            "question": "The CEO asks: \"What should we focus on understanding first?\" Choose the most effective response.",
+            "options": [
+              "Determine which department is responsible for the decline.",
+              "Identify which customer groups, products, or behaviors contributed most to the revenue decline.",
+              "Reduce operational expenses until revenue improves.",
+              "Launch a new acquisition campaign immediately."
+            ],
+            "correctAnswer": "Identify which customer groups, products, or behaviors contributed most to the revenue decline.",
+            "competencies": ["ProblemFraming", "BusinessThinking"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-2",
-        "title": "Mission 2: SQL Anomaly Hunt",
-        "context": "You decide to pull the conversion funnel using Snowflake.\n\nYou run the following query:\n\n```sql\nSELECT \n  DATE_TRUNC('day', event_timestamp) as date,\n  COUNT(DISTINCT session_id) as total_sessions,\n  COUNT(DISTINCT CASE WHEN event_name = 'add_to_cart' THEN session_id END) as cart_sessions,\n  COUNT(DISTINCT CASE WHEN event_name = 'checkout_success' THEN session_id END) as purchase_sessions\nFROM events_log\nWHERE event_timestamp >= CURRENT_DATE - 7\nGROUP BY 1 ORDER BY 1 DESC;\n```\n\nThe output shows `total_sessions` increased from 100k to 110k, `cart_sessions` increased from 20k to 22k, but `purchase_sessions` dropped from 4k to 3.2k.",
+        "title": "Mission 2: Dashboard Analysis",
+        "context": "The Analytics Team has prepared a summary dashboard comparing the previous quarter with the current quarter.\n\nDashboard Summary:\n• Revenue: ₹12.4M → ₹10.2M\n• Orders: 152,000 → 149,000\n• Website Visits: 2.1M → 2.0M\n• Conversion Rate: 7.2% → 5.1%\n\nLeadership wants to understand where performance changed before further investigation begins.",
         "tasks": [
           {
-            "id": "task-3",
+            "id": "task-2-1",
             "type": "SingleSelect",
-            "question": "Based on the SQL output, where is the exact bottleneck in the funnel?",
+            "question": "Review the dashboard. Which metric shows the largest performance decline?",
             "options": [
-              "Between visiting the site and adding to cart.",
-              "Between adding to cart and completing the purchase.",
-              "The traffic source is entirely fake.",
-              "There is no bottleneck; this is normal variance."
+              "Orders",
+              "Website Visits",
+              "Revenue",
+              "Conversion Rate"
             ],
-            "correctAnswer": "Between adding to cart and completing the purchase.",
+            "correctAnswer": "Conversion Rate",
             "competencies": ["DataLiteracy", "AnalyticalReasoning"],
             "maxScore": 20
           },
           {
-            "id": "task-4",
-            "type": "ShortText",
-            "question": "Write a brief slack message to the Product Manager explaining the funnel drop-off.",
-            "keywords": ["cart", "checkout", "conversion", "drop", "purchase"],
-            "competencies": ["Communication", "DataLiteracy"],
+            "id": "task-2-2",
+            "type": "SingleSelect",
+            "question": "Based on the dashboard, which statement is best supported by the data?",
+            "options": [
+              "Website traffic completely collapsed.",
+              "Revenue declined primarily because the number of orders doubled.",
+              "Customer conversion efficiency decreased significantly despite relatively stable traffic.",
+              "Marketing campaigns were unsuccessful."
+            ],
+            "correctAnswer": "Customer conversion efficiency decreased significantly despite relatively stable traffic.",
+            "competencies": ["DataLiteracy", "AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-2-3",
+            "type": "SingleSelect",
+            "question": "Your manager asks: \"Which metric should we investigate next to better understand the revenue decline?\"",
+            "options": [
+              "Employee headcount",
+              "Office expenses",
+              "Conversion Rate",
+              "Warehouse electricity consumption"
+            ],
+            "correctAnswer": "Conversion Rate",
+            "competencies": ["AnalyticalReasoning", "Prioritization"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-2-4",
+            "type": "SingleSelect",
+            "question": "You need to provide a brief summary to leadership. Choose the strongest conclusion.",
+            "options": [
+              "Traffic is the primary issue affecting revenue.",
+              "The dashboard suggests that fewer visitors are completing purchases, making conversion performance a key area for investigation.",
+              "Revenue decline appears unrelated to customer behavior.",
+              "Additional marketing spend should be approved immediately."
+            ],
+            "correctAnswer": "The dashboard suggests that fewer visitors are completing purchases, making conversion performance a key area for investigation.",
+            "competencies": ["Communication", "BusinessThinking"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-3",
-        "title": "Mission 3: A/B Test Conflict",
-        "context": "From: Product Manager <pm@shopsphere.com>\nTo: Data Team <data@shopsphere.com>\nSubject: Re: Funnel Drop-off\n\nHey,\n\nWe did launch a new \"1-Click Checkout\" A/B test for 50% of users 3 days ago. The product dashboard shows that the \"1-Click Checkout\" variant has a 40% faster completion time than the control group.\n\nHowever, you know overall conversion has dropped. You check the data and see:\n\n- Control Group (Standard Checkout): 4.1% Conversion Rate\n- Variant Group (1-Click Checkout): 1.8% Conversion Rate",
+        "title": "Mission 3: Segment Investigation",
+        "context": "The Analytics Team has segmented customer conversion performance to determine where the decline is occurring.\n\nSegment Performance Summary:\n• New Customers: 5.4% → 5.1%\n• Returning Customers: 9.2% → 8.8%\n• Premium Customers: 11.8% → 11.4%\n• Mobile App Users: 8.5% → 4.7%\n\nLeadership wants to identify which segment requires immediate investigation.",
         "tasks": [
           {
-            "id": "task-5",
+            "id": "task-3-1",
             "type": "SingleSelect",
-            "question": "How do you interpret the PM's claim that the variant is 'faster'?",
+            "question": "Based on the segment performance data, which customer segment should the Analytics Team investigate first?",
             "options": [
-              "The variant is a success because speed is the most important checkout metric.",
-              "The variant is faster for those who successfully purchase, but it is preventing the vast majority from purchasing at all.",
-              "The data must be corrupted because faster checkouts always yield higher conversion.",
-              "The control group data is outdated."
+              "New Customers",
+              "Returning Customers",
+              "Premium Customers",
+              "Mobile App Users"
             ],
-            "correctAnswer": "The variant is faster for those who successfully purchase, but it is preventing the vast majority from purchasing at all.",
-            "competencies": ["AnalyticalReasoning", "BusinessThinking"],
+            "correctAnswer": "Mobile App Users",
+            "competencies": ["DataLiteracy", "AnalyticalReasoning"],
             "maxScore": 20
           },
           {
-            "id": "task-6",
-            "type": "MultiSelect",
-            "question": "What actions should you recommend immediately?",
-            "options": [
-              "Halt the A/B test and roll back to the Control group for 100% of traffic.",
-              "Increase marketing spend to compensate for the lower conversion rate.",
-              "Investigate Javascript error logs for the Variant group.",
-              "Wait another 2 weeks to gather statistical significance."
+            "id": "task-3-2",
+            "type": "Ranking",
+            "question": "You can investigate only one area at a time. Arrange the following investigation areas from highest priority to lowest priority.",
+            "items": [
+              "Mobile App Experience",
+              "Checkout Process",
+              "Customer Feedback",
+              "Marketing Campaign Performance"
             ],
-            "correctAnswer": ["Halt the A/B test and roll back to the Control group for 100% of traffic.", "Investigate Javascript error logs for the Variant group."],
+            "correctAnswer": [
+              "Mobile App Experience",
+              "Checkout Process",
+              "Customer Feedback",
+              "Marketing Campaign Performance"
+            ],
             "competencies": ["Prioritization", "ProblemFraming"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-3-3",
+            "type": "MultiSelect",
+            "question": "Review the observations below and select the ones that represent STRONG evidence for the investigation.",
+            "options": [
+              "Mobile conversion rate decreased from 8.5% to 4.7%",
+              "Premium customer conversion remained relatively stable",
+              "Revenue decline is concentrated within one customer segment",
+              "Website traffic remained relatively stable"
+            ],
+            "correctAnswer": [
+              "Mobile conversion rate decreased from 8.5% to 4.7%",
+              "Revenue decline is concentrated within one customer segment"
+            ],
+            "competencies": ["AnalyticalReasoning", "RootCauseAnalysis"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-4",
-        "title": "Mission 4: Data Quality Engineering",
-        "context": "Before halting the A/B test, the Lead Engineer challenges your data:\n\n\"Wait, our telemetry pipeline had a known bug yesterday where 'checkout_success' events from mobile devices were getting dropped entirely from the Kafka stream. Are you sure the variant is actually performing worse, or are we just missing data?\"\n\nYou run a quick Python Pandas script:\n```python\ndf.groupby(['device_type', 'variant'])['checkout_success'].mean()\n```\nOutput:\nDesktop - Control: 4.2%\nDesktop - Variant: 4.1%\nMobile - Control: 4.0%\nMobile - Variant: 0.05%",
+        "title": "Mission 4: Delivery Investigation",
+        "context": "The Operations Team has shared delivery performance metrics after concerns were raised regarding mobile app customer experience.\n\nDelivery Performance Dashboard:\n• On-Time Delivery Rate: 94% → 81%\n• Average Delivery Time: 2.1 Days → 3.8 Days\n• Delivery Complaints: 1,250 → 3,420\n• Order Cancellation Rate: 4% → 11%\n\nReview the operational data and identify whether delivery issues may be affecting customer behavior.",
         "tasks": [
           {
-            "id": "task-7",
+            "id": "task-4-1",
             "type": "SingleSelect",
-            "question": "What does this Pandas output tell you?",
+            "question": "Which operational metric provides the strongest indication that customer experience may be deteriorating?",
             "options": [
-              "Mobile users hate the new checkout variant.",
-              "The new checkout variant is fundamentally broken on mobile devices, or the telemetry bug only affects the variant.",
-              "Desktop traffic is dropping off heavily.",
-              "The A/B test was configured incorrectly on the backend."
+              "On-Time Delivery Rate",
+              "Average Delivery Time",
+              "Delivery Complaints",
+              "Order Cancellation Rate"
             ],
-            "correctAnswer": "The new checkout variant is fundamentally broken on mobile devices, or the telemetry bug only affects the variant.",
-            "competencies": ["DataLiteracy", "DataQualityAwareness"],
+            "correctAnswer": "Order Cancellation Rate",
+            "competencies": ["DataLiteracy", "RootCauseAnalysis"],
             "maxScore": 20
           },
           {
-            "id": "task-8",
+            "id": "task-4-2",
+            "type": "MultiSelect",
+            "question": "Select the TWO observations that most strongly support investigating delivery performance further.",
+            "options": [
+              "On-Time Delivery Rate dropped from 94% to 81%",
+              "Delivery Complaints increased from 1,250 to 3,420",
+              "Website visits decreased slightly",
+              "Revenue decreased by 18%"
+            ],
+            "correctAnswer": [
+              "On-Time Delivery Rate dropped from 94% to 81%",
+              "Delivery Complaints increased from 1,250 to 3,420"
+            ],
+            "competencies": ["RootCauseAnalysis", "AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-4-3",
             "type": "Slider",
-            "question": "On a scale of 0 to 100, how confident are you that rolling back the mobile variant will stop the bleeding?",
+            "question": "Based on the delivery data, how confident are you (0–100) that delivery performance issues are a primary driver of the conversion decline?",
             "range": [0, 100],
-            "correctRange": [80, 100],
-            "competencies": ["AnalyticalReasoning"],
+            "correctRange": [75, 100],
+            "competencies": ["AnalyticalReasoning", "DataLiteracy"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-5",
-        "title": "Mission 5: Segment Investigation",
-        "context": "You rollback the mobile variant. Conversion stabilizes. However, the CEO replies:\n\n\"Thanks for fixing the mobile checkout. But I'm looking at our Premium Customers (our top 10% spenders). Their order volume is still down 25% year-over-year. The checkout bug only accounts for a fraction of that. What else is going on?\"\n\nYou pull a dashboard for Premium Customers. You see their traffic is normal, checkout conversion is normal, but 'Return Rate' has spiked from 4% to 22% in the last month.",
+        "title": "Mission 5: Customer Voice Analysis",
+        "context": "The Customer Experience Team has provided recent customer feedback collected through surveys and support tickets.\n\nCustomer Feedback:\n• Customer 1: \"My order arrived four days later than promised.\"\n• Customer 2: \"Delivery updates were inaccurate and confusing.\"\n• Customer 3: \"I cancelled my order because it was taking too long.\"\n• Customer 4: \"Product quality was good, but shipping was extremely slow.\"\n• Customer 5: \"Checkout process was smooth.\"\n\nReview the feedback and identify recurring themes.",
         "tasks": [
           {
-            "id": "task-9",
-            "type": "SingleSelect",
-            "question": "What is the most likely mathematical reason their order volume (net revenue) is down?",
-            "options": [
-              "They are adding fewer items to their cart.",
-              "They are successfully buying, but returning the items at a massive rate, killing net revenue.",
-              "Marketing is targeting the wrong premium customers.",
-              "The SQL query is double-counting returns."
-            ],
-            "correctAnswer": "They are successfully buying, but returning the items at a massive rate, killing net revenue.",
-            "competencies": ["RootCauseAnalysis", "BusinessThinking"],
-            "maxScore": 20
-          },
-          {
-            "id": "task-10",
-            "type": "Ranking",
-            "question": "Rank the datasets you would join next to investigate the return spike, from most useful to least useful.",
-            "items": ["Return Reason Codes (Logistics API)", "Product Categories Returned (Inventory DB)", "User Browser Fingerprints (Telemetry)", "Ad Click Source (Marketing DB)"],
-            "correctAnswer": ["Return Reason Codes (Logistics API)", "Product Categories Returned (Inventory DB)", "Ad Click Source (Marketing DB)", "User Browser Fingerprints (Telemetry)"],
-            "competencies": ["Prioritization", "DataLiteracy"],
-            "maxScore": 20
-          }
-        ]
-      },
-      {
-        "id": "mission-6",
-        "title": "Mission 6: NLP Review Classification",
-        "context": "You join the return data with Customer Support NLP classifications. \n\nThe NLP model categorized 80% of the premium returns under a cluster labeled `Topic_4_Logistics_Fulfillment`.\n\nYou sample the raw text reviews associated with this cluster:\n- \"Box arrived crushed, laptop screen cracked.\"\n- \"Package was left in the rain, completely ruined.\"\n- \"Waited 3 weeks, tracking was completely inaccurate, item damaged.\"\n- \"Carrier threw it over my fence.\"",
-        "tasks": [
-          {
-            "id": "task-11",
+            "id": "task-5-1",
             "type": "MultiSelect",
-            "question": "Which teams must be alerted immediately based on this qualitative data?",
+            "question": "Which TWO themes appear most frequently in the customer feedback?",
             "options": [
-              "Logistics / 3rd Party Shipping Carrier Management",
-              "Warehouse Packaging Operations",
-              "Marketing / User Acquisition",
-              "Frontend Web Developers"
+              "Delivery Delays",
+              "Product Quality Issues",
+              "Shipping Communication Issues",
+              "Pricing Concerns"
             ],
-            "correctAnswer": ["Logistics / 3rd Party Shipping Carrier Management", "Warehouse Packaging Operations"],
-            "competencies": ["ProblemFraming", "BusinessThinking"],
+            "correctAnswer": [
+              "Delivery Delays",
+              "Shipping Communication Issues"
+            ],
+            "competencies": ["RootCauseAnalysis", "DataLiteracy"],
             "maxScore": 20
           },
           {
-            "id": "task-12",
+            "id": "task-5-2",
+            "type": "Ranking",
+            "question": "Leadership has requested immediate actions. Rank the following actions from highest priority to lowest priority.",
+            "items": [
+              "Improve Delivery Performance",
+              "Improve Delivery Communication",
+              "Launch New Marketing Campaign",
+              "Expand Product Catalog"
+            ],
+            "correctAnswer": [
+              "Improve Delivery Performance",
+              "Improve Delivery Communication",
+              "Launch New Marketing Campaign",
+              "Expand Product Catalog"
+            ],
+            "competencies": ["Prioritization", "BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-5-3",
             "type": "ShortText",
-            "question": "Write a 1-sentence summary of the root cause of the premium segment revenue drop.",
-            "keywords": ["damage", "shipping", "logistics", "carrier", "returns"],
+            "question": "Write a one-sentence summary of the key customer concern that should be escalated to operations leadership.",
+            "keywords": ["delivery", "delay", "slow", "communication", "shipping", "cancelled"],
             "competencies": ["Communication", "RootCauseAnalysis"],
             "maxScore": 20
           }
         ]
       },
       {
-        "id": "mission-7",
-        "title": "Mission 7: Cost Modeling",
-        "context": "The VP of Operations sees your report and panics.\n\n\"We switched to a cheaper third-party shipping carrier last month to save costs. We saved ₹40 per package on shipping.\"\n\nYou calculate the math for the Premium Segment:\n- Volume: 10,000 orders last month.\n- Saved ₹40 per order = ₹4,00,000 saved.\n- However, the return rate jumped by 18% (1,800 extra returns).\n- Average margin lost per return (including damaged goods) = ₹2,500.",
+        "id": "mission-6",
+        "title": "Mission 6: Data Quality Audit",
+        "context": "Before the Analytics Team presents findings to leadership, a Data Governance Analyst notices inconsistencies in the delivery performance reports.\n\nDelivery Report Extract:\n• ORD-1001: 3 days — Delivered\n• ORD-1002: N/A days — Delivered\n• ORD-1003: 5 days — Delivered\n• ORD-1004: -2 days — Delivered\n• ORD-1005: 4 days — Cancelled\n\nYou have been asked to review the data and identify potential quality issues.",
         "tasks": [
           {
-            "id": "task-13",
-            "type": "SingleSelect",
-            "question": "What is the net financial impact of switching to the cheaper carrier for the Premium segment?",
+            "id": "task-6-1",
+            "type": "MultiSelect",
+            "question": "Which records indicate potential data quality issues?",
             "options": [
-              "Net gain of ₹4,00,000.",
-              "Net loss of ₹41,00,000.",
-              "Net loss of ₹45,00,000.",
-              "Breakeven."
+              "ORD-1001",
+              "ORD-1002",
+              "ORD-1003",
+              "ORD-1004",
+              "ORD-1005"
             ],
-            "correctAnswer": "Net loss of ₹41,00,000.",
-            "competencies": ["AnalyticalReasoning", "BusinessThinking"],
+            "correctAnswer": [
+              "ORD-1002",
+              "ORD-1004"
+            ],
+            "competencies": ["DataQualityAwareness", "DataLiteracy"],
             "maxScore": 20
           },
           {
-            "id": "task-14",
+            "id": "task-6-2",
             "type": "SingleSelect",
-            "question": "What is the business lesson here?",
+            "question": "Before presenting findings to leadership, what should the Analytics Team do?",
             "options": [
-              "Always use the cheapest carrier to maximize margin.",
-              "Optimizing for a local metric (shipping cost) can destroy a global metric (net revenue and customer retention).",
-              "Premium customers complain too much.",
-              "Data scientists shouldn't worry about shipping logistics."
+              "Ignore minor inconsistencies and proceed.",
+              "Validate and clean questionable records before finalizing conclusions.",
+              "Remove all delivery records.",
+              "Focus only on customer feedback."
             ],
-            "correctAnswer": "Optimizing for a local metric (shipping cost) can destroy a global metric (net revenue and customer retention).",
-            "competencies": ["BusinessThinking", "ProblemFraming"],
+            "correctAnswer": "Validate and clean questionable records before finalizing conclusions.",
+            "competencies": ["DataQualityAwareness", "BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-6-3",
+            "type": "ShortText",
+            "question": "Write a brief note to the Data Governance team explaining why data quality matters for this investigation.",
+            "keywords": ["accuracy", "clean", "reliable", "invalid", "quality", "decision"],
+            "competencies": ["Communication", "DataQualityAwareness"],
+            "maxScore": 20
+          }
+        ]
+      },
+      {
+        "id": "mission-7",
+        "title": "Mission 7: Stakeholder Conflict",
+        "context": "Following the investigation, several department leaders have proposed actions. Due to limited resources, leadership can only prioritize a small number of initiatives this quarter.\n\nStakeholder Requests:\n• Operations Team: Improve delivery performance and logistics processes.\n• Marketing Team: Increase acquisition campaigns to drive more traffic.\n• Product Team: Redesign parts of the mobile app experience.\n• Finance Team: Reduce operational spending.\n\nReview the proposals and determine the most effective response.",
+        "tasks": [
+          {
+            "id": "task-7-1",
+            "type": "Ranking",
+            "question": "Rank the following initiatives from highest priority to lowest priority based on the investigation findings.",
+            "items": [
+              "Improve Delivery Performance",
+              "Improve Mobile App Experience",
+              "Increase Marketing Campaigns",
+              "Reduce Operational Spending"
+            ],
+            "correctAnswer": [
+              "Improve Delivery Performance",
+              "Improve Mobile App Experience",
+              "Increase Marketing Campaigns",
+              "Reduce Operational Spending"
+            ],
+            "competencies": ["Prioritization", "BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-7-2",
+            "type": "SingleSelect",
+            "question": "Which stakeholder recommendation is most strongly supported by the investigation?",
+            "options": [
+              "Marketing Team",
+              "Finance Team",
+              "Operations Team",
+              "Human Resources Team"
+            ],
+            "correctAnswer": "Operations Team",
+            "competencies": ["BusinessThinking", "AnalyticalReasoning"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-7-3",
+            "type": "Slider",
+            "question": "You have 100 project points available. How many points would you allocate to Improve Delivery Performance (0–100)?",
+            "range": [0, 100],
+            "correctRange": [35, 45],
+            "competencies": ["Prioritization", "BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-7-4",
+            "type": "SingleSelect",
+            "question": "Which recommendation should be presented to leadership?",
+            "options": [
+              "Increase marketing investment immediately.",
+              "Prioritize delivery performance improvements before pursuing growth initiatives.",
+              "Reduce operating costs across all departments.",
+              "Delay all action until the next quarter."
+            ],
+            "correctAnswer": "Prioritize delivery performance improvements before pursuing growth initiatives.",
+            "competencies": ["BusinessThinking", "Communication"],
             "maxScore": 20
           }
         ]
       },
       {
         "id": "mission-8",
-        "title": "Mission 8: Executive Briefing",
-        "context": "It is 3:45 PM. The board meeting starts in 15 minutes.\n\nThe CEO asks you for the final verdict:\n\"I need to present the reason for our 18% revenue drop and exactly what we are doing to fix it. Keep it to the absolute core facts.\"",
+        "title": "Mission 8: Executive Decision",
+        "context": "The CEO and leadership team have requested a final recommendation. You have completed the investigation and validated the findings.\n\nKey Investigation Findings:\n• Revenue decreased by 18%\n• Conversion rate declined from 7.2% to 5.1%\n• Mobile App Users showed the largest decline in conversion (8.5% → 4.7%)\n• On-Time Delivery Rate dropped from 94% to 81%\n• Delivery complaints increased significantly (1,250 → 3,420)\n• Customer feedback highlighted delays and poor delivery communication\n• Data quality checks confirmed the findings\n\nYour task is to summarize the key issue and recommend the most appropriate business action.",
         "tasks": [
           {
-            "id": "task-15",
-            "type": "MultiSelect",
-            "question": "Which of these points must be included in your executive briefing?",
+            "id": "task-8-1",
+            "type": "SingleSelect",
+            "question": "Which summary best reflects the investigation findings?",
             "options": [
-              "We dropped the mobile A/B checkout variant which was causing severe cart drop-offs.",
-              "The Pandas script took 4 minutes to run instead of 2 minutes.",
-              "We must revert to our previous premium shipping carrier, as the new cheaper carrier caused ₹41L in damage returns.",
-              "Marketing traffic is up 10% but that traffic is mostly bots."
+              "Revenue declined primarily because website traffic decreased significantly.",
+              "The investigation indicates that delivery performance issues are contributing to lower conversion rates among Mobile App Users.",
+              "The investigation indicates that product quality concerns are driving customer dissatisfaction.",
+              "The investigation was unable to identify a likely cause."
             ],
-            "correctAnswer": ["We dropped the mobile A/B checkout variant which was causing severe cart drop-offs.", "We must revert to our previous premium shipping carrier, as the new cheaper carrier caused ₹41L in damage returns."],
-            "competencies": ["Communication", "Prioritization"],
+            "correctAnswer": "The investigation indicates that delivery performance issues are contributing to lower conversion rates among Mobile App Users.",
+            "competencies": ["Communication", "BusinessThinking"],
             "maxScore": 20
           },
           {
-            "id": "task-16",
+            "id": "task-8-2",
+            "type": "Ranking",
+            "question": "Arrange the following actions in the order they should be implemented.",
+            "items": [
+              "Improve Delivery Performance",
+              "Improve Delivery Communication",
+              "Optimize Mobile App Experience",
+              "Launch New Marketing Campaigns"
+            ],
+            "correctAnswer": [
+              "Improve Delivery Performance",
+              "Improve Delivery Communication",
+              "Optimize Mobile App Experience",
+              "Launch New Marketing Campaigns"
+            ],
+            "competencies": ["Prioritization", "BusinessThinking"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-8-3",
+            "type": "SingleSelect",
+            "question": "Which recommendation should be presented to the CEO?",
+            "options": [
+              "Increase customer acquisition spending immediately.",
+              "Reduce logistics investment to lower costs.",
+              "Prioritize resolving delivery performance issues before investing in growth initiatives.",
+              "Delay all business actions until additional data becomes available."
+            ],
+            "correctAnswer": "Prioritize resolving delivery performance issues before investing in growth initiatives.",
+            "competencies": ["BusinessThinking", "Communication"],
+            "maxScore": 20
+          },
+          {
+            "id": "task-8-4",
             "type": "ShortText",
-            "question": "Write the final 2-sentence executive summary for the CEO.",
-            "keywords": ["checkout", "mobile", "shipping", "carrier", "damage", "revert"],
+            "question": "Write a brief executive recommendation (maximum 150 characters) that could be shared with leadership summarizing the root cause and next steps.",
+            "keywords": ["delivery", "conversion", "mobile", "performance", "improve", "decline"],
             "competencies": ["Communication", "BusinessThinking"],
             "maxScore": 20
           }
