@@ -111,7 +111,7 @@ export default function SonaSCALEPortal() {
       </div>
 
       {/* Sona Scale Header Branding */}
-      <header className="w-full max-w-[1440px] mx-auto px-10 md:px-16 pt-8 pb-4 z-20 relative">
+      <header className="w-full max-w-[1440px] mx-auto px-6 md:px-8 pt-8 pb-4 z-20 relative">
         <div className="mb-4">
           <Image
             src="/scale-removebg-preview.png"
@@ -124,7 +124,7 @@ export default function SonaSCALEPortal() {
       </header>
 
       {/* Main Hero Section */}
-      <main className="max-w-[1440px] w-full mx-auto px-10 md:px-16 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-2 lg:py-4 relative z-10 min-h-0">
+      <main className="max-w-[1440px] w-full mx-auto px-6 md:px-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-2 lg:py-4 relative z-10 min-h-0">
         
         {/* Left Side: Content & Copy */}
         <div className="lg:col-span-6 flex flex-col justify-center">
@@ -215,7 +215,7 @@ export default function SonaSCALEPortal() {
       </main>
 
       {/* Footer Powered-by branding */}
-      <footer className="max-w-[1440px] w-full mx-auto px-6 pb-4 md:pb-5 flex items-center justify-between border-t border-slate-200/50 pt-3.5 z-20">
+      <footer className="max-w-[1440px] w-full mx-auto px-6 md:px-8 pb-4 md:pb-5 flex items-center justify-between border-t border-slate-200/50 pt-3.5 z-20">
         <div className="flex items-center gap-2.5 text-sm text-slate-400 font-semibold select-none">
           <span>Powered by</span>
           <Image

@@ -32,6 +32,7 @@ export default function StepAboutYou() {
       sessionStorage.setItem("onboard_name", formData.name.trim());
       sessionStorage.setItem("onboard_email", formData.email.trim());
       sessionStorage.setItem("onboard_mobile", formData.mobile.trim());
+      localStorage.setItem("hiresapienCandidate", formData.name.trim());
     }
     router.push("/sonascaledtatscientist/degree");
   };

@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 import UserAccount from "../models/UserAccount";
+import { CandidateProfile } from "../models/CandidateProfile";
+import { SimulationAttempt } from "../models/SimulationAttempt";
+import { SimulationResponse } from "../models/SimulationResponse";
+import { SimulationResult } from "../models/SimulationResult";
 import * as dotenv from "dotenv";
 import path from "path";
 
@@ -23,6 +27,22 @@ async function cleanUserAccounts() {
     console.log("Deleting all user accounts...");
     const result = await UserAccount.deleteMany({});
     console.log(`Successfully deleted ${result.deletedCount} user accounts.`);
+
+    console.log("Deleting all Candidate Profiles...");
+    const cpResult = await CandidateProfile.deleteMany({});
+    console.log(`Successfully deleted ${cpResult.deletedCount} Candidate Profiles.`);
+
+    console.log("Deleting all Simulation Attempts...");
+    const saResult = await SimulationAttempt.deleteMany({});
+    console.log(`Successfully deleted ${saResult.deletedCount} Simulation Attempts.`);
+
+    console.log("Deleting all Simulation Responses...");
+    const srResult = await SimulationResponse.deleteMany({});
+    console.log(`Successfully deleted ${srResult.deletedCount} Simulation Responses.`);
+
+    console.log("Deleting all Simulation Results...");
+    const sreResult = await SimulationResult.deleteMany({});
+    console.log(`Successfully deleted ${sreResult.deletedCount} Simulation Results.`);
   } catch (error) {
     console.error("Error cleaning user accounts:", error);
   } finally {

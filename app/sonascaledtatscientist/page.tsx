@@ -106,7 +106,16 @@ export default function SonaSCALEDatascientistWelcome() {
 
         {/* CTA Button */}
         <button
-          onClick={() => router.push("/sonascaledtatscientist/about")}
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("hiresapienCandidateProfile");
+              localStorage.removeItem("hiresapienCandidate");
+              localStorage.removeItem("simulationAttemptId");
+              localStorage.removeItem("hiresapienProgress");
+              sessionStorage.clear();
+            }
+            router.push("/sonascaledtatscientist/about");
+          }}
           className="group flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold py-4.5 px-10 rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-xl hover:shadow-blue-600/30 transition-all duration-300 transform hover:-translate-y-0.5 text-base select-none cursor-pointer w-72 md:w-80 animate-[fadeIn_0.8s_ease-out_both]"
         >
           <span>Start Xperience</span>
