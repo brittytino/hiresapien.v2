@@ -459,7 +459,7 @@
           {
             "id": "task-8-4",
             "type": "ShortText",
-            "question": "Write a brief executive recommendation (maximum 150 characters) that could be shared with leadership summarizing the root cause and next steps.",
+            "question": "Write a brief executive recommendation (minimum 60 characters) that could be shared with leadership summarizing the root cause and next steps.",
             "keywords": ["delivery", "conversion", "mobile", "performance", "improve", "decline"],
             "competencies": ["Communication", "BusinessThinking"],
             "maxScore": 20

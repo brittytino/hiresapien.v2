@@ -85,22 +85,22 @@ export function ShortTextUI({ onUpdate }: { onUpdate: (val: string) => void }) {
   };
 
   const charCount = text.trim() ? text.trim().length : 0;
-  const isMinChars = charCount >= 150;
+  const isMinChars = charCount >= 60;
 
   return (
     <div className="mt-2 space-y-2">
       <textarea
         value={text}
         className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 outline-none transition-all resize-none min-h-[160px] text-gray-800"
-        placeholder="Provide a detailed analysis (minimum 150 characters)..."
+        placeholder="Provide a detailed analysis (minimum 60 characters)..."
         onChange={handleChange}
       />
       <div className="flex justify-between items-center text-xs font-semibold">
         <span className={isMinChars ? "text-emerald-600" : "text-amber-600"}>
-          {isMinChars ? "✓ Minimum length met" : "⚠️ Please write at least 150 characters"}
+          {isMinChars ? "✓ Minimum length met" : "⚠️ Please write at least 60 characters"}
         </span>
         <span className={`${isMinChars ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"} px-2.5 py-1 rounded-md transition-all`}>
-          Character Count: {charCount} / 150
+          Character Count: {charCount} / 60
         </span>
       </div>
     </div>

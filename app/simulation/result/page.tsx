@@ -26,6 +26,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
+import PDFReport from "./PDFReport";
 
 // ── Loading Screen ───────────────────────────────────────────────────────────
 const LOADING_MESSAGES = [
@@ -211,6 +214,9 @@ export default function ResultPage() {
   const [candidateName, setCandidateName] = useState("Candidate");
   const [completedDate, setCompletedDate] = useState("");
   const [animScore, setAnimScore] = useState(0);
+  const [isBetaSignedUp, setIsBetaSignedUp] = useState(false);
+  const [betaLoading, setBetaLoading] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -257,6 +263,52 @@ export default function ResultPage() {
   const handleRetake = () => {
     if (typeof window !== "undefined") { localStorage.removeItem("simulationAttemptId"); localStorage.removeItem("hiresapienCandidate"); }
     router.push("/");
+  };
+
+  const handleBetaSignup = async () => {
+    if (isBetaSignedUp || betaLoading) return;
+    setBetaLoading(true);
+    try {
+      const attemptId = localStorage.getItem("simulationAttemptId");
+      if (attemptId) {
+        await fetch("/api/simulation/beta-signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ attemptId }),
+        });
+      }
+      setIsBetaSignedUp(true);
+    } catch (err) {
+      console.error("Beta signup failed", err);
+    } finally {
+      setBetaLoading(false);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    if (isGeneratingPdf) return;
+    setIsGeneratingPdf(true);
+    try {
+      const element = document.getElementById("pdf-report-container");
+      if (!element) return;
+      
+      const imgData = await toPng(element, { pixelRatio: 2 });
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+      });
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (element.offsetHeight * pdfWidth) / element.offsetWidth;
+      
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${candidateName.replace(/\s+/g, '_')}_Xperience_Report.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF", error);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
   };
 
   if (loading) return <LoadingScreen />;
@@ -376,8 +428,17 @@ export default function ResultPage() {
           <div className="flex-1" />
 
           {/* Download Button */}
-          <button className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-[#2563FF] border border-[#2563FF] shadow-sm text-xs font-bold py-3 px-4 rounded-xl transition-colors">
-            <Download className="w-4 h-4" /> Download Report
+          <button 
+            onClick={handleDownloadPdf}
+            disabled={isGeneratingPdf}
+            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-[#2563FF] border border-[#2563FF] shadow-sm text-xs font-bold py-3 px-4 rounded-xl transition-colors cursor-pointer disabled:opacity-70"
+          >
+            {isGeneratingPdf ? (
+              <RefreshCcw className="w-4 h-4 animate-spin" />
+            ) : (
+              <Download className="w-4 h-4" />
+            )}
+            {isGeneratingPdf ? "Generating PDF..." : "Download Report"}
           </button>
         </div>
 
@@ -487,12 +548,17 @@ export default function ResultPage() {
           <p className="text-sm font-black text-white mb-0.5">Want early access to more Xperiences?</p>
           <p className="text-[12px] text-blue-200 font-medium">Be the first to explore new roles and help shape the future of career exploration.</p>
         </div>
-        <button className="shrink-0 flex items-center gap-2 bg-[#2563FF] hover:bg-blue-500 text-white text-xs font-bold py-2.5 px-6 rounded-xl transition-colors whitespace-nowrap">
-          Sign up for Xperiences Beta <ArrowRight className="w-3.5 h-3.5" />
+        <button 
+          onClick={handleBetaSignup}
+          disabled={isBetaSignedUp || betaLoading}
+          className="shrink-0 flex items-center gap-2 bg-[#2563FF] hover:bg-blue-500 disabled:opacity-70 disabled:cursor-not-allowed text-white text-xs font-bold py-2.5 px-6 rounded-xl transition-colors whitespace-nowrap cursor-pointer"
+        >
+          {isBetaSignedUp ? "Signed Up!" : betaLoading ? "Signing up..." : "Sign up for Xperiences Beta"} 
+          {!isBetaSignedUp && <ArrowRight className="w-3.5 h-3.5" />}
         </button>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────────────────────────── */}
+      {/* Footer ──────────────────────────────────────────────────────────── */}
       <div className="border-t border-slate-200 bg-white px-6 py-3 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <Image src="/image-removebg-preview (1).png" alt="HireSapien" width={16} height={16} className="object-contain opacity-70" />
@@ -504,6 +570,19 @@ export default function ResultPage() {
             <ListRestart className="w-3 h-3" /> Retake
           </button>
         </div>
+      </div>
+
+      {/* Hidden PDF Report */}
+      <div className="fixed top-[-9999px] left-[-9999px] z-[-9999] opacity-0 pointer-events-none">
+        <PDFReport 
+          candidateName={candidateName}
+          completedDate={fmtDate}
+          score={animScore}
+          band={band}
+          displayStrengths={displayStrengths}
+          displayGrowth={displayGrowth}
+          competencies={competencies}
+        />
       </div>
     </div>
   );

@@ -10,9 +10,8 @@
     "evaluate-mcq": "node -r ts-node/register scripts/evaluate-mcq.ts",
     "seed:fri-bank": "node -r dotenv/config -e \"require('ts-node').register({project:'tsconfig.scripts.json'}); require('./scripts/seed-fri-bank.ts');\"",
     "test:fri-insights": "node -r dotenv/config -e \"require('tsconfig-paths').register({baseUrl:require('path').resolve('.'),paths:{'@/*':['./*']}});require('ts-node').register({project:'tsconfig.scripts.json'});require('./scripts/test-fri-insights.ts');\"",
-
-
     "db:clean-users": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" scripts/clean-users.ts",
+    "db:seed-admin": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" scripts/seed-admin.ts",
     "test:gemini": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\",\\\"moduleResolution\\\":\\\"node\\\"}\" scripts/test-gemini.ts",
     "test:source": "node tests/verify-source.js",
     "test:api": "vitest run --reporter=verbose",
@@ -31,6 +30,7 @@
     "dotenv": "^17.2.2",
     "framer-motion": "^12.38.0",
     "groq-sdk": "^1.1.1",
+    "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "lucide-react": "^0.577.0",

@@ -14,6 +14,7 @@ export interface ICandidateProfile extends Document {
   ds_familiarity?: number;
   data_comfort?: number;
   expectations?: string[];
+  beta_signup?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -33,6 +34,7 @@ const CandidateProfileSchema = new mongoose.Schema<ICandidateProfile>(
     ds_familiarity: { type: Number },
     data_comfort: { type: Number },
     expectations: [{ type: String }],
+    beta_signup: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

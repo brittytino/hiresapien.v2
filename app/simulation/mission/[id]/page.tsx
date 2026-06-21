@@ -171,7 +171,8 @@ export default function MissionPage({
     if (
       answer === null &&
       task.type !== "Slider" &&
-      task.type !== "ShortText"
+      task.type !== "ShortText" &&
+      task.type !== "Ranking"
     ) {
       setError("Please select an answer before continuing.");
       return;
@@ -189,7 +190,9 @@ export default function MissionPage({
       }
 
       const submittedAnswer =
-        task.type === "Slider" && answer === null ? 50 : answer;
+        task.type === "Slider" && answer === null ? 50 : 
+        task.type === "Ranking" && answer === null ? task.items : 
+        answer;
 
       const res = await fetch("/api/simulation/submit-interaction", {
         method: "POST",
@@ -238,10 +241,10 @@ export default function MissionPage({
     if (task.type === "ShortText") {
       if (typeof answer !== "string") return false;
       const charCount = answer.trim() ? answer.trim().length : 0;
-      return charCount >= 150;
+      return charCount >= 60;
     }
     if (task.type === "MultiSelect") return Array.isArray(answer) && answer.length > 0;
-    if (task.type === "Ranking") return Array.isArray(answer) && answer.length > 0;
+    if (task.type === "Ranking") return true; // Default ranking state is valid
     return answer !== null && answer !== undefined;
   })();
 
