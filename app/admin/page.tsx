@@ -614,31 +614,31 @@ export default function InstitutionalDashboard() {
 
   if (!mounted || checkingAuth) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-3 font-sans text-slate-100">
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-3 font-sans text-slate-800">
         <RotateCw className="w-10 h-10 text-blue-500 animate-spin" />
-        <p className="text-sm font-semibold text-slate-400">Verifying session credentials...</p>
+        <p className="text-sm font-semibold text-slate-500">Verifying session credentials...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex font-sans selection:bg-blue-500/30 selection:text-blue-200">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex font-sans selection:bg-blue-100 selection:text-blue-900">
       
       {/* ── SIDEBAR NAVIGATION ── */}
-      <aside className="w-72 bg-slate-950 border-r border-slate-800 flex flex-col justify-between p-6 shrink-0 relative z-30">
+      <aside className="w-72 bg-white border-r border-slate-200 flex flex-col justify-between p-6 shrink-0 relative z-30">
         <div className="flex flex-col gap-8">
           
           {/* Logo Brand Header */}
-          <div className="flex items-center gap-3 py-2 border-b border-slate-800">
+          <div className="flex items-center gap-3 py-2 border-b border-slate-200">
             <div className="relative w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/10">
               <Award className="w-5.5 h-5.5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-lg tracking-tight text-white leading-none">SONA</span>
-                <span className="text-[9px] font-black uppercase bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded tracking-widest leading-none">Scale</span>
+                <span className="font-black text-lg tracking-tight text-slate-900 leading-none">SONA</span>
+                <span className="text-[9px] font-black uppercase bg-blue-500/10 text-blue-600 px-1.5 py-0.5 rounded tracking-widest leading-none">Scale</span>
               </div>
-              <p className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase mt-1">Institution Portal</p>
+              <p className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase mt-1">Institution Portal</p>
             </div>
           </div>
 
@@ -649,7 +649,7 @@ export default function InstitutionalDashboard() {
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all border ${
                 activeTab === "overview"
                   ? "bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20"
-                  : "text-slate-400 border-transparent hover:bg-slate-900 hover:text-slate-200"
+                  : "text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-800"
               }`}
             >
               <Activity className="w-5.5 h-5.5" />
@@ -661,13 +661,13 @@ export default function InstitutionalDashboard() {
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all border ${
                 activeTab === "candidates"
                   ? "bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20"
-                  : "text-slate-400 border-transparent hover:bg-slate-900 hover:text-slate-200"
+                  : "text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-800"
               }`}
             >
               <Users className="w-5.5 h-5.5" />
               <span>Candidates Directory</span>
               {filteredCandidates.length !== candidates.length && (
-                <span className="ml-auto text-[10px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded-full">
+                <span className="ml-auto text-[10px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded-full">
                   {filteredCandidates.length}
                 </span>
               )}
@@ -678,7 +678,7 @@ export default function InstitutionalDashboard() {
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all border ${
                 activeTab === "competencies"
                   ? "bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20"
-                  : "text-slate-400 border-transparent hover:bg-slate-900 hover:text-slate-200"
+                  : "text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-800"
               }`}
             >
               <Target className="w-5.5 h-5.5" />
@@ -690,14 +690,14 @@ export default function InstitutionalDashboard() {
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all border ${
                 activeTab === "integrity"
                   ? "bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20"
-                  : "text-slate-400 border-transparent hover:bg-slate-900 hover:text-slate-200"
+                  : "text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-800"
               }`}
             >
               <Shield className="w-5.5 h-5.5" />
               <span>Proctoring Security</span>
               {metrics.totalWarnings > 0 && (
-                <span className="ml-auto text-[10px] bg-amber-500/20 text-amber-400 font-bold px-2 py-0.5 rounded-full flex items-center gap-1 border border-amber-500/20">
-                  <AlertTriangle className="w-3 h-3" />
+                <span className="ml-auto text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full flex items-center gap-1 border border-amber-200/40">
+                  <AlertTriangle className="w-3 h-3 text-amber-600" />
                   <span>{metrics.totalWarnings}</span>
                 </span>
               )}
@@ -708,7 +708,7 @@ export default function InstitutionalDashboard() {
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm tracking-wide transition-all border ${
                 activeTab === "config"
                   ? "bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20"
-                  : "text-slate-400 border-transparent hover:bg-slate-900 hover:text-slate-200"
+                  : "text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-800"
               }`}
             >
               <Sliders className="w-5.5 h-5.5" />
@@ -718,14 +718,14 @@ export default function InstitutionalDashboard() {
         </div>
 
         {/* Database Sync Status Indicators (at bottom) */}
-        <div className="flex flex-col gap-3.5 pt-4 border-t border-slate-800/80">
+        <div className="flex flex-col gap-3.5 pt-4 border-t border-slate-200/80">
           
           {/* Admin User Info Card */}
           {adminUser && (
-            <div className="p-3 bg-slate-900/60 border border-slate-800/40 rounded-xl flex items-center justify-between gap-2.5">
+            <div className="p-3 bg-slate-50 border border-slate-200/60 rounded-xl flex items-center justify-between gap-2.5">
               <div className="min-w-0">
-                <p className="text-xs font-bold text-white truncate">{adminUser.fullName}</p>
-                <p className="text-[9px] font-semibold text-slate-500 uppercase tracking-wide mt-0.5 truncate">{adminUser.role.replace("_", " ")}</p>
+                <p className="text-xs font-bold text-slate-800 truncate">{adminUser.fullName}</p>
+                <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-wide mt-0.5 truncate">{adminUser.role.replace("_", " ")}</p>
               </div>
               
               <button
@@ -733,7 +733,7 @@ export default function InstitutionalDashboard() {
                   await fetch("/api/admin/logout", { method: "POST" });
                   window.location.href = "/admin/login";
                 }}
-                className="p-1.5 bg-slate-800/60 hover:bg-rose-950/40 border border-slate-800 hover:border-rose-900/35 text-slate-400 hover:text-rose-400 rounded-lg transition-colors cursor-pointer select-none"
+                className="p-1.5 bg-slate-100/60 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-500 hover:text-rose-600 rounded-lg transition-colors cursor-pointer select-none"
                 title="Logout of admin session"
               >
                 <LogOut className="w-4 h-4" />
@@ -743,14 +743,14 @@ export default function InstitutionalDashboard() {
 
           <div className="flex items-center gap-2">
             <span className={`w-2.5 h-2.5 rounded-full ${isMockData ? "bg-amber-500 animate-pulse" : "bg-emerald-500"}`} />
-            <span className="text-[11px] font-bold text-slate-400">
+            <span className="text-[11px] font-bold text-slate-500">
               {isMockData ? "Mock Synthetic Server Mode" : "MongoDB Production Connect"}
             </span>
           </div>
           
           <button 
             onClick={() => fetchData()}
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-300 transition-colors text-xs font-bold w-full select-none cursor-pointer"
+            className="flex items-center gap-2 text-slate-450 hover:text-slate-650 transition-colors text-xs font-bold w-full select-none cursor-pointer"
           >
             <RotateCw className="w-3.5 h-3.5" />
             <span>Sync Live Records</span>
@@ -759,30 +759,30 @@ export default function InstitutionalDashboard() {
       </aside>
 
       {/* ── MAIN WORKSPACE ── */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-900/40 relative">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50 relative">
         
         {/* Dynamic Top Header Bar */}
-        <header className="h-20 bg-slate-950/80 backdrop-blur border-b border-slate-800/60 px-8 flex items-center justify-between shrink-0 z-20">
+        <header className="h-20 bg-white/80 backdrop-blur border-b border-slate-200/60 px-8 flex items-center justify-between shrink-0 z-20">
           <div>
-            <h2 className="text-xl font-black text-white capitalize tracking-tight flex items-center gap-2.5">
+            <h2 className="text-xl font-black text-slate-900 capitalize tracking-tight flex items-center gap-2.5">
               <span>{activeTab === "config" ? "Assessment & Proctoring Configuration" : activeTab === "integrity" ? "Proctoring Security & Integrity Logs" : `${activeTab} Analyzer`}</span>
               {isMockData && activeTab === "overview" && (
-                <span className="text-[9px] bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold uppercase py-0.5 px-2 rounded-full tracking-wider">
+                <span className="text-[9px] bg-amber-50/15 border border-amber-500/20 text-amber-600 font-bold uppercase py-0.5 px-2 rounded-full tracking-wider">
                   Demo Workspace
                 </span>
               )}
             </h2>
-            <p className="text-xs text-slate-400 font-medium">Sona Scale Interactive Analytics Engine</p>
+            <p className="text-xs text-slate-500 font-medium">Sona Scale Interactive Analytics Engine</p>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-xs text-slate-400 font-bold">{adminUser?.fullName || "University Admin"}</p>
-              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
+              <p className="text-xs text-slate-700 font-bold">{adminUser?.fullName || "University Admin"}</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
                 {adminUser?.role ? adminUser.role.replace("_", " ") : "Faculty Role"}
               </p>
             </div>
-            <div className="w-10 h-10 rounded-full border border-slate-800 bg-slate-900 flex items-center justify-center font-black text-sm text-blue-400">
+            <div className="w-10 h-10 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center font-black text-sm text-blue-600">
               {adminUser?.fullName ? adminUser.fullName.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase() : "UA"}
             </div>
           </div>
@@ -814,78 +814,78 @@ export default function InstitutionalDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     
                     {/* Card 1: Total Candidates */}
-                    <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800/80 shadow-md relative overflow-hidden group hover:border-slate-700/80 transition-all">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-[40px] rounded-full group-hover:bg-blue-500/10 transition-colors" />
                       <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
+                        <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
                           <Users className="w-6 h-6" />
                         </div>
-                        <span className="text-[10px] bg-emerald-500/15 text-emerald-400 font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 border border-emerald-500/10">
+                        <span className="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 border border-emerald-200/40">
                           <TrendingUp className="w-3 h-3" />
                           <span>+12%</span>
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Total Candidates</p>
-                      <h3 className="text-3xl font-black text-white">{metrics.total}</h3>
-                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-500">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Total Candidates</p>
+                      <h3 className="text-3xl font-black text-slate-900">{metrics.total}</h3>
+                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-400">
                         <span>{metrics.inProgressCount} active simulators right now</span>
                       </div>
                     </div>
 
                     {/* Card 2: Average Readiness Score */}
-                    <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800/80 shadow-md relative overflow-hidden group hover:border-slate-700/80 transition-all">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-[40px] rounded-full group-hover:bg-indigo-500/10 transition-colors" />
                       <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                        <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
                           <Target className="w-6 h-6" />
                         </div>
-                        <span className="text-[10px] bg-blue-500/10 text-blue-400 font-bold px-2 py-0.5 rounded-full border border-blue-500/10">
+                        <span className="text-[10px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded-full border border-blue-200/40">
                           Goal 70%
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Avg Overall Score</p>
-                      <h3 className="text-3xl font-black text-white">{metrics.avgScore}<span className="text-slate-500 text-lg font-bold">/100</span></h3>
-                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-500">
-                        <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Avg Overall Score</p>
+                      <h3 className="text-3xl font-black text-slate-900">{metrics.avgScore}<span className="text-slate-400 text-lg font-bold">/100</span></h3>
+                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-400">
+                        <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                           <div className="bg-indigo-500 h-full rounded-full" style={{ width: `${metrics.avgScore}%` }} />
                         </div>
                       </div>
                     </div>
 
                     {/* Card 3: Completion Rate */}
-                    <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800/80 shadow-md relative overflow-hidden group hover:border-slate-700/80 transition-all">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[40px] rounded-full group-hover:bg-emerald-500/10 transition-colors" />
                       <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl">
+                        <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
                           <FileCheck className="w-6 h-6" />
                         </div>
-                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded-full border border-emerald-500/10">
+                        <span className="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full border border-emerald-200/40">
                           {metrics.completedCount} / {metrics.total - metrics.inProgressCount}
                         </span>
                       </div>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Completion Rate</p>
-                      <h3 className="text-3xl font-black text-white">{metrics.completionRate}%</h3>
-                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-500">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Completion Rate</p>
+                      <h3 className="text-3xl font-black text-slate-900">{metrics.completionRate}%</h3>
+                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-400">
                         <span>Excluding in-progress attempts</span>
                       </div>
                     </div>
 
                     {/* Card 4: Integrity/Proctor Compliance */}
-                    <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800/80 shadow-md relative overflow-hidden group hover:border-slate-700/80 transition-all">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:border-slate-300 transition-all">
                       <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 blur-[40px] rounded-full group-hover:bg-amber-500/10 transition-colors" />
                       <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
+                        <div className="p-3 bg-amber-50 text-amber-600 rounded-xl">
                           <Shield className="w-6 h-6" />
                         </div>
                         {metrics.totalWarnings > 0 && (
-                          <span className="text-[10px] bg-amber-500/15 text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-500/10">
+                          <span className="text-[10px] bg-amber-50 text-amber-700 font-bold px-2 py-0.5 rounded-full border border-amber-200/40">
                             {metrics.totalWarnings} Alerts
                           </span>
                         )}
                       </div>
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Session Integrity</p>
-                      <h3 className="text-3xl font-black text-white">{metrics.integrityRate}%</h3>
-                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-500">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Session Integrity</p>
+                      <h3 className="text-3xl font-black text-slate-900">{metrics.integrityRate}%</h3>
+                      <div className="mt-3 flex items-center gap-2 text-[11px] font-bold text-slate-400">
                         <span>Compliant, zero-alert sessions</span>
                       </div>
                     </div>
@@ -896,20 +896,20 @@ export default function InstitutionalDashboard() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     
                     {/* Area Chart: Score and Attempt trends */}
-                    <div className="lg:col-span-8 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md">
+                    <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
                       <div className="flex justify-between items-center mb-6">
                         <div>
-                          <h4 className="text-base font-black text-white tracking-tight">Timeline Performance Analytics</h4>
+                          <h4 className="text-base font-black text-slate-900 tracking-tight">Timeline Performance Analytics</h4>
                           <p className="text-xs text-slate-500 font-medium">Tracking completion volumes and daily score trends</p>
                         </div>
                         
-                        <div className="flex items-center gap-4 text-xs font-bold text-slate-400">
+                        <div className="flex items-center gap-4 text-xs font-bold text-slate-500">
                           <div className="flex items-center gap-1.5">
                             <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
                             <span>Average Score</span>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <span className="w-2.5 h-2.5 rounded-full bg-indigo-600/35 border border-indigo-500" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-indigo-600/35 border border-indigo-400" />
                             <span>Attempt Volume</span>
                           </div>
                         </div>
@@ -929,10 +929,10 @@ export default function InstitutionalDashboard() {
                                   <stop offset="95%" stopColor="#6C3DFF" stopOpacity={0.0} />
                                 </linearGradient>
                               </defs>
-                              <CartesianGrid stroke="#1e293b" strokeDasharray="3 3" />
+                              <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" />
                               <XAxis dataKey="date" stroke="#64748b" fontSize={11} fontWeight="bold" />
                               <YAxis stroke="#64748b" fontSize={11} fontWeight="bold" domain={[0, 100]} />
-                              <Tooltip contentStyle={{ backgroundColor: "#020617", borderColor: "#334155", borderRadius: "12px", color: "#fff" }} />
+                              <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#cbd5e1", borderRadius: "12px", color: "#0f172a" }} />
                               <Area type="monotone" dataKey="avgScore" name="Avg Score" stroke="#2563FF" strokeWidth={2.5} fillOpacity={1} fill="url(#colorAvgScore)" />
                               <Area type="monotone" dataKey="attempts" name="Completed Attempts" stroke="#6C3DFF" strokeWidth={1.5} fillOpacity={1} fill="url(#colorAttempts)" />
                             </AreaChart>
@@ -942,9 +942,9 @@ export default function InstitutionalDashboard() {
                     </div>
 
                     {/* Pie Chart: Readiness Levels */}
-                    <div className="lg:col-span-4 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight">Readiness Distribution</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight">Readiness Distribution</h4>
                         <p className="text-xs text-slate-500 font-medium">Current competency distribution of cohort</p>
                       </div>
 
@@ -965,15 +965,15 @@ export default function InstitutionalDashboard() {
                                   <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                               </Pie>
-                              <Tooltip contentStyle={{ backgroundColor: "#020617", borderColor: "#334155", borderRadius: "12px", color: "#fff" }} />
+                              <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#cbd5e1", borderRadius: "12px", color: "#0f172a" }} />
                             </PieChart>
                           </ResponsiveContainer>
                         )}
                         <div className="absolute flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-3xl font-black text-white leading-none">
+                          <span className="text-3xl font-black text-slate-900 leading-none">
                             {metrics.completedCount}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">Evaluated</span>
+                          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-1">Evaluated</span>
                         </div>
                       </div>
 
@@ -983,9 +983,9 @@ export default function InstitutionalDashboard() {
                           <div key={idx} className="flex items-center justify-between text-xs font-semibold">
                             <div className="flex items-center gap-2">
                               <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: r.color }} />
-                              <span className="text-slate-300">{r.name}</span>
+                              <span className="text-slate-600">{r.name}</span>
                             </div>
-                            <span className="text-white font-bold">{r.value} candidates</span>
+                            <span className="text-slate-800 font-bold">{r.value} candidates</span>
                           </div>
                         ))}
                       </div>
@@ -997,20 +997,20 @@ export default function InstitutionalDashboard() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     
                     {/* Average score by Academic Degree */}
-                    <div className="bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md">
-                      <h4 className="text-base font-black text-white tracking-tight mb-4">Cohort Performance by Degree Stream</h4>
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                      <h4 className="text-base font-black text-slate-900 tracking-tight mb-4">Cohort Performance by Degree Stream</h4>
                       
                       <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                           <thead>
-                            <tr className="border-b border-slate-800 text-[10px] font-black uppercase text-slate-500 tracking-wider">
+                            <tr className="border-b border-slate-200 text-[10px] font-black uppercase text-slate-500 tracking-wider">
                               <th className="pb-3">Degree Specialization</th>
                               <th className="pb-3 text-center">Completes</th>
                               <th className="pb-3 text-right">Avg Score</th>
                               <th className="pb-3 text-right">Compliance</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-800/60 text-xs font-semibold">
+                          <tbody className="divide-y divide-slate-100 text-xs font-semibold">
                             {metrics.allDegrees.slice(0, 5).map((deg, idx) => {
                               const degreeCandidates = candidates.filter(c => c.degree === deg);
                               const completed = degreeCandidates.filter(c => c.status === "COMPLETED");
@@ -1021,14 +1021,14 @@ export default function InstitutionalDashboard() {
                               const compliance = degreeCandidates.length > 0 ? Math.round((zeroWarnings / degreeCandidates.length) * 100) : 100;
 
                               return (
-                                <tr key={idx} className="hover:bg-slate-900/30 transition-colors">
-                                  <td className="py-3 text-white font-bold">{deg}</td>
-                                  <td className="py-3 text-center text-slate-400">{completed.length}</td>
+                                <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
+                                  <td className="py-3 text-slate-800 font-bold">{deg}</td>
+                                  <td className="py-3 text-center text-slate-500">{completed.length}</td>
                                   <td className="py-3 text-right">
-                                    <span className="font-bold text-white">{avg || "—"}</span>
-                                    {avg > 0 && <span className="text-slate-500 text-[10px]">/100</span>}
+                                    <span className="font-bold text-slate-800">{avg || "—"}</span>
+                                    {avg > 0 && <span className="text-slate-400 text-[10px]">/100</span>}
                                   </td>
-                                  <td className="py-3 text-right text-emerald-400 font-bold">{compliance}%</td>
+                                  <td className="py-3 text-right text-emerald-600 font-bold">{compliance}%</td>
                                 </tr>
                               );
                             })}
@@ -1038,9 +1038,9 @@ export default function InstitutionalDashboard() {
                     </div>
 
                     {/* Key Behavioral Stats summary */}
-                    <div className="bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight mb-1">System Behavioral Audit</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight mb-1">System Behavioral Audit</h4>
                         <p className="text-xs text-slate-500 font-medium mb-4">Integrity stats and simulation compliance metrics</p>
                       </div>
 
@@ -1049,11 +1049,11 @@ export default function InstitutionalDashboard() {
                         {/* stat 1: avg duration */}
                         <div className="flex justify-between items-center">
                           <div>
-                            <p className="text-sm font-bold text-white">Average Completion Duration</p>
+                            <p className="text-sm font-bold text-slate-800">Average Completion Duration</p>
                             <p className="text-[10px] text-slate-500 font-medium">Standard timeframe: 15-20 minutes</p>
                           </div>
                           <div className="text-right">
-                            <span className="text-xl font-black text-white">{metrics.avgDurationMin}</span>
+                            <span className="text-xl font-black text-slate-900">{metrics.avgDurationMin}</span>
                             <span className="text-xs text-slate-500 font-bold ml-1">mins</span>
                           </div>
                         </div>
@@ -1061,11 +1061,11 @@ export default function InstitutionalDashboard() {
                         {/* stat 2: high risk count */}
                         <div className="flex justify-between items-center">
                           <div>
-                            <p className="text-sm font-bold text-white">High-Risk Flagged Candidates</p>
+                            <p className="text-sm font-bold text-slate-800">High-Risk Flagged Candidates</p>
                             <p className="text-[10px] text-slate-500 font-medium">Accumulated 2+ warnings during attempt</p>
                           </div>
                           <div className="text-right">
-                            <span className={`text-xl font-black ${highRiskCandidates.length > 0 ? "text-amber-400" : "text-white"}`}>
+                            <span className={`text-xl font-black ${highRiskCandidates.length > 0 ? "text-amber-600" : "text-slate-900"}`}>
                               {highRiskCandidates.length}
                             </span>
                             <span className="text-xs text-slate-500 font-bold ml-1">candidates</span>
@@ -1075,11 +1075,11 @@ export default function InstitutionalDashboard() {
                         {/* stat 3: terminated simulation */}
                         <div className="flex justify-between items-center">
                           <div>
-                            <p className="text-sm font-bold text-white">Terminated Attempts</p>
+                            <p className="text-sm font-bold text-slate-800">Terminated Attempts</p>
                             <p className="text-[10px] text-slate-500 font-medium">Simulation locked due to security limits</p>
                           </div>
                           <div className="text-right">
-                            <span className={`text-xl font-black ${metrics.terminatedCount > 0 ? "text-rose-500" : "text-white"}`}>
+                            <span className={`text-xl font-black ${metrics.terminatedCount > 0 ? "text-rose-600" : "text-slate-900"}`}>
                               {metrics.terminatedCount}
                             </span>
                             <span className="text-xs text-slate-500 font-bold ml-1">candidates</span>
@@ -1090,7 +1090,7 @@ export default function InstitutionalDashboard() {
 
                       <button
                         onClick={() => setActiveTab("integrity")}
-                        className="mt-6 w-full flex items-center justify-center gap-2 bg-slate-900 border border-slate-800 hover:bg-slate-800/80 text-xs font-bold py-3 rounded-xl transition-all select-none cursor-pointer"
+                        className="mt-6 w-full flex items-center justify-center gap-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-xs font-bold py-3 rounded-xl transition-all select-none cursor-pointer text-slate-700"
                       >
                         <span>View Security Logs</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -1107,32 +1107,32 @@ export default function InstitutionalDashboard() {
               {activeTab === "candidates" && (
                 <>
                   {/* Search and Filters Block */}
-                  <div className="bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md space-y-4">
+                  <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
                     
                     {/* Row 1: Search and Export */}
                     <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                       <div className="relative flex items-center w-full md:max-w-md">
-                        <Search className="w-5 h-5 text-slate-500 absolute left-4 pointer-events-none" />
+                        <Search className="w-5 h-5 text-slate-400 absolute left-4 pointer-events-none" />
                         <input
                           type="text"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           placeholder="Search candidates by name or corporate email..."
-                          className="w-full bg-slate-900 focus:bg-slate-900/40 border border-slate-800 focus:border-blue-500 rounded-xl pl-12 pr-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition-all"
+                          className="w-full bg-slate-50 focus:bg-white border border-slate-200 focus:border-blue-500 rounded-xl pl-12 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all focus:ring-4 focus:ring-blue-100/50"
                         />
                       </div>
                       
                       <button
                         onClick={exportAllCandidatesToExcel}
-                        className="w-full md:w-auto flex items-center justify-center gap-2 bg-slate-900 border border-slate-800 hover:bg-slate-800/80 text-white font-bold py-3 px-6 rounded-xl transition-all text-xs select-none cursor-pointer"
+                        className="w-full md:w-auto flex items-center justify-center gap-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-800 font-bold py-3 px-6 rounded-xl transition-all text-xs select-none cursor-pointer"
                       >
-                        <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+                        <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
                         <span>Export Filtered Cohort (.xlsx)</span>
                       </button>
                     </div>
 
                     {/* Row 2: Secondary Dropdown Filters */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2 border-t border-slate-800/60">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2 border-t border-slate-200/60">
                       
                       {/* Readiness */}
                       <div className="flex flex-col gap-1.5">
@@ -1141,7 +1141,7 @@ export default function InstitutionalDashboard() {
                           <select
                             value={filterReadiness}
                             onChange={(e) => setFilterReadiness(e.target.value)}
-                            className="w-full bg-slate-900 border border-slate-800 text-slate-300 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
                           >
                             <option value="All">All Levels</option>
                             <option value="Industry Ready">Industry Ready</option>
@@ -1160,7 +1160,7 @@ export default function InstitutionalDashboard() {
                           <select
                             value={filterDegree}
                             onChange={(e) => setFilterDegree(e.target.value)}
-                            className="w-full bg-slate-900 border border-slate-800 text-slate-300 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
                           >
                             <option value="All">All Degrees</option>
                             {metrics.allDegrees.map((d, idx) => (
@@ -1178,7 +1178,7 @@ export default function InstitutionalDashboard() {
                           <select
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
-                            className="w-full bg-slate-900 border border-slate-800 text-slate-300 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
                           >
                             <option value="All">All Statuses</option>
                             <option value="COMPLETED">Completed</option>
@@ -1196,7 +1196,7 @@ export default function InstitutionalDashboard() {
                           <select
                             value={filterArchetype}
                             onChange={(e) => setFilterArchetype(e.target.value)}
-                            className="w-full bg-slate-900 border border-slate-800 text-slate-300 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 text-xs font-semibold outline-none appearance-none cursor-pointer focus:border-blue-500"
                           >
                             <option value="All">All Archetypes</option>
                             {metrics.allArchetypes.map((a: any, idx) => (
@@ -1211,17 +1211,17 @@ export default function InstitutionalDashboard() {
                   </div>
 
                   {/* Candidates Data Table */}
-                  <div className="bg-slate-950 border border-slate-800/80 rounded-2xl overflow-hidden shadow-md">
-                    <div className="px-6 py-5 border-b border-slate-800/80 flex items-center justify-between">
-                      <h4 className="text-base font-black text-white tracking-tight">Candidates ({filteredCandidates.length})</h4>
+                  <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                    <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+                      <h4 className="text-base font-black text-slate-900 tracking-tight">Candidates ({filteredCandidates.length})</h4>
                       
                       {/* Sorting controls */}
-                      <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
+                      <div className="flex items-center gap-3 text-xs font-bold text-slate-500">
                         <span>Sort By:</span>
                         <select
                           value={sortBy}
                           onChange={(e: any) => setSortBy(e.target.value)}
-                          className="bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-slate-300 outline-none text-xs cursor-pointer"
+                          className="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-slate-750 outline-none text-xs cursor-pointer"
                         >
                           <option value="date">Date Started</option>
                           <option value="score">Overall Score</option>
@@ -1230,7 +1230,7 @@ export default function InstitutionalDashboard() {
                         </select>
                         <button
                           onClick={() => setSortOrder(curr => curr === "asc" ? "desc" : "asc")}
-                          className="p-1.5 bg-slate-900 border border-slate-800 rounded-lg text-slate-300 hover:text-white"
+                          className="p-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-650 hover:text-slate-900 hover:bg-slate-100"
                         >
                           <SlidersHorizontal className="w-3.5 h-3.5" />
                         </button>
@@ -1240,7 +1240,7 @@ export default function InstitutionalDashboard() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="border-b border-slate-800 text-[10px] font-black uppercase text-slate-500 tracking-wider">
+                          <tr className="border-b border-slate-200 text-[10px] font-black uppercase text-slate-500 tracking-wider">
                             <th className="px-6 py-4">Name / Contact</th>
                             <th className="px-6 py-4">Degree Specialization</th>
                             <th className="px-6 py-4">Status</th>
@@ -1250,7 +1250,7 @@ export default function InstitutionalDashboard() {
                             <th className="px-6 py-4 text-right">Actions</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800/50 text-xs font-semibold">
+                        <tbody className="divide-y divide-slate-100 text-xs font-semibold">
                           {filteredCandidates.length === 0 ? (
                             <tr>
                               <td colSpan={7} className="px-6 py-12 text-center text-slate-500 font-bold">
@@ -1259,17 +1259,17 @@ export default function InstitutionalDashboard() {
                             </tr>
                           ) : (
                             filteredCandidates.map((c, idx) => (
-                              <tr key={idx} className="hover:bg-slate-900/30 transition-colors">
+                              <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
                                 <td className="px-6 py-4">
-                                  <div className="text-white font-black text-sm">{c.name}</div>
-                                  <div className="text-slate-400 font-medium text-xs mt-0.5">{c.email}</div>
+                                  <div className="text-slate-800 font-extrabold text-sm">{c.name}</div>
+                                  <div className="text-slate-500 font-medium text-xs mt-0.5">{c.email}</div>
                                 </td>
-                                <td className="px-6 py-4 text-slate-300">{c.degree}</td>
+                                <td className="px-6 py-4 text-slate-600">{c.degree}</td>
                                 <td className="px-6 py-4">
                                   <span className={`px-2.5 py-1 text-[10px] font-black rounded-full uppercase tracking-wider ${
-                                    c.status === "COMPLETED" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/10" :
-                                    c.status === "IN_PROGRESS" ? "bg-blue-500/10 text-blue-400 border border-blue-500/10" :
-                                    "bg-rose-500/10 text-rose-400 border border-rose-500/10"
+                                    c.status === "COMPLETED" ? "bg-emerald-50 text-emerald-600 border border-emerald-100" :
+                                    c.status === "IN_PROGRESS" ? "bg-blue-50 text-blue-600 border border-blue-100" :
+                                    "bg-rose-50 text-rose-600 border border-rose-100"
                                   }`}>
                                     {c.status}
                                   </span>
@@ -1277,43 +1277,43 @@ export default function InstitutionalDashboard() {
                                 <td className="px-6 py-4 text-center">
                                   {c.result?.overallScore !== undefined ? (
                                     <div>
-                                      <span className="text-white font-black text-sm">{c.result.overallScore}</span>
-                                      <span className="text-slate-500 text-[10px]">/100</span>
+                                      <span className="text-slate-800 font-extrabold text-sm">{c.result.overallScore}</span>
+                                      <span className="text-slate-400 text-[10px]">/100</span>
                                     </div>
                                   ) : (
-                                    <span className="text-slate-500 font-bold">—</span>
+                                    <span className="text-slate-400 font-bold">—</span>
                                   )}
                                 </td>
                                 <td className="px-6 py-4">
                                   {c.result?.readinessLevel ? (
                                     <span className={`px-2.5 py-0.5 text-[10px] font-black rounded-full uppercase ${
-                                      c.result.readinessLevel === "Industry Ready" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/15" :
-                                      c.result.readinessLevel.includes("Foundation") ? "bg-blue-500/15 text-blue-400 border border-blue-500/15" :
-                                      c.result.readinessLevel.includes("Emerging") ? "bg-amber-500/15 text-amber-400 border border-amber-500/15" :
-                                      "bg-rose-500/15 text-rose-400 border border-rose-500/15"
+                                      c.result.readinessLevel === "Industry Ready" ? "bg-emerald-50 text-emerald-600 border border-emerald-100" :
+                                      c.result.readinessLevel.includes("Foundation") ? "bg-blue-50 text-blue-600 border border-blue-100" :
+                                      c.result.readinessLevel.includes("Emerging") ? "bg-amber-50 text-amber-600 border border-amber-100" :
+                                      "bg-rose-50 text-rose-600 border border-rose-100"
                                     }`}>
                                       {c.result.readinessLevel}
                                     </span>
                                   ) : (
-                                    <span className="text-slate-500 font-bold">—</span>
+                                    <span className="text-slate-400 font-bold">—</span>
                                   )}
                                 </td>
                                 <td className="px-6 py-4 text-center">
                                   {c.warningCount > 0 ? (
                                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
-                                      c.warningCount >= 3 ? "bg-rose-500/10 text-rose-400 border border-rose-500/10" : "bg-amber-500/10 text-amber-400 border border-amber-500/10"
+                                      c.warningCount >= 3 ? "bg-rose-50 text-rose-600 border border-rose-100" : "bg-amber-50 text-amber-600 border border-amber-100"
                                     }`}>
-                                      <AlertTriangle className="w-3.5 h-3.5" />
+                                      <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
                                       <span>{c.warningCount} Warnings</span>
                                     </span>
                                   ) : (
-                                    <span className="text-slate-500 font-bold">—</span>
+                                    <span className="text-slate-400 font-bold">—</span>
                                   )}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                   <button
                                     onClick={() => setSelectedCandidate(c)}
-                                    className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-bold transition-all text-xs select-none cursor-pointer bg-slate-900 border border-slate-800 px-3.5 py-1.5 rounded-xl hover:bg-slate-800"
+                                    className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-bold transition-all text-xs select-none cursor-pointer bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-xl hover:bg-slate-100"
                                   >
                                     <Eye className="w-4 h-4" />
                                     <span>Analyze</span>
@@ -1337,9 +1337,9 @@ export default function InstitutionalDashboard() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     
                     {/* Aggregated Radar */}
-                    <div className="lg:col-span-6 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight">Aggregated Cohort Competencies</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight">Aggregated Cohort Competencies</h4>
                         <p className="text-xs text-slate-500 font-medium mb-6">Radar evaluation of the 8 core competencies mapped by Sona Scale</p>
                       </div>
 
@@ -1347,11 +1347,11 @@ export default function InstitutionalDashboard() {
                         {mounted && (
                           <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="75%" data={chartsData.competencyRadarData}>
-                              <PolarGrid stroke="#334155" />
-                              <PolarAngleAxis dataKey="subject" stroke="#94a3b8" fontSize={10} fontWeight="bold" />
-                              <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#475569" fontSize={9} />
+                              <PolarGrid stroke="#cbd5e1" />
+                              <PolarAngleAxis dataKey="subject" stroke="#64748b" fontSize={10} fontWeight="bold" />
+                              <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#94a3b8" fontSize={9} />
                               <Radar name="Cohort Average" dataKey="average" stroke="#2563FF" fill="#2563FF" fillOpacity={0.25} />
-                              <Tooltip contentStyle={{ backgroundColor: "#020617", borderColor: "#334155", borderRadius: "12px", color: "#fff" }} />
+                              <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#cbd5e1", borderRadius: "12px", color: "#0f172a" }} />
                             </RadarChart>
                           </ResponsiveContainer>
                         )}
@@ -1359,9 +1359,9 @@ export default function InstitutionalDashboard() {
                     </div>
 
                     {/* Competency Gap Analysis */}
-                    <div className="lg:col-span-6 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight">Competency Gap Rankings</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight">Competency Gap Rankings</h4>
                         <p className="text-xs text-slate-500 font-medium mb-6">Cohort averages ranked from strongest capability to largest training gap</p>
                       </div>
 
@@ -1373,10 +1373,10 @@ export default function InstitutionalDashboard() {
                               layout="vertical"
                               margin={{ top: 5, right: 10, left: 40, bottom: 5 }}
                             >
-                              <CartesianGrid stroke="#1e293b" strokeDasharray="3 3" />
+                              <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" />
                               <XAxis type="number" stroke="#64748b" fontSize={10} fontWeight="bold" domain={[0, 100]} />
-                              <YAxis dataKey="competency" type="category" stroke="#94a3b8" fontSize={10} fontWeight="bold" width={110} />
-                              <Tooltip contentStyle={{ backgroundColor: "#020617", borderColor: "#334155", borderRadius: "12px", color: "#fff" }} />
+                              <YAxis dataKey="competency" type="category" stroke="#64748b" fontSize={10} fontWeight="bold" width={110} />
+                              <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#cbd5e1", borderRadius: "12px", color: "#0f172a" }} />
                               <Bar dataKey="score" name="Avg Skill Score" fill="#6C3DFF" radius={[0, 4, 4, 0]}>
                                 {chartsData.competencyGapData.map((entry, index) => (
                                   <Cell key={`cell-${index}`} fill={entry.score >= 70 ? "#10B981" : entry.score >= 55 ? "#6C3DFF" : "#F59E0B"} />
@@ -1391,41 +1391,41 @@ export default function InstitutionalDashboard() {
                   </div>
 
                   {/* Detailed Gap Insights & Interventions Recommendations */}
-                  <div className="bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md">
-                    <h4 className="text-base font-black text-white tracking-tight mb-4 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-indigo-400" />
+                  <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <h4 className="text-base font-black text-slate-900 tracking-tight mb-4 flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-indigo-500" />
                       <span>Cohort Training & Hiring Insights</span>
                     </h4>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       
                       {/* Top Strengths card */}
-                      <div className="p-5 bg-emerald-500/5 rounded-2xl border border-emerald-500/10">
-                        <h5 className="text-sm font-black text-emerald-400 uppercase tracking-wider mb-2.5">Key Capability Core</h5>
-                        <p className="text-slate-300 text-xs leading-relaxed mb-4">
+                      <div className="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-200/50">
+                        <h5 className="text-sm font-black text-emerald-700 uppercase tracking-wider mb-2.5">Key Capability Core</h5>
+                        <p className="text-slate-700 text-xs leading-relaxed mb-4">
                           The cohort shows high proficiency in <strong>{chartsData.competencyGapData[0]?.competency}</strong> and <strong>{chartsData.competencyGapData[1]?.competency}</strong>. 
                           These candidates are highly skilled in quantitative validation and reading complex information layouts.
                         </p>
-                        <ul className="text-xs font-bold text-slate-400 space-y-2">
+                        <ul className="text-xs font-bold text-slate-500 space-y-2">
                           <li className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             <span>Highly ready for quantitative dashboard reporting</span>
                           </li>
                           <li className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             <span>Strong analytical grounding in validating raw metrics</span>
                           </li>
                         </ul>
                       </div>
 
                       {/* Top weaknesses card */}
-                      <div className="p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10">
-                        <h5 className="text-sm font-black text-rose-400 uppercase tracking-wider mb-2.5">Primary Skill Gap</h5>
-                        <p className="text-slate-300 text-xs leading-relaxed mb-4">
+                      <div className="p-5 bg-rose-50/50 rounded-2xl border border-rose-200/50">
+                        <h5 className="text-sm font-black text-rose-700 uppercase tracking-wider mb-2.5">Primary Skill Gap</h5>
+                        <p className="text-slate-700 text-xs leading-relaxed mb-4">
                           The largest skill deficit resides in <strong>{chartsData.competencyGapData[chartsData.competencyGapData.length - 1]?.competency}</strong> and <strong>{chartsData.competencyGapData[chartsData.competencyGapData.length - 2]?.competency}</strong>.
                           We recommend integrating additional business context or communication workshops in the curriculum.
                         </p>
-                        <ul className="text-xs font-bold text-slate-400 space-y-2">
+                        <ul className="text-xs font-bold text-slate-500 space-y-2">
                           <li className="flex items-center gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
                             <span>Focus training on connecting data findings to revenue impact</span>
@@ -1450,9 +1450,9 @@ export default function InstitutionalDashboard() {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     
                     {/* Compliance KPI Card */}
-                    <div className="lg:col-span-4 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight">Security Integrity Ratio</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight">Security Integrity Ratio</h4>
                         <p className="text-xs text-slate-500 font-medium">Compliance rate based on zero proctor violations</p>
                       </div>
 
@@ -1460,7 +1460,7 @@ export default function InstitutionalDashboard() {
                         <div className="relative w-36 h-36 flex items-center justify-center">
                           {/* Circle track */}
                           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="40" stroke="#1e293b" strokeWidth="8" fill="transparent" />
+                            <circle cx="50" cy="50" r="40" stroke="#f1f5f9" strokeWidth="8" fill="transparent" />
                             <circle 
                               cx="50" 
                               cy="50" 
@@ -1474,22 +1474,22 @@ export default function InstitutionalDashboard() {
                             />
                           </svg>
                           <div className="absolute flex flex-col items-center justify-center">
-                            <span className="text-3xl font-black text-white">{metrics.integrityRate}%</span>
+                            <span className="text-3xl font-black text-slate-900">{metrics.integrityRate}%</span>
                             <span className="text-[9px] text-slate-500 font-black uppercase mt-1">Valid Sessions</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="text-center text-xs font-semibold text-slate-400">
-                        <p>Total warnings accumulated: <strong className="text-white">{metrics.totalWarnings}</strong></p>
-                        <p className="mt-1">Candidates terminated: <strong className="text-rose-500">{metrics.terminatedCount}</strong></p>
+                      <div className="text-center text-xs font-semibold text-slate-500">
+                        <p>Total warnings accumulated: <strong className="text-slate-800">{metrics.totalWarnings}</strong></p>
+                        <p className="mt-1">Candidates terminated: <strong className="text-rose-600">{metrics.terminatedCount}</strong></p>
                       </div>
                     </div>
 
                     {/* Warnings distribution Bar Chart */}
-                    <div className="lg:col-span-8 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight">Violation Types Frequency</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight">Violation Types Frequency</h4>
                         <p className="text-xs text-slate-500 font-medium">Categorized frequency of triggered proctoring warnings</p>
                       </div>
 
@@ -1497,10 +1497,10 @@ export default function InstitutionalDashboard() {
                         {mounted && (
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={chartsData.warningsChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                              <CartesianGrid stroke="#1e293b" strokeDasharray="3 3" />
+                              <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" />
                               <XAxis dataKey="name" stroke="#64748b" fontSize={10} fontWeight="bold" />
                               <YAxis stroke="#64748b" fontSize={10} fontWeight="bold" />
-                              <Tooltip contentStyle={{ backgroundColor: "#020617", borderColor: "#334155", borderRadius: "12px", color: "#fff" }} />
+                              <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#cbd5e1", borderRadius: "12px", color: "#0f172a" }} />
                               <Bar dataKey="value" name="Occurrences" fill="#F59E0B" radius={[6, 6, 0, 0]} />
                             </BarChart>
                           </ResponsiveContainer>
@@ -1513,9 +1513,9 @@ export default function InstitutionalDashboard() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     
                     {/* Live events stream */}
-                    <div className="bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight mb-1">Chronological Security Audit Stream</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight mb-1">Chronological Security Audit Stream</h4>
                         <p className="text-xs text-slate-500 font-medium mb-4">Real-time log of security events across candidates</p>
                       </div>
 
@@ -1524,18 +1524,18 @@ export default function InstitutionalDashboard() {
                           <p className="text-xs text-slate-500 font-bold py-6 text-center">No security alerts recorded. Clean audits!</p>
                         ) : (
                           proctoringStream.map((item, idx) => (
-                            <div key={idx} className="p-3 bg-slate-900 rounded-xl border border-slate-800/60 flex items-start justify-between gap-3 text-xs">
+                            <div key={idx} className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start justify-between gap-3 text-xs">
                               <div className="space-y-1">
-                                <div className="font-bold text-white flex items-center gap-2">
+                                <div className="font-bold text-slate-800 flex items-center gap-2">
                                   <span>{item.name}</span>
-                                  <span className="text-[10px] text-slate-500 font-medium font-sans">({item.email})</span>
+                                  <span className="text-[10px] text-slate-400 font-medium font-sans">({item.email})</span>
                                 </div>
-                                <p className="text-amber-400 font-semibold">{item.reason}</p>
+                                <p className="text-amber-600 font-semibold">{item.reason}</p>
                                 <p className="text-[10px] text-slate-500 font-medium">
                                   {item.timestamp.toLocaleDateString()} at {item.timestamp.toLocaleTimeString()}
                                 </p>
                               </div>
-                              <span className="bg-slate-800 text-slate-400 font-black px-2 py-0.5 rounded text-[10px] uppercase">
+                              <span className="bg-slate-100 border border-slate-200/55 text-slate-500 font-black px-2 py-0.5 rounded text-[10px] uppercase">
                                 Warning {item.totalWarningsSoFar}
                               </span>
                             </div>
@@ -1545,9 +1545,9 @@ export default function InstitutionalDashboard() {
                     </div>
 
                     {/* High Risk Candidates summary */}
-                    <div className="bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
                       <div>
-                        <h4 className="text-base font-black text-white tracking-tight mb-1">Security Alert High-Risk List</h4>
+                        <h4 className="text-base font-black text-slate-900 tracking-tight mb-1">Security Alert High-Risk List</h4>
                         <p className="text-xs text-slate-500 font-medium mb-4">Candidates flagged for review due to warning counts or termination</p>
                       </div>
 
@@ -1556,16 +1556,16 @@ export default function InstitutionalDashboard() {
                           <p className="text-xs text-slate-500 font-bold py-6 text-center">No high-risk candidates identified. Good compliance!</p>
                         ) : (
                           highRiskCandidates.map((c, idx) => (
-                            <div key={idx} className="p-3.5 bg-rose-500/5 border border-rose-500/10 rounded-xl flex items-center justify-between text-xs font-semibold">
+                            <div key={idx} className="p-3.5 bg-rose-50 border border-rose-200/40 rounded-xl flex items-center justify-between text-xs font-semibold">
                               <div>
-                                <div className="font-black text-white">{c.name}</div>
-                                <div className="text-slate-400 text-[10px] mt-0.5">{c.email}</div>
-                                <div className="text-slate-500 text-[10px] mt-1">Degree: {c.degree}</div>
+                                <div className="font-black text-slate-800">{c.name}</div>
+                                <div className="text-slate-500 text-[10px] mt-0.5">{c.email}</div>
+                                <div className="text-slate-400 text-[10px] mt-1">Degree: {c.degree}</div>
                               </div>
                               
                               <div className="text-right space-y-1.5">
                                 <span className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-black uppercase ${
-                                  c.status === "TERMINATED" ? "bg-rose-500/20 text-rose-400" : "bg-amber-500/20 text-amber-400"
+                                  c.status === "TERMINATED" ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"
                                 }`}>
                                   {c.status === "TERMINATED" ? "TERMINATED" : `${c.warningCount} Warnings`}
                                 </span>
@@ -1573,7 +1573,7 @@ export default function InstitutionalDashboard() {
                                 <div>
                                   <button
                                     onClick={() => setSelectedCandidate(c)}
-                                    className="text-blue-400 hover:text-blue-300 font-bold text-[11px] underline pointer-events-auto"
+                                    className="text-blue-600 hover:text-blue-700 font-bold text-[11px] underline pointer-events-auto cursor-pointer"
                                   >
                                     Review Responses
                                   </button>
@@ -1596,10 +1596,10 @@ export default function InstitutionalDashboard() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                   
                   {/* Proctoring parameters */}
-                  <div className="lg:col-span-6 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md space-y-6">
+                  <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
                     <div>
-                      <h4 className="text-base font-black text-white tracking-tight flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-indigo-400" />
+                      <h4 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <Shield className="w-5 h-5 text-indigo-600" />
                         <span>Security & Proctoring Policy</span>
                       </h4>
                       <p className="text-xs text-slate-500 font-medium">Configure rules and strictness limits for active candidate environments</p>
@@ -1610,8 +1610,8 @@ export default function InstitutionalDashboard() {
                       {/* max warnings */}
                       <div className="flex flex-col gap-2">
                         <div className="flex justify-between items-center text-xs font-bold">
-                          <span className="text-slate-300">Max warnings before termination</span>
-                          <span className="text-white bg-slate-800 px-2 py-0.5 rounded">{config.proctoring.maxWarnings} warnings</span>
+                          <span className="text-slate-700">Max warnings before termination</span>
+                          <span className="text-slate-800 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/50">{config.proctoring.maxWarnings} warnings</span>
                         </div>
                         <input
                           type="range"
@@ -1622,14 +1622,14 @@ export default function InstitutionalDashboard() {
                             ...config,
                             proctoring: { ...config.proctoring, maxWarnings: parseInt(e.target.value) }
                           })}
-                          className="w-full accent-blue-500 bg-slate-800 rounded-lg h-2 outline-none cursor-pointer"
+                          className="w-full accent-blue-600 bg-slate-100 rounded-lg h-2 outline-none cursor-pointer"
                         />
                       </div>
 
                       {/* track switches */}
-                      <div className="flex justify-between items-center py-2 border-t border-slate-800/40">
+                      <div className="flex justify-between items-center py-2 border-t border-slate-100">
                         <div>
-                          <p className="text-sm font-bold text-white">Browser Tab Switch Tracking</p>
+                          <p className="text-sm font-bold text-slate-800">Browser Tab Switch Tracking</p>
                           <p className="text-[10px] text-slate-500 font-medium">Trigger warning if candidate switches window tab</p>
                         </div>
                         <button
@@ -1638,7 +1638,7 @@ export default function InstitutionalDashboard() {
                             proctoring: { ...config.proctoring, trackTabSwitches: !config.proctoring.trackTabSwitches }
                           })}
                           className={`w-12 h-6.5 rounded-full p-1 transition-colors select-none cursor-pointer ${
-                            config.proctoring.trackTabSwitches ? "bg-blue-600" : "bg-slate-800"
+                            config.proctoring.trackTabSwitches ? "bg-blue-600" : "bg-slate-200"
                           }`}
                         >
                           <div className={`bg-white w-4.5 h-4.5 rounded-full shadow-md transform transition-transform ${
@@ -1648,9 +1648,9 @@ export default function InstitutionalDashboard() {
                       </div>
 
                       {/* block copy paste */}
-                      <div className="flex justify-between items-center py-2 border-t border-slate-800/40">
+                      <div className="flex justify-between items-center py-2 border-t border-slate-100">
                         <div>
-                          <p className="text-sm font-bold text-white">Block Copy-Paste Operations</p>
+                          <p className="text-sm font-bold text-slate-800">Block Copy-Paste Operations</p>
                           <p className="text-[10px] text-slate-500 font-medium">Prevent text paste commands in free-text fields</p>
                         </div>
                         <button
@@ -1659,7 +1659,7 @@ export default function InstitutionalDashboard() {
                             proctoring: { ...config.proctoring, blockCopyPaste: !config.proctoring.blockCopyPaste }
                           })}
                           className={`w-12 h-6.5 rounded-full p-1 transition-colors select-none cursor-pointer ${
-                            config.proctoring.blockCopyPaste ? "bg-blue-600" : "bg-slate-800"
+                            config.proctoring.blockCopyPaste ? "bg-blue-600" : "bg-slate-200"
                           }`}
                         >
                           <div className={`bg-white w-4.5 h-4.5 rounded-full shadow-md transform transition-transform ${
@@ -1669,9 +1669,9 @@ export default function InstitutionalDashboard() {
                       </div>
 
                       {/* force fullscreen */}
-                      <div className="flex justify-between items-center py-2 border-t border-slate-800/40">
+                      <div className="flex justify-between items-center py-2 border-t border-slate-100">
                         <div>
-                          <p className="text-sm font-bold text-white">Require Fullscreen Mode</p>
+                          <p className="text-sm font-bold text-slate-800">Require Fullscreen Mode</p>
                           <p className="text-[10px] text-slate-500 font-medium">Prompt and enforce fullscreen upon initialization</p>
                         </div>
                         <button
@@ -1680,7 +1680,7 @@ export default function InstitutionalDashboard() {
                             proctoring: { ...config.proctoring, forceFullscreen: !config.proctoring.forceFullscreen }
                           })}
                           className={`w-12 h-6.5 rounded-full p-1 transition-colors select-none cursor-pointer ${
-                            config.proctoring.forceFullscreen ? "bg-blue-600" : "bg-slate-800"
+                            config.proctoring.forceFullscreen ? "bg-blue-600" : "bg-slate-200"
                           }`}
                         >
                           <div className={`bg-white w-4.5 h-4.5 rounded-full shadow-md transform transition-transform ${
@@ -1693,10 +1693,10 @@ export default function InstitutionalDashboard() {
                   </div>
 
                   {/* Weights and scoring metrics configuration */}
-                  <div className="lg:col-span-6 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 shadow-md space-y-6">
+                  <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
                     <div>
-                      <h4 className="text-base font-black text-white tracking-tight flex items-center gap-2">
-                        <Sliders className="w-5 h-5 text-indigo-400" />
+                      <h4 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <Sliders className="w-5 h-5 text-indigo-600" />
                         <span>Competency Score Weighting</span>
                       </h4>
                       <p className="text-xs text-slate-500 font-medium">Customize the percentage weight contribution of each capability target</p>
@@ -1704,12 +1704,12 @@ export default function InstitutionalDashboard() {
 
                     <div className="grid grid-cols-2 gap-x-6 gap-y-4 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
                       {Object.keys(config.competencies).map((compKey) => (
-                        <div key={compKey} className="flex flex-col gap-1.5 border-b border-slate-800/40 pb-2">
+                        <div key={compKey} className="flex flex-col gap-1.5 border-b border-slate-100 pb-2">
                           <div className="flex justify-between text-xs font-bold">
-                            <span className="text-slate-400 truncate max-w-[140px]">
+                            <span className="text-slate-500 truncate max-w-[140px]">
                               {competencyLabels[compKey] || compKey}
                             </span>
-                            <span className="text-white">{config.competencies[compKey]}%</span>
+                            <span className="text-slate-800">{config.competencies[compKey]}%</span>
                           </div>
                           
                           <input
@@ -1723,18 +1723,18 @@ export default function InstitutionalDashboard() {
                               newWeights[compKey] = parseInt(e.target.value);
                               setConfig({ ...config, competencies: newWeights });
                             }}
-                            className="w-full accent-indigo-500 bg-slate-800 rounded-lg h-1.5 outline-none cursor-pointer"
+                            className="w-full accent-indigo-600 bg-slate-100 rounded-lg h-1.5 outline-none cursor-pointer"
                           />
                         </div>
                       ))}
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-slate-800 text-xs font-bold">
-                      <span className="text-slate-400">Total Sum Weights:</span>
-                      <span className={`px-2 py-0.5 rounded ${
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-200 text-xs font-bold">
+                      <span className="text-slate-500">Total Sum Weights:</span>
+                      <span className={`px-2 py-0.5 rounded border ${
                         Object.values(config.competencies).reduce((a: any, b: any) => a + b, 0) === 100
-                          ? "bg-emerald-500/10 text-emerald-400"
-                          : "bg-rose-500/10 text-rose-400 animate-pulse"
+                          ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                          : "bg-rose-50 text-rose-600 border-rose-100 animate-pulse"
                       }`}>
                         {Object.values(config.competencies).reduce((a: any, b: any) => a + b, 0) as any}%
                       </span>
@@ -1779,7 +1779,7 @@ export default function InstitutionalDashboard() {
       {/* ── CANDIDATE ANALYTICS DETAIL MODAL OVERLAY ── */}
       <AnimatePresence>
         {selectedCandidate && (
-          <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-sm">
             
             {/* Modal Backdrop closer click */}
             <div className="absolute inset-0" onClick={() => setSelectedCandidate(null)} />
@@ -1790,17 +1790,17 @@ export default function InstitutionalDashboard() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 220 }}
-              className="relative w-full max-w-4xl bg-slate-900 border-l border-slate-800 shadow-2xl h-full flex flex-col justify-between z-10 overflow-hidden"
+              className="relative w-full max-w-4xl bg-white border-l border-slate-200 shadow-2xl h-full flex flex-col justify-between z-10 overflow-hidden"
             >
               {/* Header drawer controls */}
-              <div className="h-20 bg-slate-950 border-b border-slate-800 flex items-center justify-between px-8 shrink-0">
+              <div className="h-20 bg-slate-50 border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-black">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-black">
                     {selectedCandidate.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-base font-black text-white tracking-tight">{selectedCandidate.name}</h3>
-                    <p className="text-xs text-slate-400 font-medium">{selectedCandidate.email}</p>
+                    <h3 className="text-base font-black text-slate-900 tracking-tight">{selectedCandidate.name}</h3>
+                    <p className="text-xs text-slate-500 font-medium">{selectedCandidate.email}</p>
                   </div>
                 </div>
 
@@ -1809,24 +1809,24 @@ export default function InstitutionalDashboard() {
                   {/* XLS Export */}
                   <button
                     onClick={() => exportSingleCandidateToExcel(selectedCandidate)}
-                    className="p-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors cursor-pointer select-none"
+                    className="p-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer select-none"
                     title="Export candidate response log as XLS spreadsheet"
                   >
-                    <FileSpreadsheet className="w-5 h-5 text-emerald-400" />
+                    <FileSpreadsheet className="w-5 h-5 text-emerald-600" />
                   </button>
 
                   {/* PDF Report Export */}
                   <button
                     onClick={() => exportSingleCandidateToPDF(selectedCandidate)}
-                    className="p-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors cursor-pointer select-none"
+                    className="p-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer select-none"
                     title="Generate candidate PDF profile report"
                   >
-                    <FileText className="w-5 h-5 text-indigo-400" />
+                    <FileText className="w-5 h-5 text-indigo-600" />
                   </button>
 
                   <button
                     onClick={() => setSelectedCandidate(null)}
-                    className="p-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors cursor-pointer select-none"
+                    className="p-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer select-none"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -1843,43 +1843,43 @@ export default function InstitutionalDashboard() {
                   <div className="md:col-span-7 space-y-6">
                     
                     {/* Academic profile card */}
-                    <div className="p-5 bg-slate-950 border border-slate-800/80 rounded-2xl space-y-4">
-                      <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Candidate Intake Profile</h4>
+                    <div className="p-5 bg-slate-50 border border-slate-200/60 rounded-2xl space-y-4">
+                      <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest">Candidate Intake Profile</h4>
                       
                       <div className="grid grid-cols-2 gap-4 text-xs font-semibold">
                         <div>
                           <span className="text-slate-500 block mb-0.5">Degree Stream</span>
-                          <span className="text-white font-bold">{selectedCandidate.degree}</span>
+                          <span className="text-slate-800 font-bold">{selectedCandidate.degree}</span>
                         </div>
                         
                         <div>
                           <span className="text-slate-500 block mb-0.5">Academic Status</span>
-                          <span className="text-white font-bold">{selectedCandidate.academicStatus}</span>
+                          <span className="text-slate-800 font-bold">{selectedCandidate.academicStatus}</span>
                         </div>
 
                         <div>
                           <span className="text-slate-500 block mb-0.5">Career Interest</span>
-                          <span className="text-white font-bold">{selectedCandidate.careerInterest}</span>
+                          <span className="text-slate-800 font-bold">{selectedCandidate.careerInterest}</span>
                         </div>
 
                         <div>
                           <span className="text-slate-500 block mb-0.5">Phone Number</span>
-                          <span className="text-white font-bold">{selectedCandidate.phone}</span>
+                          <span className="text-slate-800 font-bold">{selectedCandidate.phone}</span>
                         </div>
                       </div>
 
                       {/* DS Sliders */}
-                      <div className="grid grid-cols-2 gap-4 pt-3.5 border-t border-slate-900 text-xs font-bold">
+                      <div className="grid grid-cols-2 gap-4 pt-3.5 border-t border-slate-200 text-xs font-bold">
                         <div>
                           <span className="text-slate-500 block mb-1">DS Familiarity ({selectedCandidate.dsFamiliarity}/10)</span>
-                          <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                          <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
                             <div className="bg-blue-500 h-full" style={{ width: `${selectedCandidate.dsFamiliarity * 10}%` }} />
                           </div>
                         </div>
                         
                         <div>
                           <span className="text-slate-500 block mb-1">Data Comfort ({selectedCandidate.dataComfort}/10)</span>
-                          <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                          <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
                             <div className="bg-indigo-500 h-full" style={{ width: `${selectedCandidate.dataComfort * 10}%` }} />
                           </div>
                         </div>
@@ -1887,65 +1887,65 @@ export default function InstitutionalDashboard() {
                     </div>
 
                     {/* Result details */}
-                    <div className="p-5 bg-slate-950 border border-slate-800/80 rounded-2xl space-y-4">
-                      <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Overall Simulation Results</h4>
+                    <div className="p-5 bg-slate-50 border border-slate-200/60 rounded-2xl space-y-4">
+                      <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest">Overall Simulation Results</h4>
                       
                       {selectedCandidate.result ? (
                         <div className="space-y-4">
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Calculated Overall Score</p>
-                              <p className="text-[10px] text-slate-500 font-semibold">{selectedCandidate.status === "COMPLETED" ? "Successful Evaluation" : "Terminated Score"}</p>
+                              <p className="text-[10px] text-slate-400 font-semibold">{selectedCandidate.status === "COMPLETED" ? "Successful Evaluation" : "Terminated Score"}</p>
                             </div>
                             <div className="text-right">
-                              <span className="text-3xl font-black text-white">{selectedCandidate.result.overallScore}</span>
-                              <span className="text-slate-500 font-black ml-1">/100</span>
+                              <span className="text-3xl font-black text-slate-900">{selectedCandidate.result.overallScore}</span>
+                              <span className="text-slate-400 font-black ml-1">/100</span>
                             </div>
                           </div>
 
-                          <div className="flex justify-between items-center py-2 border-y border-slate-900">
+                          <div className="flex justify-between items-center py-2 border-y border-slate-250/60">
                             <div>
                               <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Readiness Classification</p>
-                              <span className={`text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 border border-blue-500/10 px-2 py-0.5 rounded`}>
+                              <span className={`text-[10px] font-black uppercase bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded`}>
                                 {selectedCandidate.result.readinessLevel}
                               </span>
                             </div>
 
                             <div className="text-right">
                               <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Student Archetype</p>
-                              <span className="text-white text-xs font-bold">{selectedCandidate.result.archetype}</span>
+                              <span className="text-slate-800 text-xs font-bold">{selectedCandidate.result.archetype}</span>
                             </div>
                           </div>
 
                           {/* Strengths & Weaknesses */}
                           <div className="space-y-3.5">
                             <div>
-                              <span className="text-[10px] text-emerald-400 font-black uppercase tracking-wider block mb-1">Primary Strength</span>
-                              <p className="text-xs text-slate-300 font-medium leading-relaxed">
+                              <span className="text-[10px] text-emerald-600 font-black uppercase tracking-wider block mb-1">Primary Strength</span>
+                              <p className="text-xs text-slate-700 font-medium leading-relaxed">
                                 {selectedCandidate.result.strengths?.[0] || "General analytics competency demonstrated."}
                               </p>
                             </div>
 
                             <div>
-                              <span className="text-[10px] text-rose-400 font-black uppercase tracking-wider block mb-1">Primary Improvement Gap</span>
-                              <p className="text-xs text-slate-300 font-medium leading-relaxed">
+                              <span className="text-[10px] text-rose-600 font-black uppercase tracking-wider block mb-1">Primary Improvement Gap</span>
+                              <p className="text-xs text-slate-700 font-medium leading-relaxed">
                                 {selectedCandidate.result.improvements?.[0] || "No critical training gaps recorded."}
                               </p>
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <p className="text-xs text-slate-500 font-bold">This simulation is currently in progress. Score reports will generate upon candidate completion.</p>
+                        <p className="text-xs text-slate-505 font-bold">This simulation is currently in progress. Score reports will generate upon candidate completion.</p>
                       )}
                     </div>
 
                   </div>
 
                   {/* Column 2: Specific Candidate radar compared against averages */}
-                  <div className="md:col-span-5 bg-slate-950 border border-slate-800/80 rounded-2xl p-5 shadow-md flex flex-col justify-between min-h-[320px]">
+                  <div className="md:col-span-5 bg-slate-50 border border-slate-200/60 rounded-2xl p-5 shadow-sm flex flex-col justify-between min-h-[320px]">
                     <div>
-                      <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Candidate Competency Mapping</h4>
-                      <p className="text-[10px] text-slate-500 font-bold">Comparison of candidate (Purple) vs Cohort Average (Gray)</p>
+                      <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Candidate Competency Mapping</h4>
+                      <p className="text-[10px] text-slate-400 font-bold">Comparison of candidate (Purple) vs Cohort Average (Gray)</p>
                     </div>
 
                     <div className="h-64 w-full flex items-center justify-center my-3">
@@ -1962,12 +1962,12 @@ export default function InstitutionalDashboard() {
                               };
                             })
                           }>
-                            <PolarGrid stroke="#334155" />
-                            <PolarAngleAxis dataKey="subject" stroke="#94a3b8" fontSize={9} fontWeight="bold" />
-                            <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#475569" fontSize={8} />
+                            <PolarGrid stroke="#cbd5e1" />
+                            <PolarAngleAxis dataKey="subject" stroke="#64748b" fontSize={9} fontWeight="bold" />
+                            <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#cbd5e1" fontSize={8} />
                             <Radar name="Candidate" dataKey="candidate" stroke="#6C3DFF" fill="#6C3DFF" fillOpacity={0.25} />
-                            <Radar name="Cohort Average" dataKey="average" stroke="#475569" fill="#475569" fillOpacity={0.1} />
-                            <Tooltip contentStyle={{ backgroundColor: "#020617", borderColor: "#334155", borderRadius: "12px", color: "#fff" }} />
+                            <Radar name="Cohort Average" dataKey="average" stroke="#94a3b8" fill="#94a3b8" fillOpacity={0.1} />
+                            <Tooltip contentStyle={{ backgroundColor: "#ffffff", borderColor: "#cbd5e1", borderRadius: "12px", color: "#0f172a" }} />
                           </RadarChart>
                         </ResponsiveContainer>
                       ) : (
@@ -1975,13 +1975,13 @@ export default function InstitutionalDashboard() {
                       )}
                     </div>
 
-                    <div className="flex justify-center gap-4 text-[10px] font-black uppercase text-slate-400">
+                    <div className="flex justify-center gap-4 text-[10px] font-black uppercase text-slate-500">
                       <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-primary-purple" />
                         <span>Candidate</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-slate-600" />
+                        <span className="w-2 h-2 rounded-full bg-slate-400" />
                         <span>Cohort Avg</span>
                       </div>
                     </div>
@@ -1990,39 +1990,39 @@ export default function InstitutionalDashboard() {
                 </div>
 
                 {/* Integrity Log Card (Drawer) */}
-                <div className="p-5 bg-slate-950 border border-slate-800/80 rounded-2xl space-y-4">
-                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-amber-500" />
+                <div className="p-5 bg-slate-50 border border-slate-200/60 rounded-2xl space-y-4">
+                  <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-amber-600" />
                     <span>Security Integrity Log</span>
                   </h4>
                   
                   {selectedCandidate.warningEvents && selectedCandidate.warningEvents.length > 0 ? (
                     <div className="space-y-2">
-                      <p className="text-xs text-slate-400 font-bold">Total security alerts triggered during attempt: <strong className="text-amber-400">{selectedCandidate.warningCount}</strong></p>
+                      <p className="text-xs text-slate-500 font-bold">Total security alerts triggered during attempt: <strong className="text-amber-700">{selectedCandidate.warningCount}</strong></p>
                       <div className="space-y-2">
                         {selectedCandidate.warningEvents.map((ev: any, idx: number) => (
-                          <div key={idx} className="p-2.5 bg-slate-900 border border-slate-800 text-xs font-semibold rounded-lg flex justify-between items-center">
-                            <span className="text-amber-500">{ev.reason}</span>
-                            <span className="text-slate-500 text-[10px] font-sans">{new Date(ev.timestamp).toLocaleTimeString()}</span>
+                          <div key={idx} className="p-2.5 bg-white border border-slate-200 text-xs font-semibold rounded-lg flex justify-between items-center">
+                            <span className="text-amber-700">{ev.reason}</span>
+                            <span className="text-slate-450 text-[10px] font-sans">{new Date(ev.timestamp).toLocaleTimeString()}</span>
                           </div>
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <p className="text-xs text-emerald-400 font-bold flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4" />
+                    <p className="text-xs text-emerald-600 font-bold flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                       <span>Clean Proctoring Audit. Session compliant.</span>
                     </p>
                   )}
                 </div>
 
                 {/* Reviewer Note text box */}
-                <div className="p-5 bg-slate-950 border border-slate-800/80 rounded-2xl space-y-3">
-                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                <div className="p-5 bg-slate-50 border border-slate-200/60 rounded-2xl space-y-3">
+                  <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center justify-between">
                     <span>Reviewer Notes (Persistent)</span>
                     {noteSaved && (
-                      <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                         <span>Notes Saved</span>
                       </span>
                     )}
@@ -2032,12 +2032,12 @@ export default function InstitutionalDashboard() {
                     value={noteText}
                     onChange={(e) => setNoteText(e.target.value)}
                     placeholder="Enter academic review, competency notes or hiring comments for this candidate..."
-                    className="w-full bg-slate-900 border border-slate-800 focus:border-blue-500 rounded-xl p-3 text-xs text-slate-100 placeholder-slate-500 outline-none transition-all resize-none font-semibold"
+                    className="w-full bg-white border border-slate-200 focus:border-blue-500 rounded-xl p-3 text-xs text-slate-800 placeholder-slate-450 outline-none transition-all resize-none font-semibold focus:ring-4 focus:ring-blue-100/50"
                   />
                   <div className="flex justify-end">
                     <button
                       onClick={saveCandidateNotes}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-2 px-4 rounded-lg flex items-center gap-1.5 cursor-pointer select-none shadow"
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-2 px-4 rounded-lg flex items-center gap-1.5 cursor-pointer select-none shadow-sm"
                     >
                       <Save className="w-3.5 h-3.5" />
                       <span>Save Notes</span>
@@ -2047,43 +2047,43 @@ export default function InstitutionalDashboard() {
 
                 {/* Responses List logs */}
                 <div className="space-y-4">
-                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Completed Simulation Responses</h4>
+                  <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest">Completed Simulation Responses</h4>
                   
                   {selectedCandidate.responses && selectedCandidate.responses.length > 0 ? (
                     <div className="space-y-4">
                       {selectedCandidate.responses.map((r: any, idx: number) => (
-                        <div key={idx} className="bg-slate-950 border border-slate-800/80 rounded-2xl p-5 space-y-3">
+                        <div key={idx} className="bg-slate-50 border border-slate-200/60 rounded-2xl p-5 space-y-3">
                           <div className="flex justify-between items-start">
                             <div>
-                              <span className="text-[9px] bg-slate-800 text-slate-400 font-black py-0.5 px-2 rounded-full uppercase tracking-wider">
+                              <span className="text-[9px] bg-slate-200/60 text-slate-500 font-black py-0.5 px-2 rounded-full uppercase tracking-wider">
                                 Mission {idx + 1}
                               </span>
-                              <h5 className="text-sm font-black text-white mt-1.5">{r.selectedOption?.title || r.missionId}</h5>
+                              <h5 className="text-sm font-black text-slate-800 mt-1.5">{r.selectedOption?.title || r.missionId}</h5>
                             </div>
                             
                             <div className="text-right">
-                              <span className="text-sm font-black text-white">{r.scoreEarned}</span>
-                              <span className="text-slate-500 text-[10px]">/{r.maxScore} pts</span>
+                              <span className="text-sm font-black text-slate-850">{r.scoreEarned}</span>
+                              <span className="text-slate-450 text-[10px]">/{r.maxScore} pts</span>
                             </div>
                           </div>
 
-                          <div className="bg-slate-900 border border-slate-800/60 rounded-xl p-3 text-xs space-y-2">
+                          <div className="bg-white border border-slate-200 rounded-xl p-3 text-xs space-y-2">
                             <div>
-                              <span className="text-[10px] text-slate-500 font-bold block mb-0.5">Task Objective Question</span>
-                              <p className="text-slate-300 font-medium">{r.selectedOption?.description || "Select the most optimal model architecture for the scenario."}</p>
+                              <span className="text-[10px] text-slate-400 font-bold block mb-0.5">Task Objective Question</span>
+                              <p className="text-slate-700 font-medium">{r.selectedOption?.description || "Select the most optimal model architecture for the scenario."}</p>
                             </div>
                             
                             {r.textValue && (
-                              <div className="pt-2 border-t border-slate-800/80">
-                                <span className="text-[10px] text-slate-500 font-bold block mb-0.5">Candidate Reasoning</span>
-                                <p className="text-slate-200 font-medium font-sans italic">"{r.textValue}"</p>
+                              <div className="pt-2 border-t border-slate-100">
+                                <span className="text-[10px] text-slate-400 font-bold block mb-0.5">Candidate Reasoning</span>
+                                <p className="text-slate-700 font-medium font-sans italic">"{r.textValue}"</p>
                               </div>
                             )}
                           </div>
 
-                          <div className="flex flex-wrap gap-2 text-[9px] font-black uppercase text-slate-400">
+                          <div className="flex flex-wrap gap-2 text-[9px] font-black uppercase text-slate-500">
                             {r.competenciesHit && r.competenciesHit.map((comp: string, cIdx: number) => (
-                              <span key={cIdx} className="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
+                              <span key={cIdx} className="bg-white border border-slate-200 px-2 py-0.5 rounded">
                                 {competencyLabels[comp] || comp}
                               </span>
                             ))}
@@ -2099,10 +2099,10 @@ export default function InstitutionalDashboard() {
               </div>
 
               {/* Footer Drawer controls */}
-              <div className="h-20 bg-slate-950 border-t border-slate-800 px-8 flex items-center justify-end gap-3 shrink-0">
+              <div className="h-20 bg-slate-55 border-t border-slate-200 px-8 flex items-center justify-end gap-3 shrink-0">
                 <button
                   onClick={() => setSelectedCandidate(null)}
-                  className="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white font-bold text-xs py-3 px-6 rounded-xl transition-all cursor-pointer select-none"
+                  className="bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-800 font-bold text-xs py-3 px-6 rounded-xl transition-all cursor-pointer select-none"
                 >
                   Close Drawer
                 </button>
@@ -2117,30 +2117,30 @@ export default function InstitutionalDashboard() {
       {selectedCandidate && (
         <div 
           id="pdf-report-canvas" 
-          style={{ display: "none", width: "800px", padding: "40px", backgroundColor: "#0f172a", color: "#f8fafc", fontFamily: "sans-serif" }}
+          style={{ display: "none", width: "800px", padding: "40px", backgroundColor: "#f8fafc", color: "#1e293b", fontFamily: "sans-serif" }}
         >
           {/* Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid #334155", paddingBottom: "20px", marginBottom: "30px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid #cbd5e1", paddingBottom: "20px", marginBottom: "30px" }}>
             <div>
-              <h1 style={{ fontSize: "28px", fontWeight: "900", margin: "0", color: "#fff" }}>SONA SCALE</h1>
-              <p style={{ fontSize: "12px", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "2px", margin: "5px 0 0 0" }}>Candidate Analytical Profile</p>
+              <h1 style={{ fontSize: "28px", fontWeight: "900", margin: "0", color: "#0f172a" }}>SONA SCALE</h1>
+              <p style={{ fontSize: "12px", color: "#64748b", textTransform: "uppercase", letterSpacing: "2px", margin: "5px 0 0 0" }}>Candidate Analytical Profile</p>
             </div>
             <div style={{ textAlign: "right" }}>
-              <p style={{ fontSize: "12px", color: "#94a3b8", margin: "0" }}>POWERED BY HIRESAPIEN</p>
+              <p style={{ fontSize: "12px", color: "#64748b", margin: "0" }}>POWERED BY HIRESAPIEN</p>
               <p style={{ fontSize: "10px", color: "#64748b", margin: "2px 0 0 0" }}>{new Date().toLocaleDateString()}</p>
             </div>
           </div>
 
           {/* Profile overview */}
-          <div style={{ backgroundColor: "#020617", padding: "20px", borderRadius: "12px", border: "1px solid #1e293b", marginBottom: "30px" }}>
-            <h2 style={{ fontSize: "16px", color: "#38bdf8", margin: "0 0 15px 0", textTransform: "uppercase" }}>Candidate Details</h2>
+          <div style={{ backgroundColor: "#ffffff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0", marginBottom: "30px" }}>
+            <h2 style={{ fontSize: "16px", color: "#0284c7", margin: "0 0 15px 0", textTransform: "uppercase" }}>Candidate Details</h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", fontSize: "13px" }}>
-              <div><span style={{ color: "#64748b" }}>Name:</span> <strong style={{ color: "#fff" }}>{selectedCandidate.name}</strong></div>
-              <div><span style={{ color: "#64748b" }}>Email:</span> <strong style={{ color: "#fff" }}>{selectedCandidate.email}</strong></div>
-              <div><span style={{ color: "#64748b" }}>Degree:</span> <strong style={{ color: "#fff" }}>{selectedCandidate.degree}</strong></div>
-              <div><span style={{ color: "#64748b" }}>Phone:</span> <strong style={{ color: "#fff" }}>{selectedCandidate.phone}</strong></div>
-              <div><span style={{ color: "#64748b" }}>Career Interest:</span> <strong style={{ color: "#fff" }}>{selectedCandidate.careerInterest}</strong></div>
-              <div><span style={{ color: "#64748b" }}>Status:</span> <strong style={{ color: "#fff" }}>{selectedCandidate.status}</strong></div>
+              <div><span style={{ color: "#475569" }}>Name:</span> <strong style={{ color: "#0f172a" }}>{selectedCandidate.name}</strong></div>
+              <div><span style={{ color: "#475569" }}>Email:</span> <strong style={{ color: "#0f172a" }}>{selectedCandidate.email}</strong></div>
+              <div><span style={{ color: "#475569" }}>Degree:</span> <strong style={{ color: "#0f172a" }}>{selectedCandidate.degree}</strong></div>
+              <div><span style={{ color: "#475569" }}>Phone:</span> <strong style={{ color: "#0f172a" }}>{selectedCandidate.phone}</strong></div>
+              <div><span style={{ color: "#475569" }}>Career Interest:</span> <strong style={{ color: "#0f172a" }}>{selectedCandidate.careerInterest}</strong></div>
+              <div><span style={{ color: "#475569" }}>Status:</span> <strong style={{ color: "#0f172a" }}>{selectedCandidate.status}</strong></div>
             </div>
           </div>
 
@@ -2149,32 +2149,32 @@ export default function InstitutionalDashboard() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "30px", marginBottom: "30px" }}>
               
               {/* Score card */}
-              <div style={{ backgroundColor: "#020617", padding: "20px", borderRadius: "12px", border: "1px solid #1e293b", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <span style={{ fontSize: "11px", color: "#64748b", fontWeight: "bold", textTransform: "uppercase" }}>Overall Score</span>
-                <div style={{ fontSize: "64px", fontWeight: "900", color: "#fff", lineHeight: "1", margin: "10px 0" }}>
+              <div style={{ backgroundColor: "#ffffff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <span style={{ fontSize: "11px", color: "#94a3b8", fontWeight: "bold", textTransform: "uppercase" }}>Overall Score</span>
+                <div style={{ fontSize: "64px", fontWeight: "900", color: "#0f172a", lineHeight: "1", margin: "10px 0" }}>
                   {selectedCandidate.result.overallScore}
-                  <span style={{ fontSize: "20px", color: "#64748b" }}>/100</span>
+                  <span style={{ fontSize: "20px", color: "#94a3b8" }}>/100</span>
                 </div>
-                <div style={{ fontSize: "12px", color: "#38bdf8", fontWeight: "bold", textTransform: "uppercase" }}>
+                <div style={{ fontSize: "12px", color: "#0284c7", fontWeight: "bold", textTransform: "uppercase" }}>
                   {selectedCandidate.result.readinessLevel}
                 </div>
-                <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "10px" }}>
+                <div style={{ fontSize: "11px", color: "#64748b", marginTop: "10px" }}>
                   Archetype: {selectedCandidate.result.archetype}
                 </div>
               </div>
 
               {/* Competency scores list */}
-              <div style={{ backgroundColor: "#020617", padding: "20px", borderRadius: "12px", border: "1px solid #1e293b" }}>
-                <h3 style={{ fontSize: "14px", color: "#38bdf8", margin: "0 0 15px 0", textTransform: "uppercase" }}>Competency Scores</h3>
+              <div style={{ backgroundColor: "#ffffff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <h3 style={{ fontSize: "14px", color: "#0284c7", margin: "0 0 15px 0", textTransform: "uppercase" }}>Competency Scores</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {Object.entries(selectedCandidate.result.competencyScores).map(([key, score]: any, idx) => (
                     <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "12px" }}>
-                      <span style={{ color: "#94a3b8" }}>{competencyLabels[key] || key}</span>
+                      <span style={{ color: "#475569" }}>{competencyLabels[key] || key}</span>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                        <div style={{ width: "100px", backgroundColor: "#1e293b", height: "6px", borderRadius: "3px", overflow: "hidden" }}>
+                        <div style={{ width: "100px", backgroundColor: "#f1f5f9", height: "6px", borderRadius: "3px", overflow: "hidden" }}>
                           <div style={{ backgroundColor: "#3b82f6", height: "100%", width: `${score}%` }} />
                         </div>
-                        <strong style={{ color: "#fff", width: "30px", textAlign: "right" }}>{score}%</strong>
+                        <strong style={{ color: "#0f172a", width: "30px", textAlign: "right" }}>{score}%</strong>
                       </div>
                     </div>
                   ))}
@@ -2187,30 +2187,30 @@ export default function InstitutionalDashboard() {
           {/* Strengths / Improvements */}
           {selectedCandidate.result && (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "30px" }}>
-              <div style={{ backgroundColor: "#052e16", padding: "15px", borderRadius: "10px", border: "1px solid #14532d", fontSize: "12px" }}>
-                <strong style={{ color: "#4ade80", textTransform: "uppercase", display: "block", marginBottom: "5px" }}>Primary Strength</strong>
-                <p style={{ margin: "0", color: "#e2e8f0" }}>{selectedCandidate.result.strengths?.[0]}</p>
+              <div style={{ backgroundColor: "#f0fdf4", padding: "15px", borderRadius: "10px", border: "1px solid #bbf7d0", fontSize: "12px" }}>
+                <strong style={{ color: "#166534", textTransform: "uppercase", display: "block", marginBottom: "5px" }}>Primary Strength</strong>
+                <p style={{ margin: "0", color: "#1e293b" }}>{selectedCandidate.result.strengths?.[0]}</p>
               </div>
               
-              <div style={{ backgroundColor: "#450a0a", padding: "15px", borderRadius: "10px", border: "1px solid #7f1d1d", fontSize: "12px" }}>
-                <strong style={{ color: "#fca5a5", textTransform: "uppercase", display: "block", marginBottom: "5px" }}>Recommended Improvement</strong>
-                <p style={{ margin: "0", color: "#e2e8f0" }}>{selectedCandidate.result.improvements?.[0]}</p>
+              <div style={{ backgroundColor: "#fef2f2", padding: "15px", borderRadius: "10px", border: "1px solid #fecaca", fontSize: "12px" }}>
+                <strong style={{ color: "#991b1b", textTransform: "uppercase", display: "block", marginBottom: "5px" }}>Recommended Improvement</strong>
+                <p style={{ margin: "0", color: "#1e293b" }}>{selectedCandidate.result.improvements?.[0]}</p>
               </div>
             </div>
           )}
 
           {/* Proctoring */}
-          <div style={{ backgroundColor: "#020617", padding: "20px", borderRadius: "12px", border: "1px solid #1e293b", marginBottom: "30px", fontSize: "12px" }}>
-            <h3 style={{ fontSize: "14px", color: "#eab308", margin: "0 0 10px 0", textTransform: "uppercase" }}>Security Proctor Audit</h3>
+          <div style={{ backgroundColor: "#ffffff", padding: "20px", borderRadius: "12px", border: "1px solid #e2e8f0", marginBottom: "30px", fontSize: "12px" }}>
+            <h3 style={{ fontSize: "14px", color: "#b45309", margin: "0 0 10px 0", textTransform: "uppercase" }}>Security Proctor Audit</h3>
             {selectedCandidate.warningCount > 0 ? (
-              <p style={{ margin: "0 0 10px 0", color: "#f87171" }}>Warning logs detected: <strong>{selectedCandidate.warningCount} proctor warnings</strong> during simulation session.</p>
+              <p style={{ margin: "0 0 10px 0", color: "#b91c1c" }}>Warning logs detected: <strong>{selectedCandidate.warningCount} proctor warnings</strong> during simulation session.</p>
             ) : (
-              <p style={{ margin: "0", color: "#4ade80" }}>Compliant session. Zero warnings or integrity notifications logged during evaluation.</p>
+              <p style={{ margin: "0", color: "#166534" }}>Compliant session. Zero warnings or integrity notifications logged during evaluation.</p>
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {selectedCandidate.warningEvents && selectedCandidate.warningEvents.map((ev: any, idx: number) => (
-                <div key={idx} style={{ display: "flex", justifyContent: "space-between", padding: "6px 10px", backgroundColor: "#0f172a", borderRadius: "6px" }}>
-                  <span style={{ color: "#fca5a5" }}>{ev.reason}</span>
+                <div key={idx} style={{ display: "flex", justifyContent: "space-between", padding: "6px 10px", backgroundColor: "#f8fafc", borderRadius: "6px" }}>
+                  <span style={{ color: "#991b1b" }}>{ev.reason}</span>
                   <span style={{ color: "#64748b" }}>{new Date(ev.timestamp).toLocaleTimeString()}</span>
                 </div>
               ))}
@@ -2218,7 +2218,7 @@ export default function InstitutionalDashboard() {
           </div>
 
           {/* Footer Note */}
-          <div style={{ borderTop: "1px solid #334155", paddingTop: "20px", marginTop: "40px", textAlign: "center", fontSize: "11px", color: "#64748b" }}>
+          <div style={{ borderTop: "1px solid #cbd5e1", paddingTop: "20px", marginTop: "40px", textAlign: "center", fontSize: "11px", color: "#64748b" }}>
             This evaluation is processed dynamically under Sona Scale metrics. All scores are aggregated on performance calculations.
           </div>
         </div>
