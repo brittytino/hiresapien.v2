@@ -56,14 +56,14 @@ export default function AdminLoginPage() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-slate-950 relative overflow-hidden flex flex-col justify-between items-center font-sans selection:bg-blue-500/20 selection:text-blue-200 py-12 px-6">
+    <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col justify-between items-center font-sans selection:bg-blue-100 selection:text-blue-900 py-12 px-6">
       
       {/* Decorative Radial Backdrop Lights */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/10 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-500/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-400/15 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-400/15 blur-[130px] rounded-full pointer-events-none" />
 
       {/* Watermark Logo background */}
-      <div className="absolute -left-20 sm:-left-28 bottom-[10%] w-[320px] h-[320px] sm:w-[450px] sm:h-[450px] lg:w-[550px] lg:h-[550px] opacity-[0.03] select-none pointer-events-none -rotate-12 z-0">
+      <div className="absolute -left-20 sm:-left-28 bottom-[10%] w-[320px] h-[320px] sm:w-[450px] sm:h-[450px] lg:w-[550px] lg:h-[550px] opacity-[0.04] select-none pointer-events-none -rotate-12 z-0">
         <Image
           src="/image-removebg-preview (1).png"
           alt="Watermark Logo"
@@ -93,58 +93,58 @@ export default function AdminLoginPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="w-full bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-8 rounded-3xl shadow-2xl flex flex-col gap-6"
+          className="w-full bg-white/85 backdrop-blur-md border border-slate-200/80 p-8 rounded-3xl shadow-2xl shadow-slate-200/40 flex flex-col gap-6"
         >
           <div className="text-center">
-            <div className="inline-flex p-3 bg-blue-500/10 text-blue-400 rounded-2xl mb-3 border border-blue-500/10">
+            <div className="inline-flex p-3 bg-blue-50 text-blue-600 rounded-2xl mb-3 border border-blue-100">
               <Award className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-black text-white tracking-tight">Institutional Entrance</h2>
-            <p className="text-xs text-slate-400 font-medium mt-1">Authenticate access to Sona Scale analytics portal</p>
+            <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Institutional Entrance</h2>
+            <p className="text-xs text-slate-500 font-medium mt-1">Authenticate access to Sona Scale analytics portal</p>
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
             
             {/* Username Input */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                 Username
               </label>
               <div className="relative flex items-center">
-                <User className="w-4.5 h-4.5 text-slate-500 absolute left-3.5 pointer-events-none" />
+                <User className="w-4.5 h-4.5 text-slate-400 absolute left-3.5 pointer-events-none" />
                 <input
                   type="text"
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter administrator username"
-                  className="w-full bg-slate-950/80 border border-slate-800 focus:border-blue-500 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all"
+                  className="w-full bg-slate-50/70 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl pl-11 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all focus:ring-4 focus:ring-blue-100/50"
                 />
               </div>
             </div>
 
             {/* Password Input */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                 Password
               </label>
               <div className="relative flex items-center">
-                <Lock className="w-4.5 h-4.5 text-slate-500 absolute left-3.5 pointer-events-none" />
+                <Lock className="w-4.5 h-4.5 text-slate-400 absolute left-3.5 pointer-events-none" />
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter secure password"
-                  className="w-full bg-slate-950/80 border border-slate-800 focus:border-blue-500 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all"
+                  className="w-full bg-slate-50/70 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl pl-11 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 outline-none transition-all focus:ring-4 focus:ring-blue-100/50"
                 />
               </div>
             </div>
 
             {/* Error Message */}
             {error && (
-              <div className="p-3.5 bg-rose-500/10 border border-rose-500/25 rounded-xl text-rose-400 text-xs font-semibold flex items-start gap-2.5">
-                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+              <div className="p-3.5 bg-rose-50 border border-rose-100 rounded-xl text-rose-600 text-xs font-semibold flex items-start gap-2.5">
+                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-rose-500" />
                 <span>{error}</span>
               </div>
             )}
@@ -170,12 +170,12 @@ export default function AdminLoginPage() {
           </form>
 
           {/* Seeded Credentials Helper Card */}
-          <div className="mt-2 p-4 bg-slate-950/50 rounded-2xl border border-slate-800/60 flex items-start gap-3">
-            <Info className="w-4.5 h-4.5 text-blue-400 shrink-0 mt-0.5" />
-            <div className="text-[11px] font-semibold text-slate-400 leading-relaxed">
-              <span className="text-white block font-black mb-1">Demo Credentials</span>
-              <p>Username: <strong className="text-blue-300 font-mono">admin</strong></p>
-              <p>Password: <strong className="text-blue-300 font-mono">SonaAdmin2026!</strong></p>
+          <div className="mt-2 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-3">
+            <Info className="w-4.5 h-4.5 text-blue-500 shrink-0 mt-0.5" />
+            <div className="text-[11px] font-semibold text-slate-500 leading-relaxed">
+              <span className="text-slate-800 block font-bold mb-1">Demo Credentials</span>
+              <p>Username: <strong className="text-blue-600 font-mono">admin</strong></p>
+              <p>Password: <strong className="text-blue-600 font-mono">SonaAdmin2026!</strong></p>
             </div>
           </div>
 
@@ -183,14 +183,14 @@ export default function AdminLoginPage() {
       </main>
 
       <footer className="z-10 text-center animate-[fadeIn_0.9s_ease-out_both]">
-        <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest flex items-center justify-center gap-2">
+        <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest flex items-center justify-center gap-2">
           <span>Powered by</span>
           <Image
             src="/poweredby.png"
             alt="HireSapien Xperience"
             width={112}
             height={16}
-            className="object-contain opacity-40"
+            className="object-contain opacity-60"
           />
         </div>
       </footer>
